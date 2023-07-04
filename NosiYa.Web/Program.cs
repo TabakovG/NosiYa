@@ -3,7 +3,8 @@ namespace NosiYa.Web
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
-    using Data;
+    using NosiYa.Data;
+    
 
     public class Program
     {

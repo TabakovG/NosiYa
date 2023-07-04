@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NosiYa.Web", "NosiYa.Web\NosiYa.Web.csproj", "{3DD55B65-D73C-4033-B658-EA5573F39320}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NosiYa.Web", "NosiYa.Web\NosiYa.Web.csproj", "{3DD55B65-D73C-4033-B658-EA5573F39320}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NosiYa.Common", "NosiYa.Common\NosiYa.Common.csproj", "{3F26B90C-5F77-49F1-98D8-553B0945DFD1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{C9C89228-2A84-4596-BD0F-E2138321090A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{875B64E9-316F-475E-BE07-991606BA353E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NosiYa.Data", "NosiYa.Data\NosiYa.Data.csproj", "{1BDA9BCA-9E59-413A-9498-57FB2F401C9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NosiYa.Data.Models", "NosiYa.Data.Models\NosiYa.Data.Models.csproj", "{42AFE12A-885C-4A6E-B638-9338902A5CD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NosiYa.Web.ViewModels", "NosiYa.Web.ViewModels\NosiYa.Web.ViewModels.csproj", "{65B3CA82-A0E4-406D-A0C5-578E12816A5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +27,31 @@ Global
 		{3DD55B65-D73C-4033-B658-EA5573F39320}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DD55B65-D73C-4033-B658-EA5573F39320}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DD55B65-D73C-4033-B658-EA5573F39320}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F26B90C-5F77-49F1-98D8-553B0945DFD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F26B90C-5F77-49F1-98D8-553B0945DFD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F26B90C-5F77-49F1-98D8-553B0945DFD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F26B90C-5F77-49F1-98D8-553B0945DFD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BDA9BCA-9E59-413A-9498-57FB2F401C9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BDA9BCA-9E59-413A-9498-57FB2F401C9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BDA9BCA-9E59-413A-9498-57FB2F401C9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BDA9BCA-9E59-413A-9498-57FB2F401C9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42AFE12A-885C-4A6E-B638-9338902A5CD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42AFE12A-885C-4A6E-B638-9338902A5CD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42AFE12A-885C-4A6E-B638-9338902A5CD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42AFE12A-885C-4A6E-B638-9338902A5CD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65B3CA82-A0E4-406D-A0C5-578E12816A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65B3CA82-A0E4-406D-A0C5-578E12816A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65B3CA82-A0E4-406D-A0C5-578E12816A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65B3CA82-A0E4-406D-A0C5-578E12816A5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3DD55B65-D73C-4033-B658-EA5573F39320} = {C9C89228-2A84-4596-BD0F-E2138321090A}
+		{1BDA9BCA-9E59-413A-9498-57FB2F401C9C} = {875B64E9-316F-475E-BE07-991606BA353E}
+		{42AFE12A-885C-4A6E-B638-9338902A5CD3} = {875B64E9-316F-475E-BE07-991606BA353E}
+		{65B3CA82-A0E4-406D-A0C5-578E12816A5A} = {C9C89228-2A84-4596-BD0F-E2138321090A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0756ED3C-20C0-4A6A-B0BA-E9C23E8AD502}
