@@ -1,8 +1,8 @@
-﻿using System.Drawing;
-using System.Reflection;
-
-namespace NosiYa.Data.Models.Outfit
+﻿namespace NosiYa.Data.Models.Outfit
 {
+
+    using System.Drawing;
+
     public class Shirt
     {
         public int Id { get; set; }

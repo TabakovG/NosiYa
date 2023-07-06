@@ -1,7 +1,5 @@
-﻿
-namespace NosiYa.Data.Models.Outfit
+﻿namespace NosiYa.Data.Models.Outfit
 {
-
     using System.Drawing;
 
     public class Accessory
