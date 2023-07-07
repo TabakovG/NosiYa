@@ -1,3 +1,5 @@
+using NosiYa.Data.Models;
+
 namespace NosiYa.Web
 {
     using Microsoft.AspNetCore.Identity;
@@ -16,17 +18,23 @@ namespace NosiYa.Web
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
                                    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContext<NosiYaDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
             //builder.Services.AddDatabaseDeveloperPageExceptionFilter(); da se mahne TODO 
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
                     {
-                        options.SignIn.RequireConfirmedAccount = true;
+                        options.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
+                        options.Password.RequireDigit = builder.Configuration.GetValue<bool>("Identity:Password:RequireDigit");
+                        options.Password.RequireLowercase = builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
+                        options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
+                        options.Password.RequireUppercase = builder.Configuration.GetValue<bool>("Identity:Password:RequireUppercase");
+                        options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
+                        options.Password.RequiredUniqueChars = builder.Configuration.GetValue<int>("Identity:Password:RequiredUniqueChars");
                     }
                 )
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<NosiYaDbContext>();
 
             builder.Services.AddControllersWithViews();
 

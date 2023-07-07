@@ -1,6 +1,6 @@
-﻿namespace NosiYa.Data.Models
+﻿namespace NosiYa.Data.Models.Enums
 {
-    public enum UserType
+    public enum RenterType
     {
         Male = 1,
         Female = 2,

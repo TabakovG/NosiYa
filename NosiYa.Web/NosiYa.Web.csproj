@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NosiYa.Common\NosiYa.Common.csproj" />
     <ProjectReference Include="..\NosiYa.Data\NosiYa.Data.csproj" />
+    <ProjectReference Include="..\NosiYa.Services.Data\NosiYa.Services.Data.csproj" />
     <ProjectReference Include="..\NosiYa.Web.ViewModels\NosiYa.Web.ViewModels.csproj" />
   </ItemGroup>
 

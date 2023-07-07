@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.13" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NosiYa.Common\NosiYa.Common.csproj" />
+    <ProjectReference Include="..\NosiYa.Data.Models\NosiYa.Data.Models.csproj" />
+    <ProjectReference Include="..\NosiYa.Data\NosiYa.Data.csproj" />
+    <ProjectReference Include="..\NosiYa.Web.ViewModels\NosiYa.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

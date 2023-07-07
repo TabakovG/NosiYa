@@ -1,35 +1,31 @@
-﻿namespace NosiYa.Data.Models.Outfit
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace NosiYa.Data.Models.Outfit
 {
-    public class Outfit
+    public class OutfitSet : OutfitBase
     {
-        public Outfit()
+        public OutfitSet() :base()
         {
             this.Accessories = new HashSet<Accessory>();
         }
 
-        public int Id { get; set; }
-
-        public string Name { get; set; } = null!;
-
-        public Region Region { get; set; } = null!;
-
-        public ICollection<Accessory> Accessories { get; set; }
-
+        [ForeignKey(nameof(Shirt))]
         public int ShirtId { get; set; } 
         public Shirt Shirt { get; set; } = null!;
 
+        [ForeignKey(nameof(Legs))]
         public int LegsId { get; set; }
         public Legs Legs { get; set; } = null!;
 
+        [ForeignKey(nameof(Vest))]
         public int? VestId { get; set; }
         public Vest? Vest { get; set; }
 
+        [ForeignKey(nameof(Belt))]
         public int? BeltId { get; set; }
         public Belt? Belt { get; set; }
 
-        public UserType UserType { get; set; }
-
-        public string Description { get; set; } = null!;
+        public ICollection<Accessory> Accessories { get; set; }
 
 
     }

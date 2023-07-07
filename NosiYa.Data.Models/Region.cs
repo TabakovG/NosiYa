@@ -1,16 +1,25 @@
 ﻿namespace NosiYa.Data.Models
 {
+
+    using System.ComponentModel.DataAnnotations;
+
+    using Outfit;
+    using static NosiYa.Common.EntityValidationConstants.Region;
+
     public class Region
     {
         public Region()
         {
-            this.Outfits = new HashSet<Outfit.Outfit>();
+            this.Outfits = new HashSet<OutfitBase>();
         }
 
-        public int RegionId { get; set;}
+        [Key]
+        public int Id { get; set; }
 
-        public string RegionName { get; set; } = null!; 
+        [Required]
+        [MaxLength(NameMaxLength)]
+        public string Name { get; set; } = null!;
 
-        public ICollection<Outfit.Outfit> Outfits { get; set;}
+        public ICollection<OutfitBase> Outfits { get; set; }
     }
 }
