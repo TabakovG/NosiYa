@@ -4,10 +4,15 @@
     using System.ComponentModel.DataAnnotations;
 
     using Enums;
-    using static NosiYa.Common.EntityValidationConstants.OutfitBase;
+    using static Common.EntityValidationConstants.Outfit;
+    using System.Drawing;
 
-    public abstract class OutfitBase
+    public class OutfitPart
     {
+        public OutfitPart()
+        {
+            this.Sizes = new HashSet<KeyValuePair<SizeType, double>>();
+        }
 
         [Key]
         public int Id { get; set; }
@@ -42,6 +47,10 @@
         public int? OutfitSetId { get; set; }
 
         public OutfitSet? OutfitSet { get; set; }
+
+        public OutfitPartType Type { get; set; }
+
+        public ICollection<Size> Sizes { get; set; }
 
         public ICollection<OutfitRenterDate> OutfitRenterDates { get; set; } = new HashSet<OutfitRenterDate>();
 

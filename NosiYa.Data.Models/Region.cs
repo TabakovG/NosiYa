@@ -10,7 +10,7 @@
     {
         public Region()
         {
-            this.Outfits = new HashSet<OutfitBase>();
+            this.Outfits = new HashSet<OutfitPart>();
         }
 
         [Key]
@@ -20,6 +20,6 @@
         [MaxLength(NameMaxLength)]
         public string Name { get; set; } = null!;
 
-        public ICollection<OutfitBase> Outfits { get; set; }
+        public ICollection<OutfitPart> Outfits { get; set; }
     }
 }

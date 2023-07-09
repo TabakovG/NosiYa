@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NosiYa.Data.Models;
-using NosiYa.Data.Models.Outfit;
-
-namespace NosiYa.Data.Configurations
+﻿namespace NosiYa.Data.Configurations
 {
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+    using Models;
+
     public class OutfitRenterDateEntityConfiguration : IEntityTypeConfiguration<OutfitRenterDate>
     {
         public void Configure(EntityTypeBuilder<OutfitRenterDate> builder)
@@ -18,8 +18,8 @@ namespace NosiYa.Data.Configurations
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .HasOne(x=>x.Renter)
-                .WithMany(ord=>ord.OutfitRenterDates)
+                .HasOne(x => x.Renter)
+                .WithMany(ord => ord.OutfitRenterDates)
                 .OnDelete(DeleteBehavior.Restrict);
 
         }

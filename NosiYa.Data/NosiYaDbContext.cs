@@ -16,15 +16,12 @@ namespace NosiYa.Data
         {
         }
 
-        public DbSet<Accessory> Accessories { get; set; } = null!;
-        public DbSet<Belt> Belts { get; set; } = null!;
-        public DbSet<Legs> Legs { get; set; } = null!;
+
+        public DbSet<OutfitPart> OutfitParts { get; set; } = null!;
         public DbSet<OutfitSet> OutfitSets { get; set; } = null!;
-        public DbSet<Shirt> Shirts { get; set; } = null!;
-        public DbSet<Vest> Vests { get; set; } = null!;
-        public DbSet<Event> Events { get; set; } = null!;
         public DbSet<OutfitRenterDate> OutfitRenterDates { get; set; } = null!;
         public DbSet<Region> Regions { get; set; } = null!;
+        public DbSet<Event> Events { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder builder)

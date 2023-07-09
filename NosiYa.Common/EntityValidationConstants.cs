@@ -7,7 +7,7 @@
             public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
         }
-        public static class OutfitBase
+        public static class Outfit
         {
             public const int NameMinLength = 3;
             public const int NameMaxLength = 100;

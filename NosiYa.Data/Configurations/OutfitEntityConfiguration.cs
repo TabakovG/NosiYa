@@ -4,9 +4,9 @@ using NosiYa.Data.Models.Outfit;
 
 namespace NosiYa.Data.Configurations
 {
-    public class OutfitEntityConfiguration : IEntityTypeConfiguration<OutfitBase>
+    public class OutfitEntityConfiguration : IEntityTypeConfiguration<OutfitPart>
     {
-        public void Configure(EntityTypeBuilder<OutfitBase> builder)
+        public void Configure(EntityTypeBuilder<OutfitPart> builder)
         {
             builder
                 .Property(x => x.PricePerDay)

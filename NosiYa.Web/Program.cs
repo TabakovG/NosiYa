@@ -1,12 +1,13 @@
-using NosiYa.Data.Models;
 
 namespace NosiYa.Web
 {
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
-    using NosiYa.Data;
-    
+    using Data;
+    using Data.Models;
+    using NosiYa.Services.Data.Interfaces;
+    using Infrastructure.Extensions;
+
 
     public class Program
     {
@@ -15,7 +16,7 @@ namespace NosiYa.Web
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
                                    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<NosiYaDbContext>(options =>
@@ -35,6 +36,8 @@ namespace NosiYa.Web
                     }
                 )
                 .AddEntityFrameworkStores<NosiYaDbContext>();
+
+            builder.Services.AddApplicationServices(typeof(IOutfitService));
 
             builder.Services.AddControllersWithViews();
 

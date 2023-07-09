@@ -10,7 +10,7 @@
     {
         [ForeignKey(nameof(Outfit))]
         public int OutfitId { get; set; }
-        public OutfitBase Outfit { get; set; } = null!;
+        public OutfitPart Outfit { get; set; } = null!;
 
         [ForeignKey(nameof(Renter))]
         public Guid RenterId { get; set; }

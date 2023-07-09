@@ -1,31 +1,53 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NosiYa.Data.Models.Outfit
+﻿namespace NosiYa.Data.Models.Outfit
 {
-    public class OutfitSet : OutfitBase
+    using Enums;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using static Common.EntityValidationConstants.Outfit;
+
+
+    public class OutfitSet
     {
-        public OutfitSet() :base()
+        public OutfitSet() 
         {
-            this.Accessories = new HashSet<Accessory>();
+            this.OutfitParts = new HashSet<OutfitPart>();
+            this.OutfitRenterDates = new HashSet<OutfitRenterDate>();
         }
 
-        [ForeignKey(nameof(Shirt))]
-        public int ShirtId { get; set; } 
-        public Shirt Shirt { get; set; } = null!;
+        [Key]
+        public int Id { get; set; }
 
-        [ForeignKey(nameof(Legs))]
-        public int LegsId { get; set; }
-        public Legs Legs { get; set; } = null!;
+        [Required]
+        [MaxLength(NameMaxLength)]
+        public string Name { get; set; } = null!;
 
-        [ForeignKey(nameof(Vest))]
-        public int? VestId { get; set; }
-        public Vest? Vest { get; set; }
+        [MaxLength(DescriptionMaxLength)]
+        public string? Description { get; set; }
 
-        [ForeignKey(nameof(Belt))]
-        public int? BeltId { get; set; }
-        public Belt? Belt { get; set; }
+        [ForeignKey(nameof(Region))]
+        public int? RegionId { get; set; }
+        public Region? Region { get; set; }
 
-        public ICollection<Accessory> Accessories { get; set; }
+        public decimal PricePerDay { get; set; }
+
+        [Required]
+        [MaxLength(ColorMaxLength)]
+        public string Color { get; set; } = null!;
+
+        [Required]
+        [MaxLength(PictureMaxLength)]
+        public string Picture { get; set; } = null!;
+
+        [Required]
+        public RenterType RenterType { get; set; }
+
+        [Required]
+        public bool IsAvailable { get; set; }
+
+        public ICollection<OutfitPart> OutfitParts { get; set; }
+
+        public ICollection<OutfitRenterDate> OutfitRenterDates { get; set; }
+
 
 
     }
