@@ -19,9 +19,12 @@ namespace NosiYa.Data
 
         public DbSet<OutfitPart> OutfitParts { get; set; } = null!;
         public DbSet<OutfitSet> OutfitSets { get; set; } = null!;
+        public DbSet<OutfitForCart> OutfitsForCarts { get; set; } = null!;
         public DbSet<OutfitRenterDate> OutfitRenterDates { get; set; } = null!;
         public DbSet<Region> Regions { get; set; } = null!;
         public DbSet<Event> Events { get; set; } = null!;
+        public DbSet<Cart> Carts { get; set; } = null!;
+        public DbSet<Comment> Comments { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder builder)

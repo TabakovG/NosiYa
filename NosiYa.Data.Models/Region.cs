@@ -11,6 +11,7 @@
         public Region()
         {
             this.Outfits = new HashSet<OutfitPart>();
+            this.Images = new HashSet<string>();
         }
 
         [Key]
@@ -20,6 +21,12 @@
         [MaxLength(NameMaxLength)]
         public string Name { get; set; } = null!;
 
+        [Required]
+        [MaxLength(DescriptionMaxLength)]
+        public string Description { get; set; } = null!;
+
+        public ICollection<string> Images { get; set; }
+ 
         public ICollection<OutfitPart> Outfits { get; set; }
     }
 }

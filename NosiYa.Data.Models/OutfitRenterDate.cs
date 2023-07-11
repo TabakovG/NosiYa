@@ -9,14 +9,17 @@
     public class OutfitRenterDate
     {
         [ForeignKey(nameof(Outfit))]
-        public int OutfitId { get; set; }
-        public OutfitPart Outfit { get; set; } = null!;
+        public int OutfitSetId { get; set; }
+        public OutfitSet Outfit { get; set; } = null!;
 
         [ForeignKey(nameof(Renter))]
         public Guid RenterId { get; set; }
         public ApplicationUser Renter { get; set; } = null!;
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime StartDate { get; set; }
+
+        [Required]
+        public DateTime EndDate { get; set; }
     }
 }

@@ -5,6 +5,11 @@
 
     public  class Event
     {
+        public Event()
+        {
+            this.Comments = new HashSet<Comment>();
+        }
+
         [Key]
         public int Id { get; set; }
         
@@ -31,5 +36,7 @@
         
         [Required]
         public DateTime EventEndDate { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
     }
 }

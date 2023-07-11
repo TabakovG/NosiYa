@@ -2,12 +2,11 @@
 {
     public enum SizeType
     {
-        Length = 1,
-        Width = 2,
-        Waist = 3,
-        ShouldersWidth = 4,
-        Chest = 5,
-        SleeveLength = 6,
-        Sleeve = 7
+        XS = 0,
+        S = 1,
+        M = 2,
+        L = 3,
+        XL = 4,
+        XXL = 5,
     }
 }

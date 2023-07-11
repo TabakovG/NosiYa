@@ -11,11 +11,12 @@
     {
         public OutfitPart()
         {
-            this.Sizes = new HashSet<KeyValuePair<SizeType, double>>();
+            this.Sizes = new HashSet<SizeType>();
         }
 
         [Key]
         public int Id { get; set; }
+
         [Required]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; } = null!;
@@ -27,21 +28,13 @@
         public int? RegionId { get; set; }
         public Region? Region { get; set; }
 
-        public decimal PricePerDay { get; set; }
-
         [Required]
         [MaxLength(ColorMaxLength)]
         public string Color { get; set; } = null!;
 
         [Required]
-        [MaxLength(PictureMaxLength)]
-        public string Picture { get; set; } = null!;
-
-        [Required]
         public RenterType RenterType { get; set; }
 
-        [Required]
-        public bool IsAvailable { get; set; }
 
         [ForeignKey(nameof(OutfitSet))]
         public int? OutfitSetId { get; set; }
@@ -50,9 +43,7 @@
 
         public OutfitPartType Type { get; set; }
 
-        public ICollection<Size> Sizes { get; set; }
-
-        public ICollection<OutfitRenterDate> OutfitRenterDates { get; set; } = new HashSet<OutfitRenterDate>();
+        public ICollection<SizeType> Sizes { get; set; }
 
     }
 }

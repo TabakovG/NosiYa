@@ -23,6 +23,14 @@
                 try
                 {
                     string formDecValue = valueResult.FirstValue;
+                    formDecValue = formDecValue.Replace(" ", "");
+
+                    if (formDecValue.Contains(',') && formDecValue.Contains('.'))
+                    {
+                        formDecValue = formDecValue.Replace(",","");
+                        formDecValue = formDecValue.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                    }
+
                     formDecValue = formDecValue.Replace(",",
                         CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                     formDecValue = formDecValue.Replace(".",

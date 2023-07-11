@@ -10,7 +10,7 @@
         public void Configure(EntityTypeBuilder<OutfitRenterDate> builder)
         {
             builder
-                .HasKey(x => new { x.OutfitId, x.RenterId });
+                .HasKey(x => new { OutfitId = x.OutfitSetId, x.RenterId });
 
             builder
                 .HasOne(x => x.Outfit)

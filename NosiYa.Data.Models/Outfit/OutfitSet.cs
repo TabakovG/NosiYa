@@ -8,8 +8,10 @@
 
     public class OutfitSet
     {
-        public OutfitSet() 
+        public OutfitSet()
         {
+            this.Sizes = new HashSet<SizeType>();
+            this.Images = new HashSet<string>();
             this.OutfitParts = new HashSet<OutfitPart>();
             this.OutfitRenterDates = new HashSet<OutfitRenterDate>();
         }
@@ -35,14 +37,16 @@
         public string Color { get; set; } = null!;
 
         [Required]
-        [MaxLength(PictureMaxLength)]
-        public string Picture { get; set; } = null!;
+        [MaxLength(ImageMaxLength)]
+        public ICollection<string> Images { get; set; } = null!;
 
         [Required]
         public RenterType RenterType { get; set; }
 
         [Required]
         public bool IsAvailable { get; set; }
+
+        public ICollection<SizeType> Sizes { get; set; }
 
         public ICollection<OutfitPart> OutfitParts { get; set; }
 

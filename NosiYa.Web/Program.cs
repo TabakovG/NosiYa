@@ -1,4 +1,6 @@
 
+using NosiYa.Web.Infrastructure.ModelBinders;
+
 namespace NosiYa.Web
 {
     using Microsoft.EntityFrameworkCore;
@@ -39,7 +41,12 @@ namespace NosiYa.Web
 
             builder.Services.AddApplicationServices(typeof(IOutfitService));
 
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews()
+                .AddMvcOptions(options =>
+                {
+                    //Should be inserted at the beginning, otherwise the default provider will handle the binding.
+                    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider()); 
+                }); ;
 
             var app = builder.Build();
 

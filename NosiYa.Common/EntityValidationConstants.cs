@@ -6,6 +6,11 @@
         {
             public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
+
+            public const int DescriptionMinLength = 30;
+            public const int DescriptionMaxLength = 2000;
+
+            public const int ImageMaxLength = 2048;
         }
         public static class Outfit
         {
@@ -14,7 +19,7 @@
 
             public const int DescriptionMaxLength = 1000;
 
-            public const int PictureMaxLength = 2048;
+            public const int ImageMaxLength = 2048;
 
             public const int RenterTypeMinValue= 1;
             public const int RenterTypeMaxValue = 5;
@@ -36,5 +41,12 @@
             
 
         }
+
+        public static class Comment
+        {
+            public const int ContentMinLength = 2;
+            public const int ContentMaxLength = 2000;
+        }
+
     }
 }
