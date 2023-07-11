@@ -9,10 +9,10 @@
         public int Id { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Outfit))]
+        [ForeignKey(nameof(OutfitSet))]
         public int OutfitId { get; set; }
 
-        public OutfitSet Outfit { get; set; } = null!;
+        public OutfitSet OutfitSet { get; set; } = null!;
 
         [Required]
         public DateTime FromDate { get; set; }

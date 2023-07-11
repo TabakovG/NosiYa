@@ -8,6 +8,10 @@
 
     public class OutfitPart
     {
+        public OutfitPart()
+        {
+            this.Images = new HashSet<Image>();
+        }
 
         [Key]
         public int Id { get; set; }
@@ -19,10 +23,6 @@
         [MaxLength(DescriptionMaxLength)]
         public string? Description { get; set; }
 
-        [ForeignKey(nameof(Region))]
-        public int? RegionId { get; set; }
-        public Region? Region { get; set; }
-
         [Required]
         [MaxLength(ColorMaxLength)]
         public string Color { get; set; } = null!;
@@ -30,17 +30,15 @@
         [Required]
         public RenterType RenterType { get; set; }
 
-
         [ForeignKey(nameof(OutfitSet))]
         public int? OutfitSetId { get; set; }
 
         public OutfitSet? OutfitSet { get; set; }
 
-        public OutfitPartType Type { get; set; }
+        public OutfitPartType OutfitType { get; set; }
 
-        [ForeignKey( nameof(Image))]
-        public int? ImageId { get; set; }
-        public Image? Image { get; set; }
+        [ForeignKey(nameof(Image))]
+        public ICollection<Image> Images { get; set; }
 
         [Required]
         [MaxLength(SizeMaxLength)]

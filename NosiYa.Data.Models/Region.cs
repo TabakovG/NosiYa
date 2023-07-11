@@ -10,7 +10,7 @@
     {
         public Region()
         {
-            this.Outfits = new HashSet<OutfitPart>();
+            this.Outfits = new HashSet<OutfitSet>();
             this.Images = new HashSet<Image>();
         }
 
@@ -27,6 +27,6 @@
 
         public ICollection<Image> Images { get; set; }
  
-        public ICollection<OutfitPart> Outfits { get; set; }
+        public ICollection<OutfitSet> Outfits { get; set; }
     }
 }

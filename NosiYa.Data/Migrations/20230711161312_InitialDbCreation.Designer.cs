@@ -12,7 +12,7 @@ using NosiYa.Data;
 namespace NosiYa.Data.Migrations
 {
     [DbContext(typeof(NosiYaDbContext))]
-    [Migration("20230711115553_InitialDbCreation")]
+    [Migration("20230711161312_InitialDbCreation")]
     partial class InitialDbCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,7 +238,8 @@ namespace NosiYa.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("OwnerId")
+                        .IsUnique();
 
                     b.ToTable("Carts");
                 });
@@ -258,6 +259,9 @@ namespace NosiYa.Data.Migrations
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
@@ -324,6 +328,9 @@ namespace NosiYa.Data.Migrations
                     b.Property<int?>("EventId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Image")
+                        .HasColumnType("int");
+
                     b.Property<int?>("OutfitSetId")
                         .HasColumnType("int");
 
@@ -339,11 +346,13 @@ namespace NosiYa.Data.Migrations
 
                     b.HasIndex("EventId");
 
+                    b.HasIndex("Image");
+
                     b.HasIndex("OutfitSetId");
 
                     b.HasIndex("RegionId");
 
-                    b.ToTable("Image");
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitForCart", b =>
@@ -392,9 +401,6 @@ namespace NosiYa.Data.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -403,7 +409,7 @@ namespace NosiYa.Data.Migrations
                     b.Property<int?>("OutfitSetId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RegionId")
+                    b.Property<int>("OutfitType")
                         .HasColumnType("int");
 
                     b.Property<int>("RenterType")
@@ -414,18 +420,32 @@ namespace NosiYa.Data.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
 
                     b.HasIndex("OutfitSetId");
 
-                    b.HasIndex("RegionId");
-
                     b.ToTable("OutfitParts");
+                });
+
+            modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitRenterDate", b =>
+                {
+                    b.Property<int>("OutfitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("RenterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("OutfitId", "Date");
+
+                    b.HasIndex("RenterId");
+
+                    b.ToTable("OutfitRenterDates");
                 });
 
             modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitSet", b =>
@@ -473,24 +493,6 @@ namespace NosiYa.Data.Migrations
                     b.HasIndex("RegionId");
 
                     b.ToTable("OutfitSets");
-                });
-
-            modelBuilder.Entity("NosiYa.Data.Models.OutfitRenterDate", b =>
-                {
-                    b.Property<int>("OutfitSetId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<Guid>("RenterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("OutfitSetId", "Date");
-
-                    b.HasIndex("RenterId");
-
-                    b.ToTable("OutfitRenterDates");
                 });
 
             modelBuilder.Entity("NosiYa.Data.Models.Region", b =>
@@ -570,8 +572,8 @@ namespace NosiYa.Data.Migrations
             modelBuilder.Entity("NosiYa.Data.Models.Cart", b =>
                 {
                     b.HasOne("NosiYa.Data.Models.ApplicationUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
+                        .WithOne("Cart")
+                        .HasForeignKey("NosiYa.Data.Models.Cart", "OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -614,6 +616,10 @@ namespace NosiYa.Data.Migrations
                         .WithMany("Images")
                         .HasForeignKey("EventId");
 
+                    b.HasOne("NosiYa.Data.Models.Outfit.OutfitPart", null)
+                        .WithMany("Images")
+                        .HasForeignKey("Image");
+
                     b.HasOne("NosiYa.Data.Models.Outfit.OutfitSet", null)
                         .WithMany("Images")
                         .HasForeignKey("OutfitSetId");
@@ -628,10 +634,10 @@ namespace NosiYa.Data.Migrations
                     b.HasOne("NosiYa.Data.Models.Cart", "Cart")
                         .WithMany("Outfits")
                         .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("NosiYa.Data.Models.Outfit.OutfitSet", "Outfit")
+                    b.HasOne("NosiYa.Data.Models.Outfit.OutfitSet", "OutfitSet")
                         .WithMany()
                         .HasForeignKey("OutfitId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -639,51 +645,30 @@ namespace NosiYa.Data.Migrations
 
                     b.Navigation("Cart");
 
-                    b.Navigation("Outfit");
+                    b.Navigation("OutfitSet");
                 });
 
             modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitPart", b =>
                 {
-                    b.HasOne("NosiYa.Data.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-
                     b.HasOne("NosiYa.Data.Models.Outfit.OutfitSet", "OutfitSet")
                         .WithMany("OutfitParts")
                         .HasForeignKey("OutfitSetId");
 
-                    b.HasOne("NosiYa.Data.Models.Region", "Region")
-                        .WithMany("Outfits")
-                        .HasForeignKey("RegionId");
-
-                    b.Navigation("Image");
-
                     b.Navigation("OutfitSet");
-
-                    b.Navigation("Region");
                 });
 
-            modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitSet", b =>
-                {
-                    b.HasOne("NosiYa.Data.Models.Region", "Region")
-                        .WithMany()
-                        .HasForeignKey("RegionId");
-
-                    b.Navigation("Region");
-                });
-
-            modelBuilder.Entity("NosiYa.Data.Models.OutfitRenterDate", b =>
+            modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitRenterDate", b =>
                 {
                     b.HasOne("NosiYa.Data.Models.Outfit.OutfitSet", "Outfit")
                         .WithMany("OutfitRenterDates")
-                        .HasForeignKey("OutfitSetId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("OutfitId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("NosiYa.Data.Models.ApplicationUser", "Renter")
                         .WithMany("OutfitRenterDates")
                         .HasForeignKey("RenterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Outfit");
@@ -691,8 +676,20 @@ namespace NosiYa.Data.Migrations
                     b.Navigation("Renter");
                 });
 
+            modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitSet", b =>
+                {
+                    b.HasOne("NosiYa.Data.Models.Region", "Region")
+                        .WithMany("Outfits")
+                        .HasForeignKey("RegionId");
+
+                    b.Navigation("Region");
+                });
+
             modelBuilder.Entity("NosiYa.Data.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("Cart")
+                        .IsRequired();
+
                     b.Navigation("OutfitRenterDates");
                 });
 
@@ -705,6 +702,11 @@ namespace NosiYa.Data.Migrations
                 {
                     b.Navigation("Comments");
 
+                    b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitPart", b =>
+                {
                     b.Navigation("Images");
                 });
 

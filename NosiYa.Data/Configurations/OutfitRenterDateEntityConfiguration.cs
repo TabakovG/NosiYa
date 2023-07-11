@@ -3,24 +3,24 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    using Models;
+    using Models.Outfit;
 
     public class OutfitRenterDateEntityConfiguration : IEntityTypeConfiguration<OutfitRenterDate>
     {
         public void Configure(EntityTypeBuilder<OutfitRenterDate> builder)
         {
             builder
-                .HasKey(x => new { OutfitId = x.OutfitSetId, x.Date });
+                .HasKey(x => new { x.OutfitId, x.Date });
 
             builder
                 .HasOne(x => x.Outfit)
                 .WithMany(u => u.OutfitRenterDates)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasOne(x => x.Renter)
                 .WithMany(ord => ord.OutfitRenterDates)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

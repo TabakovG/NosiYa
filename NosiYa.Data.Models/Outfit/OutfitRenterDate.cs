@@ -1,4 +1,4 @@
-﻿namespace NosiYa.Data.Models
+﻿namespace NosiYa.Data.Models.Outfit
 {
 
     using System.ComponentModel.DataAnnotations;
@@ -9,7 +9,7 @@
     public class OutfitRenterDate
     {
         [ForeignKey(nameof(Outfit))]
-        public int OutfitSetId { get; set; }
+        public int OutfitId { get; set; }
         public OutfitSet Outfit { get; set; } = null!;
 
         [ForeignKey(nameof(Renter))]
@@ -19,6 +19,8 @@
         [Required]
         [Column(TypeName = "date")]
         public DateTime Date { get; set; }
+
+        public bool IsActive { get; set; } = true;
 
     }
 }

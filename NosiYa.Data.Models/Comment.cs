@@ -23,5 +23,8 @@
         [ForeignKey(nameof(Event))]
         public int EventId { get; set; }
         public Event Event { get; set; } = null!;
+
+        public bool IsApproved { get; set; } = false;
+
     }
 }

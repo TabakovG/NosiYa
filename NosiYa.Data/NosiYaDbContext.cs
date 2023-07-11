@@ -25,6 +25,8 @@ namespace NosiYa.Data
         public DbSet<Event> Events { get; set; } = null!;
         public DbSet<Cart> Carts { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;
+        public DbSet<Image> Images { get; set; } = null!;
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)

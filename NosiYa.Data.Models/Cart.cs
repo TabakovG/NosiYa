@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using NosiYa.Data.Models.Outfit;
-
-namespace NosiYa.Data.Models
+﻿namespace NosiYa.Data.Models
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
-    public  class Cart
+    using Outfit;
+
+    public class Cart
     {
 
         public Cart()

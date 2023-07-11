@@ -245,7 +245,8 @@ namespace NosiYa.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false)
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -264,33 +265,26 @@ namespace NosiYa.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Image",
+                name: "OutfitParts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Url = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    Color = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    RenterType = table.Column<int>(type: "int", nullable: false),
                     OutfitSetId = table.Column<int>(type: "int", nullable: true),
-                    RegionId = table.Column<int>(type: "int", nullable: true)
+                    OutfitType = table.Column<int>(type: "int", nullable: false),
+                    Size = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Image", x => x.Id);
+                    table.PrimaryKey("PK_OutfitParts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Image_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Image_OutfitSets_OutfitSetId",
+                        name: "FK_OutfitParts_OutfitSets_OutfitSetId",
                         column: x => x.OutfitSetId,
                         principalTable: "OutfitSets",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Image_Regions_RegionId",
-                        column: x => x.RegionId,
-                        principalTable: "Regions",
                         principalColumn: "Id");
                 });
 
@@ -298,25 +292,24 @@ namespace NosiYa.Data.Migrations
                 name: "OutfitRenterDates",
                 columns: table => new
                 {
-                    OutfitSetId = table.Column<int>(type: "int", nullable: false),
+                    OutfitId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "date", nullable: false),
-                    RenterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RenterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OutfitRenterDates", x => new { x.OutfitSetId, x.Date });
+                    table.PrimaryKey("PK_OutfitRenterDates", x => new { x.OutfitId, x.Date });
                     table.ForeignKey(
                         name: "FK_OutfitRenterDates_AspNetUsers_RenterId",
                         column: x => x.RenterId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_OutfitRenterDates_OutfitSets_OutfitSetId",
-                        column: x => x.OutfitSetId,
+                        name: "FK_OutfitRenterDates_OutfitSets_OutfitId",
+                        column: x => x.OutfitId,
                         principalTable: "OutfitSets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -337,8 +330,7 @@ namespace NosiYa.Data.Migrations
                         name: "FK_OutfitsForCarts_Carts_CartId",
                         column: x => x.CartId,
                         principalTable: "Carts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_OutfitsForCarts_OutfitSets_OutfitId",
                         column: x => x.OutfitId,
@@ -348,36 +340,37 @@ namespace NosiYa.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OutfitParts",
+                name: "Images",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    RegionId = table.Column<int>(type: "int", nullable: true),
-                    Color = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    RenterType = table.Column<int>(type: "int", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
+                    EventId = table.Column<int>(type: "int", nullable: true),
+                    Image = table.Column<int>(type: "int", nullable: true),
                     OutfitSetId = table.Column<int>(type: "int", nullable: true),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: true),
-                    Size = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
+                    RegionId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OutfitParts", x => x.Id);
+                    table.PrimaryKey("PK_Images", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OutfitParts_Image_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Image",
+                        name: "FK_Images_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_OutfitParts_OutfitSets_OutfitSetId",
+                        name: "FK_Images_OutfitParts_Image",
+                        column: x => x.Image,
+                        principalTable: "OutfitParts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Images_OutfitSets_OutfitSetId",
                         column: x => x.OutfitSetId,
                         principalTable: "OutfitSets",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_OutfitParts_Regions_RegionId",
+                        name: "FK_Images_Regions_RegionId",
                         column: x => x.RegionId,
                         principalTable: "Regions",
                         principalColumn: "Id");
@@ -425,7 +418,8 @@ namespace NosiYa.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_OwnerId",
                 table: "Carts",
-                column: "OwnerId");
+                column: "OwnerId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_EventId",
@@ -443,34 +437,29 @@ namespace NosiYa.Data.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Image_EventId",
-                table: "Image",
+                name: "IX_Images_EventId",
+                table: "Images",
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Image_OutfitSetId",
-                table: "Image",
+                name: "IX_Images_Image",
+                table: "Images",
+                column: "Image");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Images_OutfitSetId",
+                table: "Images",
                 column: "OutfitSetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Image_RegionId",
-                table: "Image",
+                name: "IX_Images_RegionId",
+                table: "Images",
                 column: "RegionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OutfitParts_ImageId",
-                table: "OutfitParts",
-                column: "ImageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OutfitParts_OutfitSetId",
                 table: "OutfitParts",
                 column: "OutfitSetId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OutfitParts_RegionId",
-                table: "OutfitParts",
-                column: "RegionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OutfitRenterDates_RenterId",
@@ -514,7 +503,7 @@ namespace NosiYa.Data.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "OutfitParts");
+                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "OutfitRenterDates");
@@ -526,13 +515,13 @@ namespace NosiYa.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Image");
+                name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "OutfitParts");
 
             migrationBuilder.DropTable(
                 name: "Carts");
-
-            migrationBuilder.DropTable(
-                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "OutfitSets");
