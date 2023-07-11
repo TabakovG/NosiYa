@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NosiYa.Data.Models.Outfit;
-
-namespace NosiYa.Data.Configurations
+﻿namespace NosiYa.Data.Configurations
 {
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+    using Models.Outfit;
+
     public class OutfitEntityConfiguration : IEntityTypeConfiguration<OutfitSet>
     {
         public void Configure(EntityTypeBuilder<OutfitSet> builder)

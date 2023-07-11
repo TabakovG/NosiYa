@@ -17,9 +17,8 @@
         public ApplicationUser Renter { get; set; } = null!;
 
         [Required]
-        public DateTime StartDate { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime Date { get; set; }
 
-        [Required]
-        public DateTime EndDate { get; set; }
     }
 }

@@ -10,7 +10,6 @@
     {
         public OutfitSet()
         {
-            this.Sizes = new HashSet<SizeType>();
             this.Images = new HashSet<Image>();
             this.OutfitParts = new HashSet<OutfitPart>();
             this.OutfitRenterDates = new HashSet<OutfitRenterDate>();
@@ -46,7 +45,9 @@
         [Required]
         public bool IsAvailable { get; set; }
 
-        public ICollection<SizeType> Sizes { get; set; }
+        [Required]
+        [MaxLength(SizeMaxLength)]
+        public string Size { get; set; } = null!;
 
         public ICollection<OutfitPart> OutfitParts { get; set; }
 
