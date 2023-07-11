@@ -11,7 +11,7 @@
         public OutfitSet()
         {
             this.Sizes = new HashSet<SizeType>();
-            this.Images = new HashSet<string>();
+            this.Images = new HashSet<Image>();
             this.OutfitParts = new HashSet<OutfitPart>();
             this.OutfitRenterDates = new HashSet<OutfitRenterDate>();
         }
@@ -38,7 +38,7 @@
 
         [Required]
         [MaxLength(ImageMaxLength)]
-        public ICollection<string> Images { get; set; } = null!;
+        public ICollection<Image> Images { get; set; }
 
         [Required]
         public RenterType RenterType { get; set; }

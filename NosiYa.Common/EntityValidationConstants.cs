@@ -26,6 +26,8 @@
 
             public const int ColorMinLength = 3;
             public const int ColorMaxLength = 20;
+
+            public const int SizeMaxLength = 10;
         }
 
         public static class Event
@@ -46,6 +48,12 @@
         {
             public const int ContentMinLength = 2;
             public const int ContentMaxLength = 2000;
+        }
+
+        public static class Image
+        {
+            public const int ImageUrlMinLength = 3;
+            public const int ImageUrlMaxLength = 1500;
         }
 
     }

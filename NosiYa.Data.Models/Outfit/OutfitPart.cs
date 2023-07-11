@@ -5,14 +5,9 @@
 
     using Enums;
     using static Common.EntityValidationConstants.Outfit;
-    using System.Drawing;
 
     public class OutfitPart
     {
-        public OutfitPart()
-        {
-            this.Sizes = new HashSet<SizeType>();
-        }
 
         [Key]
         public int Id { get; set; }
@@ -43,7 +38,13 @@
 
         public OutfitPartType Type { get; set; }
 
-        public ICollection<SizeType> Sizes { get; set; }
+        [ForeignKey( nameof(Image))]
+        public int? ImageId { get; set; }
+        public Image? Image { get; set; }
+
+        [Required]
+        [MaxLength(SizeMaxLength)]
+        public string Size { get; set; } = null!;
 
     }
 }

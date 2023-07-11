@@ -8,6 +8,7 @@
         public Event()
         {
             this.Comments = new HashSet<Comment>();
+            this.Images = new HashSet<Image>();
         }
 
         [Key]
@@ -38,5 +39,7 @@
         public DateTime EventEndDate { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
+
+        public ICollection<Image> Images { get; set; }
     }
 }
