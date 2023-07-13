@@ -37,6 +37,11 @@ namespace NosiYa.Data.Migrations
                 oldNullable: true);
 
             migrationBuilder.InsertData(
+                table: "Regions",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[] { 1, "Обхваща Родопа планина.", "Родопски Регион" });
+
+            migrationBuilder.InsertData(
                 table: "OutfitSets",
                 columns: new[] { "Id", "Color", "Description", "IsAvailable", "Name", "PricePerDay", "RegionId", "RenterType", "Size" },
                 values: new object[] { 1, "Кафяв", "Родопска детска носия за момче.Риза, елек, панталон и пояс,\r\n                    Състои се от:\r\n                    - Риза\r\n                    - Елек\r\n                    - Панталон\r\n                    - Пояс\r\n\r\n                    Подходяща за момче между 7 и 9 години.\r\n                    ", true, "Носия 17", 25m, 1, 3, "XS" });
@@ -119,6 +124,11 @@ namespace NosiYa.Data.Migrations
 
             migrationBuilder.DeleteData(
                 table: "OutfitSets",
+                keyColumn: "Id",
+                keyValue: 1);
+
+            migrationBuilder.DeleteData(
+                table: "Regions",
                 keyColumn: "Id",
                 keyValue: 1);
 

@@ -12,7 +12,7 @@ using NosiYa.Data;
 namespace NosiYa.Data.Migrations
 {
     [DbContext(typeof(NosiYaDbContext))]
-    [Migration("20230713165203_OutfitSetSeedTest")]
+    [Migration("20230713165924_OutfitSetSeedTest")]
     partial class OutfitSetSeedTest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -574,6 +574,14 @@ namespace NosiYa.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Regions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Обхваща Родопа планина.",
+                            Name = "Родопски Регион"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
