@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NosiYa.Data.Models
+﻿namespace NosiYa.Data.Models
 {
+    using System.ComponentModel.DataAnnotations;
 
     using Microsoft.AspNetCore.Identity;
+
     using Outfit;
 
     public class ApplicationUser : IdentityUser<Guid>
@@ -18,6 +17,5 @@ namespace NosiYa.Data.Models
         public ICollection<OutfitRenterDate> OutfitRenterDates { get; set; }
 
         public Cart Cart { get; set; }
-
     }
 }

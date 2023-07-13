@@ -7,7 +7,6 @@
 
     public class Cart
     {
-
         public Cart()
         {
             this.Outfits = new HashSet<OutfitForCart>();

@@ -31,16 +31,34 @@ namespace NosiYa.Data.Configurations
             image = new Image()
             {
                 Id = 2,
-                Url = "Set image",
+                Url = "Shirt image",
                 OutfitPartId = 1
             };
             images.Add(image);
+
             image = new Image()
             {
                 Id = 3,
-                Url = "Set image",
+                Url = "Vest image",
                 OutfitPartId = 2
             };
+            images.Add(image);
+
+            image = new Image()
+            {
+                Id = 4,
+                Url = "Jeravna image",
+                EventId = 1
+            };
+            images.Add(image);
+
+            image = new Image()
+            {
+                Id = 5,
+                Url = "Jeravna image 2",
+                EventId = 1
+            };
+
             images.Add(image);
 
             return images.ToArray();

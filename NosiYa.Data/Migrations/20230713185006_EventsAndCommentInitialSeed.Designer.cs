@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NosiYa.Data;
 
@@ -11,9 +12,10 @@ using NosiYa.Data;
 namespace NosiYa.Data.Migrations
 {
     [DbContext(typeof(NosiYaDbContext))]
-    partial class NosiYaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230713185006_EventsAndCommentInitialSeed")]
+    partial class EventsAndCommentInitialSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
