@@ -36,10 +36,6 @@
         public string Color { get; set; } = null!;
 
         [Required]
-        [MaxLength(ImageMaxLength)]
-        public ICollection<Image> Images { get; set; }
-
-        [Required]
         public RenterType RenterType { get; set; }
 
         [Required]
@@ -48,6 +44,8 @@
         [Required]
         [MaxLength(SizeMaxLength)]
         public string Size { get; set; } = null!;
+
+        public ICollection<Image> Images { get; set; }
 
         public ICollection<OutfitPart> OutfitParts { get; set; }
 

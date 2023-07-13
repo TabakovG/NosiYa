@@ -30,19 +30,19 @@
         [Required]
         public RenterType RenterType { get; set; }
 
+        public OutfitPartType OutfitType { get; set; } 
+
+        [Required]
         [ForeignKey(nameof(OutfitSet))]
-        public int? OutfitSetId { get; set; }
+        public int OutfitSetId { get; set; }
 
-        public OutfitSet? OutfitSet { get; set; }
-
-        public OutfitPartType OutfitType { get; set; }
-
-        [ForeignKey(nameof(Image))]
-        public ICollection<Image> Images { get; set; }
+        public OutfitSet OutfitSet { get; set; } = null!;
 
         [Required]
         [MaxLength(SizeMaxLength)]
         public string Size { get; set; } = null!;
+
+        public ICollection<Image> Images { get; set; }
 
     }
 }
