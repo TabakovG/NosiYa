@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\NosiYa.Common\NosiYa.Common.csproj" />
     <ProjectReference Include="..\NosiYa.Data.Models\NosiYa.Data.Models.csproj" />
     <ProjectReference Include="..\NosiYa.Data\NosiYa.Data.csproj" />

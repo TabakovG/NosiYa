@@ -39,7 +39,7 @@ namespace NosiYa.Web
                 )
                 .AddEntityFrameworkStores<NosiYaDbContext>();
 
-            builder.Services.AddApplicationServices(typeof(IOutfitService));
+            builder.Services.AddApplicationServices(typeof(IOutfitSetService));
 
             builder.Services.AddControllersWithViews()
                 .AddMvcOptions(options =>

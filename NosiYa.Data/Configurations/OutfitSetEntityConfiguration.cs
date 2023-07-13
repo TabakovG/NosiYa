@@ -5,6 +5,7 @@
 
     using Models.Outfit;
     using Models.Enums;
+    using static NosiYa.Common.SeedingConstants;
 
     public class OutfitSetEntityConfiguration : IEntityTypeConfiguration<OutfitSet>
     {
@@ -28,7 +29,7 @@
                 Id = 1,
                 Name = "Носия 17",
                 Description =
-                    @"Родопска детска носия за момче.Риза, елек, панталон и пояс,
+                    @"Родопска детска носия за момче.
                     Състои се от:
                     - Риза
                     - Елек
@@ -43,7 +44,8 @@
                 RenterType = (RenterType)3,
                 IsAvailable = true,
                 Size = "XS",
-                
+                OwnerId = Guid.Parse(FirstUserId)
+
             };
 
             outfits.Add(outfit);

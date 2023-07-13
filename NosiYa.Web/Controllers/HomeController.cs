@@ -17,6 +17,7 @@ using ViewModels.Home;
 
         public IActionResult Index()
         {
+
             return View();
         }
 
