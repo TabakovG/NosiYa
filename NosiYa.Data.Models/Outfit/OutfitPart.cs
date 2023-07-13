@@ -39,6 +39,11 @@
         public OutfitSet OutfitSet { get; set; } = null!;
 
         [Required]
+        [ForeignKey(nameof(Owner))]
+        public Guid OwnerId { get; set; }
+        public ApplicationUser Owner { get; set; }
+
+        [Required]
         [MaxLength(SizeMaxLength)]
         public string Size { get; set; } = null!;
 

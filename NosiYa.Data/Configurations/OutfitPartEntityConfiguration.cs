@@ -5,6 +5,7 @@
 
     using Models.Outfit;
     using Models.Enums;
+    using static NosiYa.Common.SeedingConstants;
 
     public class OutfitPartEntityConfiguration : IEntityTypeConfiguration<OutfitPart>
     {
@@ -31,7 +32,8 @@
                 RenterType = (RenterType)3,
                 OutfitType = (OutfitPartType)4,
                 Size = "XS",
-                OutfitSetId = 1
+                OutfitSetId = 1,
+                OwnerId = Guid.Parse(FirstUserId)
             };
 
             outfitParts.Add(outfitPart);
@@ -48,7 +50,8 @@
                 RenterType = (RenterType)3,
                 OutfitType = (OutfitPartType)4,
                 Size = "XS",
-                OutfitSetId = 1
+                OutfitSetId = 1,
+                OwnerId = Guid.Parse(SecondUserId)
             };
 
             outfitParts.Add(outfitPart);

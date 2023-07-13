@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NosiYa.Data.Migrations
 {
-    public partial class OutfitSetOwner : Migration
+    public partial class OutfitPartOwner : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<Guid>(
                 name: "OwnerId",
-                table: "OutfitSets",
+                table: "OutfitParts",
                 type: "uniqueidentifier",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
@@ -22,20 +22,34 @@ namespace NosiYa.Data.Migrations
                 values: new object[] { 4, 1, null, null, null, "Jeravna image" });
 
             migrationBuilder.UpdateData(
+                table: "OutfitParts",
+                keyColumn: "Id",
+                keyValue: 1,
+                column: "OwnerId",
+                value: new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7"));
+
+            migrationBuilder.UpdateData(
+                table: "OutfitParts",
+                keyColumn: "Id",
+                keyValue: 2,
+                column: "OwnerId",
+                value: new Guid("2f29d591-89ef-45b2-89a9-08db83ceb60e"));
+
+            migrationBuilder.UpdateData(
                 table: "OutfitSets",
                 keyColumn: "Id",
                 keyValue: 1,
-                columns: new[] { "Description", "OwnerId" },
-                values: new object[] { "Родопска детска носия за момче.\r\n                    Състои се от:\r\n                    - Риза\r\n                    - Елек\r\n                    - Панталон\r\n                    - Пояс\r\n\r\n                    Подходяща за момче между 7 и 9 години.\r\n                    ", new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7") });
+                column: "Description",
+                value: "Родопска детска носия за момче.\r\n                    Състои се от:\r\n                    - Риза\r\n                    - Елек\r\n                    - Панталон\r\n                    - Пояс\r\n\r\n                    Подходяща за момче между 7 и 9 години.\r\n                    ");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OutfitSets_OwnerId",
-                table: "OutfitSets",
+                name: "IX_OutfitParts_OwnerId",
+                table: "OutfitParts",
                 column: "OwnerId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_OutfitSets_AspNetUsers_OwnerId",
-                table: "OutfitSets",
+                name: "FK_OutfitParts_AspNetUsers_OwnerId",
+                table: "OutfitParts",
                 column: "OwnerId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
@@ -45,12 +59,12 @@ namespace NosiYa.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_OutfitSets_AspNetUsers_OwnerId",
-                table: "OutfitSets");
+                name: "FK_OutfitParts_AspNetUsers_OwnerId",
+                table: "OutfitParts");
 
             migrationBuilder.DropIndex(
-                name: "IX_OutfitSets_OwnerId",
-                table: "OutfitSets");
+                name: "IX_OutfitParts_OwnerId",
+                table: "OutfitParts");
 
             migrationBuilder.DeleteData(
                 table: "Images",
@@ -59,7 +73,7 @@ namespace NosiYa.Data.Migrations
 
             migrationBuilder.DropColumn(
                 name: "OwnerId",
-                table: "OutfitSets");
+                table: "OutfitParts");
 
             migrationBuilder.UpdateData(
                 table: "OutfitSets",

@@ -43,8 +43,7 @@
                 Color = "Кафяв",
                 RenterType = (RenterType)3,
                 IsAvailable = true,
-                Size = "XS",
-                OwnerId = Guid.Parse(FirstUserId)
+                Size = "XS"
 
             };
 

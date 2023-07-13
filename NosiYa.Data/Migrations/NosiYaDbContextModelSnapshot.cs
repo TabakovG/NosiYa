@@ -492,6 +492,9 @@ namespace NosiYa.Data.Migrations
                     b.Property<int>("OutfitType")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("RenterType")
                         .HasColumnType("int");
 
@@ -504,6 +507,8 @@ namespace NosiYa.Data.Migrations
 
                     b.HasIndex("OutfitSetId");
 
+                    b.HasIndex("OwnerId");
+
                     b.ToTable("OutfitParts");
 
                     b.HasData(
@@ -515,6 +520,7 @@ namespace NosiYa.Data.Migrations
                             Name = "Детска Риза",
                             OutfitSetId = 1,
                             OutfitType = 4,
+                            OwnerId = new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7"),
                             RenterType = 3,
                             Size = "XS"
                         },
@@ -526,6 +532,7 @@ namespace NosiYa.Data.Migrations
                             Name = "Детски Елек",
                             OutfitSetId = 1,
                             OutfitType = 4,
+                            OwnerId = new Guid("2f29d591-89ef-45b2-89a9-08db83ceb60e"),
                             RenterType = 3,
                             Size = "XS"
                         });
@@ -577,9 +584,6 @@ namespace NosiYa.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<decimal>("PricePerDay")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -597,8 +601,6 @@ namespace NosiYa.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
-
                     b.HasIndex("RegionId");
 
                     b.ToTable("OutfitSets");
@@ -611,7 +613,6 @@ namespace NosiYa.Data.Migrations
                             Description = "Родопска детска носия за момче.\r\n                    Състои се от:\r\n                    - Риза\r\n                    - Елек\r\n                    - Панталон\r\n                    - Пояс\r\n\r\n                    Подходяща за момче между 7 и 9 години.\r\n                    ",
                             IsAvailable = true,
                             Name = "Носия 17",
-                            OwnerId = new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7"),
                             PricePerDay = 25m,
                             RegionId = 1,
                             RenterType = 3,
@@ -796,7 +797,15 @@ namespace NosiYa.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("NosiYa.Data.Models.ApplicationUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("OutfitSet");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitRenterDate", b =>
@@ -820,17 +829,9 @@ namespace NosiYa.Data.Migrations
 
             modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitSet", b =>
                 {
-                    b.HasOne("NosiYa.Data.Models.ApplicationUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("NosiYa.Data.Models.Region", "Region")
                         .WithMany("Outfits")
                         .HasForeignKey("RegionId");
-
-                    b.Navigation("Owner");
 
                     b.Navigation("Region");
                 });
