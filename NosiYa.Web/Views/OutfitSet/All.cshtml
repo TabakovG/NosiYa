@@ -1,0 +1,135 @@
+﻿@model AllOutfitsQueryModel
+
+@{
+    ViewBag.Title = "Наеми Носия";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="...">
+        </div>
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div class="form-group">
+                <label asp-for="Region"></label>
+                <select asp-for="Region" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var region in Model.Regions)
+                    {
+                        <option value="@region">@region</option>
+                    }
+                </select>
+            </div>
+	        <div class="form-group">
+		        <label asp-for="Size"></label>
+		        <select asp-for="Size" class="form-control">
+                    <option value="">- Избери -</option>
+			        <option value="0">XS</option>
+			        <option value="1">S</option>
+			        <option value="2">M</option>
+			        <option value="3">L</option>
+			        <option value="4">XL</option>
+			        <option value="5">XXL</option>
+		        </select>
+	        </div>
+	        <div class="form-group">
+                <label asp-for="RenterType"></label>
+                <select asp-for="RenterType" class="form-control">
+			        <option value="">- Избери -</option>
+			        <option value="1">Мъж</option>
+	                <option value="2">Жена</option>
+			        <option value="3">Момче</option>
+			        <option value="4">Момиче</option>
+			        <option value="5">Универсална</option>
+		        </select>
+	        </div>
+            <div class="form-group">
+                <label asp-for="OutfitsPerPage"></label>
+                <select asp-for="OutfitsPerPage" class="form-control">
+                    <option value="3">3</option>
+                    <option value="6">6</option>
+                    <option value="9">9</option>
+                </select>
+            </div>
+        </div>
+	    <div class="form-group col-md-3">
+            <div class="form-group">
+                <label asp-for="OutfitSorting"></label>
+                <select asp-for="OutfitSorting" class="form-control">
+                    <option value="0">Най-нови</option>
+                    <option value="1">Най-стари</option>
+                    <option value="2">Цена (Разтяща)</option>
+                    <option value="3">Цена (Намаляваща)</option>
+                    <option value="4">Популярност</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group mt-4 p-2">
+                <input type="submit" value="Филтрирай" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@{
+    int previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    int maxPage = (int)Math.Ceiling((double)Model.OutfitsCount /
+        Model.OutfitsPerPage);
+}
+
+<div class="row mb-5">
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="OutfitSet"
+           asp-action="All"
+           asp-route-currentPage="@previousPage"
+           asp-route-region="@Model.Region"
+           asp-route-size="@Model.Size"
+           asp-route-renterType="@Model.RenterType"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@((int)Model.OutfitSorting)"><<</a>
+    </div>
+
+    @{
+        bool shouldNextPageBeDisabled = Model.CurrentPage == maxPage ||
+        !Model.Outfits.Any();
+    }
+
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary
+           @(shouldNextPageBeDisabled ? "disabled" : string.Empty)"
+           asp-controller="OutfitSet"
+           asp-action="All"
+           asp-route-currentPage="@previousPage"
+           asp-route-region="@Model.Region"
+           asp-route-size="@Model.Size"
+           asp-route-renterType="@Model.RenterType"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@((int)Model.OutfitSorting)"><<</a>
+    </div>
+</div>
+
+@if (!Model.Outfits.Any())
+{
+    <h2 class="text-center">Няма носии които да отговарят на зададенте критерии!</h2>
+}
+
+<div class="row">
+    @foreach (var outfit in Model.Outfits)
+    {
+        <partial name="_OutfitSetPartial" model="@outfit" />
+    }
+</div>
+

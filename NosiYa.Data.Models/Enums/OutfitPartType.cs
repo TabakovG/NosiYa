@@ -2,10 +2,10 @@
 {
     public enum OutfitPartType
     {
-        Accessory = 1,
-        Belt = 2,
-        Legs = 3,
-        Shirt = 4,
-        Vest = 5
+        Accessory = 0,
+        Belt = 1,
+        Legs = 2,
+        Shirt = 3,
+        Vest = 4
     }
 }

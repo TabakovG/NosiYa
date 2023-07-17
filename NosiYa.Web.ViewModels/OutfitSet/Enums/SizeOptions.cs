@@ -2,11 +2,12 @@
 {
 public enum SizeOptions
     {
-        Xs = 0,
-        S = 1,
-        M = 2,
-        L = 3,
-        Xl = 4,
-        Xxl = 5
+        All = 0,
+        Xs = 1,
+        S = 2,
+        M = 3,
+        L = 4,
+        Xl = 5,
+        Xxl = 6
     }
 }

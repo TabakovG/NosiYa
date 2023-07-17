@@ -15,13 +15,12 @@
             this.Outfits = new HashSet<OutfitSetAllViewModel>();
             this.Regions = new HashSet<string>();
         }
-        public string? Category { get; set; }
 
         [Display(Name = "Търси...:")]
         public string? SearchTerm { get; set; }
-
+/*
         [Display(Name = "Цвят:")]
-        public string? Color { get; set; }
+        public string? Color { get; set; }*/
 
         [Display(Name = "Регион:")]
         public string? Region { get; set; }

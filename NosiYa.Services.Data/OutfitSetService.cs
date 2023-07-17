@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Services.Data
+﻿using NosiYa.Data.Models.Enums;
+
+namespace NosiYa.Services.Data
 {
     using Microsoft.EntityFrameworkCore;
 
@@ -50,13 +52,15 @@
                     .Where(o => o.Region != null && o.Region.Name == queryModel.Region);
             }
 
-            if (!string.IsNullOrWhiteSpace(queryModel.Size.ToString()))
+            if (!string.IsNullOrWhiteSpace(queryModel.Size.ToString())
+                && queryModel.Size != SizeOptions.All)
             {
                 outfitQuery = outfitQuery
                     .Where(o => o.Size.Contains(queryModel.Size.ToString()));
             }
 
-            if (!string.IsNullOrWhiteSpace(queryModel.RenterType.ToString()))
+            if (!string.IsNullOrWhiteSpace(queryModel.RenterType.ToString())
+                && queryModel.RenterType != RenterType.All)
             {
                 outfitQuery = outfitQuery
                     .Where(o => o.RenterType == queryModel.RenterType);
