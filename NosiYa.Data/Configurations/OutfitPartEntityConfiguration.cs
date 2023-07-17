@@ -31,7 +31,7 @@
                 Color = "бял",
                 RenterType = (RenterType)3,
                 OutfitType = (OutfitPartType)4,
-                Size = "XS",
+                Size = "-XS-",
                 OutfitSetId = 1,
                 OwnerId = Guid.Parse(FirstUserId)
             };
@@ -49,7 +49,7 @@
                 Color = "кафяв",
                 RenterType = (RenterType)3,
                 OutfitType = (OutfitPartType)4,
-                Size = "XS",
+                Size = "-XS-",
                 OutfitSetId = 1,
                 OwnerId = Guid.Parse(SecondUserId)
             };

@@ -1,4 +1,5 @@
-﻿using NosiYa.Data.Models.Enums;
+﻿using System.Text.RegularExpressions;
+using NosiYa.Data.Models.Enums;
 
 namespace NosiYa.Services.Data
 {
@@ -56,7 +57,7 @@ namespace NosiYa.Services.Data
                 && queryModel.Size != SizeOptions.All)
             {
                 outfitQuery = outfitQuery
-                    .Where(o => o.Size.Contains(queryModel.Size.ToString()));
+                    .Where(o => o.Size.Contains($"-{queryModel.Size.ToString()}-"));
             }
 
             if (!string.IsNullOrWhiteSpace(queryModel.RenterType.ToString())
