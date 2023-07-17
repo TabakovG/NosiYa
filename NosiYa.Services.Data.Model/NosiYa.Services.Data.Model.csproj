@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NosiYa.Common\NosiYa.Common.csproj" />
-    <ProjectReference Include="..\NosiYa.Data.Models\NosiYa.Data.Models.csproj" />
+    <ProjectReference Include="..\NosiYa.Web.ViewModels\NosiYa.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

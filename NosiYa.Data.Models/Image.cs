@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using NosiYa.Data.Models.Outfit;
-
-namespace NosiYa.Data.Models
+﻿namespace NosiYa.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
+    using Outfit;
     using static NosiYa.Common.EntityValidationConstants.Image;
 
     public class Image
@@ -19,6 +18,8 @@ namespace NosiYa.Data.Models
         [ForeignKey(nameof(OutfitSet))]
         public int? OutfitSetId { get; set; }
         public OutfitSet? OutfitSet { get; set; }
+
+        public bool IsDefault { get; set; } = false;
 
         [ForeignKey(nameof(OutfitPart))]
         public int? OutfitPartId { get; set; }

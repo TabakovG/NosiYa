@@ -1,4 +1,5 @@
-﻿using NosiYa.Web.ViewModels.OutfitSet;
+﻿using NosiYa.Services.Data.Model;
+using NosiYa.Web.ViewModels.OutfitSet;
 
 namespace NosiYa.Services.Data.Interfaces
 {
@@ -9,7 +10,7 @@ namespace NosiYa.Services.Data.Interfaces
         Task<string> CreateOutfitSetAndReturnIdAsync(OutfitSetFormModel formModel);
 
         //Read
-        Task<IEnumerable<OutfitSetAllViewModel>> AllOutfitSetsAsync();
+        Task<AllOutfitsFilteredAndPagedServiceModel> AllAvailableOutfitSetsAsync(AllOutfitsQueryModel queryModel);
         Task<IEnumerable<OutfitSetAllViewModel>> AllOutfitSetsByUserIdAsync(string userId);
         Task<bool> ExistByIdAsync(int outfitId);
         

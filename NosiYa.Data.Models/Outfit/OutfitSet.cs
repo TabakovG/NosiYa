@@ -13,6 +13,8 @@
             this.Images = new HashSet<Image>();
             this.OutfitParts = new HashSet<OutfitPart>();
             this.OutfitRenterDates = new HashSet<OutfitRenterDate>();
+            this.IsAvailable = true;
+            this.IsActive = true;
         }
 
         [Key]
@@ -42,8 +44,13 @@
         public bool IsAvailable { get; set; }
 
         [Required]
+        public bool IsActive { get; set; }
+
+        [Required]
         [MaxLength(SizeMaxLength)]
         public string Size { get; set; } = null!;
+
+        public DateTime CreatedOn { get; set; }
 
         public ICollection<Image> Images { get; set; }
 

@@ -15,6 +15,10 @@
                 .Property(x => x.PricePerDay)
                 .HasPrecision(18, 2);
 
+            builder
+                .Property(h => h.CreatedOn)
+                .HasDefaultValueSql("GETDATE()");
+
             builder.HasData(this.CreateOutfitSets());
         }
 

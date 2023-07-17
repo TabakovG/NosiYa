@@ -2,8 +2,15 @@
 {
     public static class ApplicationConstants
     {
+        //Layout
         public const int ReleaseYear = 2023;
 
+        //Outfits
+        public const int DefaultOutfitsFirstPage = 1;
+        public const int DefaultOutfitsPerPage = 6;
+
+        //Messages
+        public const string DefaultOutfitImagePath = "";
     }
 
     public static class SeedingConstants

@@ -1,10 +1,10 @@
 ﻿namespace NosiYa.Web.Controllers
 {
-using System.Diagnostics;
+    using System.Diagnostics;
 
-using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc;
 
-using ViewModels.Home;
+    using ViewModels.Home;
 
     public class HomeController : Controller
     {
@@ -13,7 +13,7 @@ using ViewModels.Home;
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-        } TODO use or delete*/ 
+        } TODO use or delete*/
 
         public IActionResult Index()
         {
