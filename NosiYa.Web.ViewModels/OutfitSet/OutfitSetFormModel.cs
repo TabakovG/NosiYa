@@ -6,6 +6,7 @@
     using Image;
     using OutfitPart;
     using static Common.EntityValidationConstants.Outfit;
+    using NosiYa.Web.ViewModels.Region;
 
     public class OutfitSetFormModel
     {
@@ -13,6 +14,7 @@
         {
             this.SetImages = new HashSet<ImageFormModel>();
             this.OutfitParts = new HashSet<OutfitPartFormModel>();
+            this.Regions = new HashSet<PossibleRegionsOnCreateOutfitSetFormModel>();
             this.IsActive = true;
             this.IsAvailable = true;
         }
@@ -25,6 +27,7 @@
         public string Description { get; set; } = null!;
 
         public int? RegionId { get; set; }
+        public IEnumerable<PossibleRegionsOnCreateOutfitSetFormModel> Regions { get; set; }
 
         public decimal PricePerDay { get; set; }
 

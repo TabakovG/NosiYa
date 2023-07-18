@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Web.Controllers
+﻿using NosiYa.Data.Models.Enums;
+
+namespace NosiYa.Web.Controllers
 {
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.OutfitSet;
@@ -14,7 +16,7 @@
 			this.outfitService = outfitService;
 			this.regionService = regionService;
 		}
-
+		[HttpGet]
 		public async Task<IActionResult> All([FromQuery] AllOutfitsQueryModel queryModel)
 		{
 			var queryAndSorting = await this.outfitService.AllAvailableOutfitSetsAsync(queryModel);
@@ -25,5 +27,32 @@
 
 			return View(queryModel);
 		}
-	}
+
+		[HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            try
+            {
+                var outfitSet = new OutfitSetFormModel
+                {
+                    Regions = await this.regionService.GetAllRegionsAsync()
+                };
+
+                return this.View(outfitSet);
+            }
+            catch (Exception)
+            {
+                return this.GeneralError();
+
+            }
+        }
+
+        private IActionResult GeneralError()
+        {
+            this.TempData["ErrorMessage"] =
+                "Unexpected error occurred! Please try again later or contact administrator";
+
+            return this.RedirectToAction("Index", "Home");
+        }
+    }
 }

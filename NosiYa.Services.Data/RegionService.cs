@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NosiYa.Data;
-using NosiYa.Services.Data.Interfaces;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
+    using Microsoft.EntityFrameworkCore;
+
+    using NosiYa.Data;
+    using Interfaces;
+    using Web.ViewModels.Region;
+
     public class RegionService : IRegionService
     {
         private readonly NosiYaDbContext context;
@@ -19,6 +21,19 @@ namespace NosiYa.Services.Data
                 .Regions
                 .AsNoTracking()
                 .Select(r => r.Name)
+                .ToArrayAsync();
+        }
+
+        public async Task<IEnumerable<PossibleRegionsOnCreateOutfitSetFormModel>> GetAllRegionsAsync()
+        {
+            return await this.context
+                .Regions
+                .AsNoTracking()
+                .Select(r => new PossibleRegionsOnCreateOutfitSetFormModel()
+                {
+                    Id = r.Id,
+                    Name = r.Name
+                })
                 .ToArrayAsync();
         }
     }

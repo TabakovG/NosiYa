@@ -41,13 +41,14 @@
                 OutfitParts = formModel.OutfitParts, //TODO foreach fm create and add part*/
             };
 
-            this.context.OutfitSets.AddAsync(outfit);
-            this.context.SaveChangesAsync();
+            await this.context.OutfitSets.AddAsync(outfit);
+            await this.context.SaveChangesAsync();
 
             return outfit.Id;
         }
 
         //Read:  --------------//---------------
+
         public async Task<AllOutfitsFilteredAndPagedServiceModel> AllAvailableOutfitSetsAsync(AllOutfitsQueryModel queryModel)
         {
             IQueryable<OutfitSet> outfitQuery = this.context
