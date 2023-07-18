@@ -24,9 +24,27 @@ namespace NosiYa.Services.Data
 
         //Create: --------------//---------------
 
-        public Task<string> CreateOutfitSetAndReturnIdAsync(OutfitSetFormModel formModel)
+        public async Task<int> CreateOutfitSetAndReturnIdAsync(OutfitSetFormModel formModel)
         {
-            throw new NotImplementedException();
+            OutfitSet outfit = new OutfitSet
+            {
+                Name = formModel.Name,
+                Description = formModel.Description,
+                RegionId = formModel.RegionId,
+                PricePerDay = formModel.PricePerDay, //TODO decimal parse ?
+                Color = formModel.Color,
+                RenterType = formModel.RenterType,
+                IsAvailable = formModel.IsAvailable,
+                IsActive = formModel.IsActive,
+                Size = formModel.Size,
+                Images = formModel.Images, //TODO foreach fm create and add image
+                OutfitParts = formModel.OutfitParts, //TODO foreach fm create and add part
+            };
+
+            this.context.OutfitSets.AddAsync(outfit);
+            this.context.SaveChangesAsync();
+
+            return outfit.Id;
         }
 
         //Read:  --------------//---------------

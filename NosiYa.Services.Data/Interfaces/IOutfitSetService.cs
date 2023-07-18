@@ -7,7 +7,7 @@ namespace NosiYa.Services.Data.Interfaces
     public interface IOutfitSetService
     {
         //Create
-        Task<string> CreateOutfitSetAndReturnIdAsync(OutfitSetFormModel formModel);
+        Task<int> CreateOutfitSetAndReturnIdAsync(OutfitSetFormModel formModel);
 
         //Read
         Task<AllOutfitsFilteredAndPagedServiceModel> AllAvailableOutfitSetsAsync(AllOutfitsQueryModel queryModel);
