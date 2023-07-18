@@ -27,6 +27,7 @@
             public const int ColorMinLength = 3;
             public const int ColorMaxLength = 20;
 
+            public const int SizeMinLength = 3;
             public const int SizeMaxLength = 10;
         }
 

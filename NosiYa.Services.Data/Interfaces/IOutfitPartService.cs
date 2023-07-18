@@ -1,12 +1,9 @@
 ﻿namespace NosiYa.Services.Data.Interfaces
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using Web.ViewModels.OutfitPart;
 
-    internal interface IOutfitPartService
+    public interface IOutfitPartService
     {
+        Task<int> CreateAndReturnIdAsync(OutfitPartFormModel formModel);
     }
 }

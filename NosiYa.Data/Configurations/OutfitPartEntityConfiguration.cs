@@ -30,7 +30,7 @@
                             Гръдна обиколка - 73",
                 Color = "бял",
                 RenterType = (RenterType)3,
-                OutfitType = (OutfitPartType)4,
+                OutfitPartType = (OutfitPartType)4,
                 Size = "-XS-",
                 OutfitSetId = 1,
                 OwnerId = Guid.Parse(FirstUserId)
@@ -48,7 +48,7 @@
                             Отвор за ръкав - 27",
                 Color = "кафяв",
                 RenterType = (RenterType)3,
-                OutfitType = (OutfitPartType)4,
+                OutfitPartType = (OutfitPartType)4,
                 Size = "-XS-",
                 OutfitSetId = 1,
                 OwnerId = Guid.Parse(SecondUserId)

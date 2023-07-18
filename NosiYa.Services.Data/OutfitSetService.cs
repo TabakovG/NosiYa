@@ -1,12 +1,11 @@
-﻿using System.Text.RegularExpressions;
-using NosiYa.Data.Models.Enums;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
     using Microsoft.EntityFrameworkCore;
 
     using NosiYa.Data;
     using NosiYa.Data.Models.Outfit;
+    using NosiYa.Data.Models.Enums;
+
     using Interfaces;
     using Model;
     using Web.ViewModels.OutfitSet;
@@ -37,8 +36,9 @@ namespace NosiYa.Services.Data
                 IsAvailable = formModel.IsAvailable,
                 IsActive = formModel.IsActive,
                 Size = formModel.Size,
+                /*
                 Images = formModel.Images, //TODO foreach fm create and add image
-                OutfitParts = formModel.OutfitParts, //TODO foreach fm create and add part
+                OutfitParts = formModel.OutfitParts, //TODO foreach fm create and add part*/
             };
 
             this.context.OutfitSets.AddAsync(outfit);

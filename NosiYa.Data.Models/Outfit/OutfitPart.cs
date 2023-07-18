@@ -30,7 +30,7 @@
         [Required]
         public RenterType RenterType { get; set; }
 
-        public OutfitPartType OutfitType { get; set; } 
+        public OutfitPartType OutfitPartType { get; set; } 
 
         [Required]
         [ForeignKey(nameof(OutfitSet))]
