@@ -1,6 +1,6 @@
 ﻿namespace NosiYa.Web.ViewModels.Region
 {
-    public  class PossibleRegionsOnCreateOutfitSetFormModel
+    public  class PossibleRegionsFormModel
     {
 
         public int Id { get; set; }

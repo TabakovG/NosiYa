@@ -5,6 +5,8 @@
     public interface IRegionService
     {
         Task<IEnumerable<string>> GetAllRegionsNamesAsync();
-        Task<IEnumerable<PossibleRegionsOnCreateOutfitSetFormModel>>  GetAllRegionsAsync();
+        Task<IEnumerable<PossibleRegionsFormModel>>  GetAllRegionsAsync();
+        Task<bool> RegionExistsByIdAsync(int id);
+
     }
 }

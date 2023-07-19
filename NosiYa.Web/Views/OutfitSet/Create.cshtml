@@ -45,6 +45,17 @@
 		        <span asp-validation-for="Color" class="small text-danger"></span>
 	        </div>
 	        <div class="form-group">
+		        <label asp-for="NumberOfParts"></label>
+				<select asp-for="NumberOfParts" class="form-control">
+					@for (int i = NumberOfPartsMinValue; i < NumberOfPartsMaxValue; i++)
+					{
+			        <option value="@i">@i</option>
+
+					}
+		        </select>
+				<span asp-validation-for="NumberOfParts" class="small text-danger"></span>
+	        </div>
+	        <div class="form-group">
 		        <label asp-for="RenterType"></label>
 		        <select asp-for="RenterType" class="form-control">
 			        <option value="0">Всички</option>
@@ -53,11 +64,7 @@
 			        <option value="3">Момче</option>
 			        <option value="4">Момиче</option>
 		        </select>
-				<span asp-validation-for="RenterType" class="small text-danger"></span>
-	        </div>
-	        <div class="form-group">
-		        <label asp-for="IsActive"></label>
-				<input asp-for="IsActive" type="checkbox" class="form-check-input" checked />
+		        <span asp-validation-for="RenterType" class="small text-danger"></span>
 	        </div>
 	        <div class="form-group">
 		        <label asp-for="IsAvailable"></label>

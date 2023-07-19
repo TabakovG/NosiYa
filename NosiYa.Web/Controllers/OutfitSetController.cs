@@ -1,4 +1,5 @@
 ﻿using NosiYa.Data.Models.Enums;
+using NosiYa.Services.Data.Model;
 
 namespace NosiYa.Web.Controllers
 {
@@ -47,7 +48,55 @@ namespace NosiYa.Web.Controllers
             }
         }
 
-        private IActionResult GeneralError()
+        [HttpPost]
+        public async Task<IActionResult> Create(OutfitSetFormModel model)
+        {
+	        try
+	        {
+		        //TODO To check if the user is admin
+
+		        bool regionExists = await this.regionService.RegionExistsByIdAsync(model.RegionId);
+		        if (!regionExists)
+		        {
+			        this.ModelState.AddModelError(nameof(model.RegionId), "Selected region does not exist!");
+		        }
+
+		        if (!this.ModelState.IsValid)
+		        {
+			        model.Regions = await this.regionService.GetAllRegionsAsync();
+
+			        return this.View(model);
+		        }
+
+		        try
+		        {
+
+			        int outfitSetId =
+				        await this.outfitService.CreateOutfitSetAndReturnIdAsync(model);
+
+			        CreateSetToAddPartServiceModel input = new CreateSetToAddPartServiceModel
+			        {
+				        OutfitSetId = outfitSetId,
+				        NumberOfParts = model.NumberOfParts
+			        };
+
+			        return this.RedirectToAction("Add", "OutfitPart", input);
+		        }
+		        catch (Exception)
+		        {
+			        model.Regions = await this.regionService.GetAllRegionsAsync();
+
+			        return this.View(model);
+		        }
+	        }
+	        catch (Exception)
+	        {
+		        return this.GeneralError();
+
+	        }
+        }
+
+		private IActionResult GeneralError()
         {
             this.TempData["ErrorMessage"] =
                 "Unexpected error occurred! Please try again later or contact administrator";

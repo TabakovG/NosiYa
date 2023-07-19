@@ -25,6 +25,8 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
+        public bool IsActive { get; set; } = true;
+
         public ICollection<Image> Images { get; set; }
  
         public ICollection<OutfitSet> Outfits { get; set; }

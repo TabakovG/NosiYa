@@ -35,6 +35,10 @@
         public Guid OwnerId { get; set; }
 
         [Required]
+        [StringLength(OwnerEmailMaxLength, MinimumLength= OwnerEmailMinLength)]
+		public string OwnerEmail { get; set; }
+
+        [Required]
         [StringLength(SizeMaxLength, MinimumLength = SizeMinLength)]
         public string Size { get; set; } = null!;
 

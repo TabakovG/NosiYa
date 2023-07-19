@@ -21,15 +21,21 @@
 
             public const int ImageMaxLength = 2048;
 
-            public const int RenterTypeMinValue= 1;
-            public const int RenterTypeMaxValue = 5;
+            public const int RenterTypeMinValue= 0; 
+            public const int RenterTypeMaxValue = 4;
+
+            public const int NumberOfPartsMinValue = 1;
+            public const int NumberOfPartsMaxValue = 10;
 
             public const int ColorMinLength = 3;
             public const int ColorMaxLength = 20;
 
             public const int SizeMinLength = 3;
             public const int SizeMaxLength = 10;
-        }
+
+            public const int OwnerEmailMinLength = 3;
+            public const int OwnerEmailMaxLength = 50; //TODO regex
+		}
 
         public static class Event
         {

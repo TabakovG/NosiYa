@@ -5,8 +5,8 @@
     using NosiYa.Data.Models.Enums;
     using Image;
     using OutfitPart;
+    using Region;
     using static Common.EntityValidationConstants.Outfit;
-    using NosiYa.Web.ViewModels.Region;
 
     public class OutfitSetFormModel
     {
@@ -14,9 +14,9 @@
         {
             this.SetImages = new HashSet<ImageFormModel>();
             this.OutfitParts = new HashSet<OutfitPartFormModel>();
-            this.Regions = new HashSet<PossibleRegionsOnCreateOutfitSetFormModel>();
+            this.Regions = new HashSet<PossibleRegionsFormModel>();
             this.IsActive = true;
-            this.IsAvailable = true;
+            this.IsAvailable = false;
         }
 
         [Required]
@@ -26,8 +26,8 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
-        public int? RegionId { get; set; }
-        public IEnumerable<PossibleRegionsOnCreateOutfitSetFormModel> Regions { get; set; }
+        public int RegionId { get; set; }
+        public IEnumerable<PossibleRegionsFormModel> Regions { get; set; }
 
         public decimal PricePerDay { get; set; }
 
@@ -35,12 +35,15 @@
         [StringLength(ColorMaxLength, MinimumLength = ColorMinLength)]
         public string Color { get; set; } = null!;
 
-        [Range(0,4)]
+        [Range(RenterTypeMinValue,RenterTypeMaxValue)]
         public RenterType RenterType { get; set; }
 
         public bool IsAvailable { get; set; }
 
         public bool IsActive { get; set; }
+
+        [Range(NumberOfPartsMinValue, NumberOfPartsMaxValue)]
+        public int NumberOfParts { get; set; }
 
         [Required]
         [StringLength(SizeMaxLength, MinimumLength = SizeMinLength)]
