@@ -136,9 +136,16 @@
             throw new NotImplementedException();
         }
 
-        public Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync()
+        public async Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync(int id)
         {
-            throw new NotImplementedException();
+	        var outfitSet = await this.context
+		        .OutfitSets
+		        .FirstOrDefaultAsync(o => o.IsActive && o.Id == id);
+
+			var outfitModel = new OutfitSetDetailsViewModel()
+			{
+                
+			}
         }
 
         //Update:  --------------//---------------

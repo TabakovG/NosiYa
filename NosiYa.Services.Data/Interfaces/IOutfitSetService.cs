@@ -15,7 +15,7 @@ namespace NosiYa.Services.Data.Interfaces
         Task<bool> ExistByIdAsync(int outfitId);
         
         //Update
-        Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync();
+        Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync(int id);
         Task<OutfitSetFormModel> EditByIdAsync(int outfitId);
 
 

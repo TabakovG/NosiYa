@@ -96,6 +96,12 @@ namespace NosiYa.Web.Controllers
 	        }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+	        var model = await this.outfitService.GetDetailsByIdAsync(id);
+        }
+
 		private IActionResult GeneralError()
         {
             this.TempData["ErrorMessage"] =
