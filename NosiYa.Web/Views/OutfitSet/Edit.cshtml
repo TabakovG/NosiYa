@@ -1,0 +1,17 @@
+﻿@model OutfitSetFormModel
+@{
+	ViewData["Title"] = "Промени носия";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr/>
+
+<partial name="_OutfitSetFormPartial" model="@Model" />
+
+<a asp-controller="OutfitSet" asp-action="AddPart" asp-route-id="@Url.ActionContext.RouteData.Values["id"]"
+   class="btn btn-warning">Промени</a>
+
+@section Scripts
+{
+	<partial name="_ValidationScriptsPartial" />
+}

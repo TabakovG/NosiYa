@@ -142,9 +142,10 @@
         {
 	        var outfitSet = await this.context
 		        .OutfitSets
-		        .FirstOrDefaultAsync(o => o.IsActive && o.Id == id);
+                .Include(r=>r.Region)
+		        .FirstAsync(o => o.Id == id); //TODO only admin to be able to see non active
 
-	        var outfitModel = new OutfitSetDetailsViewModel
+	            var outfitModel = new OutfitSetDetailsViewModel
 	        {
 		        Id = outfitSet.Id,
 		        Name = outfitSet.Name,
@@ -161,9 +162,44 @@
 
         //Update:  --------------//---------------
 
-        public Task<OutfitSetFormModel> EditByIdAsync(int outfitId)
+        public async Task<OutfitSetFormModel> GetForEditByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var outfitSet = await this.context
+                .OutfitSets
+                .Include(r => r.Region)
+                .FirstAsync(o => o.Id == id);
+
+            var editModel = new OutfitSetFormModel
+            {
+                Name = outfitSet.Name,
+                Description = outfitSet.Description,
+                RegionId = outfitSet.RegionId,
+                PricePerDay = outfitSet.PricePerDay,
+                Color = outfitSet.Color,
+                RenterType = outfitSet.RenterType,
+                IsAvailable = outfitSet.IsAvailable,
+                Size = outfitSet.Size,
+            };
+
+            return editModel;
+        }
+
+        public async Task EditByIdAsync(int outfitId, OutfitSetFormModel model)
+        {
+	        var outfit = await this.context
+		        .OutfitSets
+		        .FindAsync(outfitId);
+
+            outfit.Name = model.Name;
+            outfit.Description = model.Description;
+            outfit.RegionId = model.RegionId;
+            outfit.PricePerDay = model.PricePerDay;
+            outfit.Color = model.Color;
+            outfit.RenterType = model.RenterType;
+            outfit.IsAvailable = model.IsAvailable;
+            outfit.Size = model.Size;
+
+            await this.context.SaveChangesAsync();
         }
 
 

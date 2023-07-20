@@ -16,7 +16,8 @@ namespace NosiYa.Services.Data.Interfaces
         
         //Update
         Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync(int id);
-        Task<OutfitSetFormModel> EditByIdAsync(int outfitId);
+        Task<OutfitSetFormModel> GetForEditByIdAsync(int id);
+        Task EditByIdAsync(int outfitId, OutfitSetFormModel model);
 
 
         //Delete

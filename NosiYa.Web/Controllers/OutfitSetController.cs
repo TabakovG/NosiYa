@@ -99,7 +99,88 @@ namespace NosiYa.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-	        var model = await this.outfitService.GetDetailsByIdAsync(id);
+	        var outfitSetExists = await this.outfitService.ExistByIdAsync(id);
+
+	        if (!outfitSetExists)
+	        {
+		        this.TempData["ErrorMessage"] = "Носия с този идентификатор не съществува!";
+
+		        return this.RedirectToAction("All", "OutfitSet");
+	        }
+
+	        try
+	        {
+		        OutfitSetDetailsViewModel viewModel = await this.outfitService
+			        .GetDetailsByIdAsync(id);
+
+		        return View(viewModel);
+	        }
+	        catch (Exception)
+	        {
+		        return this.GeneralError();
+	        }
+
+		}
+		[HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var outfitSetExists = await this.outfitService.ExistByIdAsync(id);
+
+            if (!outfitSetExists)
+            {
+                this.TempData["ErrorMessage"] = "Носия с този идентификатор не съществува!";
+
+                return this.RedirectToAction("All", "OutfitSet");
+            }
+
+            try
+            {
+                OutfitSetFormModel viewModel = await this.outfitService
+                    .GetForEditByIdAsync(id);
+
+                viewModel.Regions = await this.regionService.GetAllRegionsAsync();
+
+				return View(viewModel);
+            }
+            catch (Exception)
+            {
+                return this.GeneralError();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, OutfitSetFormModel model)
+        {
+	        if (!this.ModelState.IsValid)
+	        {
+		        model.Regions = await this.regionService.GetAllRegionsAsync();
+
+		        return this.View(model);
+	        }
+
+			var outfitSetExists = await this.outfitService.ExistByIdAsync(id);
+
+	        if (!outfitSetExists)
+	        {
+		        this.TempData["ErrorMessage"] = "Носия с този идентификатор не съществува!";
+
+		        return this.RedirectToAction("All", "OutfitSet");
+	        }
+
+	        try
+	        {
+		        await this.outfitService.EditByIdAsync(id, model);
+		        this.TempData["SuccessMessage"] = "Промените са запазени успешно!";
+		        return this.RedirectToAction("Details", "OutfitSet", new { id });
+			}
+	        catch (Exception)
+	        {
+				this.ModelState.AddModelError(string.Empty,
+					"Възникна грешка при обработване на заявката. Моля опитайте отново или се свържете с администратор!");
+				model.Regions = await this.regionService.GetAllRegionsAsync();
+
+				return this.View(model);
+			}
         }
 
 		private IActionResult GeneralError()

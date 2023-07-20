@@ -5,77 +5,8 @@
 
 <h2 class="text-center">@ViewData["Title"]</h2>
 <hr />
+<partial name="_OutfitSetFormPartial" model="@Model" />
 
-<div class="row">
-    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" placeholder="Name...">
-                <span asp-validation-for="Name" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Size"></label>
-                <input asp-for="Size" class="form-control" placeholder="-XS-S-...">
-                <span asp-validation-for="Size" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description"></label>
-                <textarea asp-for="Description" rows="4" class="form-control" placeholder="Description..."></textarea>
-                <span asp-validation-for="Description" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PricePerDay"></label>
-                <input asp-for="PricePerDay" class="form-control">
-                <span asp-validation-for="PricePerDay" class="small text-danger"></span>
-            </div>
-	        <div class="form-group">
-		        <label asp-for="RegionId"></label>
-		        <select asp-for="RegionId" class="form-control">
-			        @foreach (var region in Model.Regions)
-			        {
-				        <option value="@region.Id">@region.Name</option>
-			        }
-		        </select>
-		        <span asp-validation-for="RegionId" class="small text-danger"></span>
-	        </div>
-	        <div class="form-group">
-		        <label asp-for="Color"></label>
-		        <input asp-for="Color" class="form-control" placeholder="Color...">
-		        <span asp-validation-for="Color" class="small text-danger"></span>
-	        </div>
-	        <div class="form-group">
-		        <label asp-for="NumberOfParts"></label>
-				<select asp-for="NumberOfParts" class="form-control">
-					@for (int i = NumberOfPartsMinValue; i < NumberOfPartsMaxValue; i++)
-					{
-			        <option value="@i">@i</option>
-
-					}
-		        </select>
-				<span asp-validation-for="NumberOfParts" class="small text-danger"></span>
-	        </div>
-	        <div class="form-group">
-		        <label asp-for="RenterType"></label>
-		        <select asp-for="RenterType" class="form-control">
-			        <option value="0">Всички</option>
-			        <option value="1">Мъж</option>
-			        <option value="2">Жена</option>
-			        <option value="3">Момче</option>
-			        <option value="4">Момиче</option>
-		        </select>
-		        <span asp-validation-for="RenterType" class="small text-danger"></span>
-	        </div>
-	        <div class="form-group">
-		        <label asp-for="IsAvailable"></label>
-				<input asp-for="IsAvailable" class="form-check-input" type="checkbox" checked>
-	        </div>
-            <div class="text-center">
-                <input class="btn btn-primary mt-3" type="submit" value="Създай" />
-            </div>
-        </form>
-    </div>
-</div>
 
 @section Scripts
 {
