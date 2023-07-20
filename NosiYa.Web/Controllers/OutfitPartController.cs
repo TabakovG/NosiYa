@@ -1,4 +1,5 @@
 ﻿using NosiYa.Web.ViewModels.OutfitPart;
+using NuGet.Protocol;
 
 namespace NosiYa.Web.Controllers
 {
@@ -9,13 +10,12 @@ namespace NosiYa.Web.Controllers
 	public class OutfitPartController : Controller
 	{
 		[HttpGet]
-		public async Task<IActionResult> Add(CreateSetToAddPartServiceModel serviceModel)
+		public async Task<IActionResult> Add(int setId)
 		{
 			try
 			{
 				var outfitPart = new OutfitPartFormModel();
-				ViewData["SetId"] = serviceModel.OutfitSetId;
-				ViewData["NumberOfParts"] = serviceModel.NumberOfParts;
+				outfitPart.OutfitSetId = setId;
 					return this.View(outfitPart);
 			}
 			catch (Exception)

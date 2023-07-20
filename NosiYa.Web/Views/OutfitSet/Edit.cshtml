@@ -8,8 +8,8 @@
 
 <partial name="_OutfitSetFormPartial" model="@Model" />
 
-<a asp-controller="OutfitSet" asp-action="AddPart" asp-route-id="@Url.ActionContext.RouteData.Values["id"]"
-   class="btn btn-warning">Промени</a>
+<a asp-controller="OutfitPart" asp-action="Add" asp-route-id="@Url.ActionContext.RouteData.Values["id"]"
+   class="btn btn-warning">Добави елемент</a>
 
 @section Scripts
 {

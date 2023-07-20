@@ -77,7 +77,6 @@ namespace NosiYa.Web.Controllers
 			        CreateSetToAddPartServiceModel input = new CreateSetToAddPartServiceModel
 			        {
 				        OutfitSetId = outfitSetId,
-				        NumberOfParts = model.NumberOfParts
 			        };
 
 			        return this.RedirectToAction("Add", "OutfitPart", input);

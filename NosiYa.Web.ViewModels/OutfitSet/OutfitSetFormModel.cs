@@ -42,9 +42,6 @@
 
         public bool IsActive { get; set; }
 
-        [Range(NumberOfPartsMinValue, NumberOfPartsMaxValue)]
-        public int NumberOfParts { get; set; }
-
         [Required]
         [StringLength(SizeMaxLength, MinimumLength = SizeMinLength)]
         public string Size { get; set; } = null!;
