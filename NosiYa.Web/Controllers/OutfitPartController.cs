@@ -1,4 +1,5 @@
 ﻿using NosiYa.Services.Data.Interfaces;
+using NosiYa.Web.Infrastructure.Extensions;
 using NosiYa.Web.ViewModels.OutfitPart;
 using NuGet.Protocol;
 
@@ -18,13 +19,53 @@ namespace NosiYa.Web.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Add(int setId)
+		public async Task<IActionResult> Add(int id)
 		{
 			try
 			{
-				var outfitPart = new OutfitPartFormModel();
-				outfitPart.OutfitSetId = setId;
-					return this.View(outfitPart);
+				var outfitPart = new OutfitPartFormModel()
+				{
+					OutfitSetId = id
+				};
+				return this.View(outfitPart);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Add(OutfitPartFormModel model)
+		{
+			try
+			{
+				//TODO To check if the user is admin
+
+				if (!this.ModelState.IsValid)
+				{
+					return this.View(model);
+				}
+
+				var isAuthenticated = this.User.Identity.IsAuthenticated;
+				if (!isAuthenticated)
+				{
+					return this.View(model);
+				}
+
+				model.OwnerId = Guid.Parse(this.User.GetId()!);
+
+				try
+				{
+					int outfitPartId =
+						await this.outfitPartService.CreateAndReturnIdAsync(model);
+
+					return this.RedirectToAction("Details", "OutfitSet", new { Id = model.OutfitSetId });
+				}
+				catch (Exception)
+				{
+					return this.View(model);
+				}
 			}
 			catch (Exception)
 			{
@@ -75,7 +116,7 @@ namespace NosiYa.Web.Controllers
 				var outfitSetId = await this.outfitPartService.DeleteByIdAsyncAndReturnParentId(id);
 
 				this.TempData["WarningMessage"] = "Елементът беше изтрит успешно!";
-				return this.RedirectToAction("Details", "OutfitSet", new {Id = outfitSetId});
+				return this.RedirectToAction("Details", "OutfitSet", new { Id = outfitSetId });
 			}
 			catch (Exception)
 			{

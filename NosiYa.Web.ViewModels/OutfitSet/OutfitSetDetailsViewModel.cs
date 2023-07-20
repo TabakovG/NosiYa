@@ -1,8 +1,14 @@
 ﻿namespace NosiYa.Web.ViewModels.OutfitSet
 {
+    using OutfitPart;
 
     public class OutfitSetDetailsViewModel
     {
+        public OutfitSetDetailsViewModel()
+        {
+            this.Images = new HashSet<string>();
+            this.OutfitParts = new HashSet<OutfitPartViewModel>();
+        }
 	    public int Id { get; set; }
 
 	    public string Name { get; set; } = null!;
@@ -19,9 +25,9 @@
 
 		public string Size { get; set; } = null!;
 
-/*	    public ICollection<Image> Images { get; set; }
+	    public ICollection<string> Images { get; set; }
 
-	    public ICollection<OutfitPart> OutfitParts { get; set; }*/
+	    public ICollection<OutfitPartViewModel> OutfitParts { get; set; }
 
 	}
 }

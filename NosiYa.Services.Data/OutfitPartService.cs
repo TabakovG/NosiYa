@@ -48,11 +48,37 @@
 				.AnyAsync(o => o.IsActive && o.Id == id);
 		}
 
-		//Delete:  --------------//---------------
+        public async Task<ICollection<OutfitPartViewModel>> GetAllPartsBySetIdAsync(int setId)
+        {
+            var outfitSet =  await this.context
+                .OutfitSets
+                .AsNoTracking()
+                .Include(o=>o.OutfitParts)
+                .FirstAsync(os=>os.IsActive && os.Id == setId);
+
+            var result = outfitSet
+                .OutfitParts
+                .Where(p=>p.IsActive)
+                .Select(p => new OutfitPartViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    imageUrl = p.Images.FirstOrDefault()?.Url ?? ""
+                })
+                .ToList();
+
+            return result;
+        }
+
+        //Delete:  --------------//---------------
 		public async Task<OutfitPartForDelete> GetOutfitPartForDeleteAsync(int outfitPartId)
         {
 	        OutfitPart outfitPart = await this.context
 		        .OutfitParts
+		        .AsNoTracking()
+		        .Include(o=>o.Owner)
+		        .Include(os=>os.OutfitSet)
+		        .Include(i=>i.Images)
 		        .FirstAsync(o => o.Id == outfitPartId && o.IsActive);
 
 	        return new OutfitPartForDelete

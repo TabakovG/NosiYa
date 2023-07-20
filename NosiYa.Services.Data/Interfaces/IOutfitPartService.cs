@@ -7,6 +7,8 @@
         Task<int> CreateAndReturnIdAsync(OutfitPartFormModel formModel);
         Task<bool> ExistByIdAsync(int outfitPartId);
 
+        //Read
+        Task<ICollection<OutfitPartViewModel>> GetAllPartsBySetIdAsync(int id);
 
         //Delete
         Task<OutfitPartForDelete> GetOutfitPartForDeleteAsync(int outfitPartId);

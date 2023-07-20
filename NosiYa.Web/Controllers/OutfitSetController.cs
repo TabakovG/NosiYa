@@ -12,11 +12,13 @@ namespace NosiYa.Web.Controllers
 	{
 		private readonly IOutfitSetService outfitService;
 		private readonly IRegionService regionService;
+		private readonly IOutfitPartService partService;
 
-		public OutfitSetController(IOutfitSetService outfitService, IRegionService regionService)
+		public OutfitSetController(IOutfitSetService outfitService, IRegionService regionService, IOutfitPartService partService)
 		{
 			this.outfitService = outfitService;
 			this.regionService = regionService;
+			this.partService = partService;
 		}
 		[HttpGet]
 		public async Task<IActionResult> All([FromQuery] AllOutfitsQueryModel queryModel)
@@ -75,12 +77,12 @@ namespace NosiYa.Web.Controllers
 			        int outfitSetId =
 				        await this.outfitService.CreateOutfitSetAndReturnIdAsync(model);
 
-			        CreateSetToAddPartServiceModel input = new CreateSetToAddPartServiceModel
+/*			        CreateSetToAddPartServiceModel input = new CreateSetToAddPartServiceModel
 			        {
 				        OutfitSetId = outfitSetId,
-			        };
+			        };*/
 
-			        return this.RedirectToAction("Add", "OutfitPart", input);
+			        return this.RedirectToAction("Add", "OutfitPart", new {Id = outfitSetId});
 		        }
 		        catch (Exception)
 		        {
@@ -112,7 +114,7 @@ namespace NosiYa.Web.Controllers
 	        {
 		        OutfitSetDetailsViewModel viewModel = await this.outfitService
 			        .GetDetailsByIdAsync(id);
-
+                viewModel.OutfitParts = await this.partService.GetAllPartsBySetIdAsync(id);
 		        return View(viewModel);
 	        }
 	        catch (Exception)

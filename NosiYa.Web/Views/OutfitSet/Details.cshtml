@@ -1,38 +1,61 @@
 ﻿@model OutfitSetDetailsViewModel
 
 @{
-    ViewBag.Title = "Детайли на носията";
+	ViewBag.Title = "Детайли на носията";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
 <div class="container" style="display:inline">
-    <div class="row">
-        <div class="col-4">
-            <img class="card-img-top" style="width: 20rem;"
-                 src="@Model.Size" alt="OutfitSet Image">
-        </div>
-        <div class="card col-8 border-0">
-            <p style="font-size:25px;"><u>@Model.Name</u></p>
-	        <p>
-                Price Per Day:
-                <b>@($"{Model.PricePerDay:f2}") BGN</b>
-            </p>
-            <p>@Model.Description</p>
-            <p>Region: <b>@Model.Region</b></p>
-            <p>Подходяща за: <b>@Model.RenterType</b></p>
-            <p>Размер: <b>@Model.Size</b></p>
-	        <div class="form-inline">
-                @if (this.User.Identity?.IsAuthenticated ?? false)
-                {
-                    <a class="btn btn-warning" asp-controller="OutfitSet" asp-action="Edit"
-                   asp-route-id="@Model.Id">Edit</a>
-                    <a class="ml-2 btn btn-danger" asp-controller="OutfitSet" asp-action="Delete"
-                   asp-route-id="@Model.Id">Delete</a>
+	<div class="row">
+		<div class="col-4">
+			<img class="card-img-top" style="width: 20rem;"
+				 src="@Model.Size" alt="OutfitSet Image">
+		</div>
+		<div class="card col-8 border-0">
+			<p style="font-size:25px;"><u>@Model.Name</u></p>
+			<p>
+				Price Per Day:
+				<b>@($"{Model.PricePerDay:f2}") BGN</b>
+			</p>
+			<p>@Model.Description</p>
+			<p>Region: <b>@Model.Region</b></p>
+			<p>Подходяща за: <b>@Model.RenterType</b></p>
+			<p>Размер: <b>@Model.Size</b></p>
+			<div class="form-inline">
+				@if (this.User.Identity?.IsAuthenticated ?? false)
+				{
+					<a class="btn btn-warning" asp-controller="OutfitSet" asp-action="Edit"
+				   asp-route-id="@Model.Id">Edit</a>
+					<a class="ml-2 btn btn-danger" asp-controller="OutfitSet" asp-action="Delete"
+				   asp-route-id="@Model.Id">Delete</a>
 
-                }
-            </div>
-        </div>
-    </div>
+				}
+			</div>
+
+			@foreach (OutfitPartViewModel part in Model.OutfitParts)
+			{
+				<div class="row">
+					<div class="col-4">
+						<img class="img-thumbnail float" style="width: 10rem;"
+							 src="@part.imageUrl" alt="OutfitPart Image">
+					</div>
+					<div class="card col-8 border-0">
+						<p style="font-size:25px;"><u>@part.Name</u></p>
+					</div>
+					<div class="form-inline">
+						@if (this.User.Identity?.IsAuthenticated ?? false)
+						{
+							<a class="btn btn-warning" asp-controller="OutfitPart" asp-action="Edit"
+					   asp-route-id="@part.Id">Edit</a>
+							<a class="ml-2 btn btn-danger" asp-controller="OutfitPart" asp-action="Delete"
+					   asp-route-id="@part.Id">Delete</a>
+
+						}
+					</div>
+				</div>
+			}
+		</div>
+	</div>
 </div>

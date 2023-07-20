@@ -154,8 +154,9 @@
 		        PricePerDay = outfitSet.PricePerDay,
 		        RenterType = outfitSet.RenterType.ToString(),
 		        IsAvailable = outfitSet.IsAvailable,
-		        Size = outfitSet.Size
-	        };
+		        Size = outfitSet.Size,
+                Images = outfitSet.Images.Select(i=>i.Url).ToArray()
+            };
 
             return outfitModel;
         }
