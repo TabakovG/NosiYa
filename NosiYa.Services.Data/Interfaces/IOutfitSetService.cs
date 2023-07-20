@@ -21,7 +21,7 @@ namespace NosiYa.Services.Data.Interfaces
 
 
         //Delete
-        Task<OutfitSetForDelete> GetOutfitSetForDeleteAsync();
+        Task<OutfitSetForDelete> GetOutfitSetForDeleteAsync(int id);
         Task DeleteByIdAsync(int outfitId);
     }
 }

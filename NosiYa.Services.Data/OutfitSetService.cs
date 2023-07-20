@@ -204,14 +204,29 @@
 
 
         //Delete:  --------------//---------------
-        public Task<OutfitSetForDelete> GetOutfitSetForDeleteAsync()
+        public async Task<OutfitSetForDelete> GetOutfitSetForDeleteAsync(int id)
         {
-            throw new NotImplementedException();
-        }
+			OutfitSet outfit = await this.context
+				.OutfitSets
+				.FirstAsync(o=>o.Id == id && o.IsActive);
 
-        public Task DeleteByIdAsync(int outfitId)
+			return new OutfitSetForDelete
+			{
+				Name = outfit.Name,
+				Description = outfit.Description!,
+                Images = outfit.Images.Select(i=>i.Url).ToArray()
+			};
+		}
+
+        public async Task DeleteByIdAsync(int outfitId)
         {
-            throw new NotImplementedException();
+	        var outfitForDelete = await this.context
+		        .OutfitSets
+		        .FirstAsync(o => o.IsActive && o.Id == outfitId);
+
+	        outfitForDelete.IsActive = false;
+
+            await this.context.SaveChangesAsync();
         }
     }
 }

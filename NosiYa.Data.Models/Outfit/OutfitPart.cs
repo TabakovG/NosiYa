@@ -11,6 +11,7 @@
         public OutfitPart()
         {
             this.Images = new HashSet<Image>();
+            this.IsActive = true;
         }
 
         [Key]
@@ -48,6 +49,8 @@
         public string Size { get; set; } = null!;
 
         public ICollection<Image> Images { get; set; }
+
+        public bool IsActive { get; set; }
 
     }
 }
