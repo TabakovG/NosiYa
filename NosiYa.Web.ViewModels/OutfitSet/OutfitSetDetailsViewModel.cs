@@ -17,9 +17,7 @@
 
 		public bool IsAvailable { get; set; }
 
-	    public bool IsActive { get; set; }
-
-	    public string Size { get; set; } = null!;
+		public string Size { get; set; } = null!;
 
 /*	    public ICollection<Image> Images { get; set; }
 

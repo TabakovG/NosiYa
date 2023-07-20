@@ -131,9 +131,11 @@
             throw new NotImplementedException();
         }
 
-        public Task<bool> ExistByIdAsync(int outfitId)
+        public async Task<bool> ExistByIdAsync(int outfitId)
         {
-            throw new NotImplementedException();
+	        return await this.context
+		        .OutfitSets
+		        .AnyAsync(o => o.IsActive && o.Id == outfitId);
         }
 
         public async Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync(int id)
@@ -142,10 +144,19 @@
 		        .OutfitSets
 		        .FirstOrDefaultAsync(o => o.IsActive && o.Id == id);
 
-			var outfitModel = new OutfitSetDetailsViewModel()
-			{
-                
-			}
+	        var outfitModel = new OutfitSetDetailsViewModel
+	        {
+		        Id = outfitSet.Id,
+		        Name = outfitSet.Name,
+		        Description = outfitSet.Description,
+		        Region = outfitSet.Region.Name,
+		        PricePerDay = outfitSet.PricePerDay,
+		        RenterType = outfitSet.RenterType.ToString(),
+		        IsAvailable = outfitSet.IsAvailable,
+		        Size = outfitSet.Size
+	        };
+
+            return outfitModel;
         }
 
         //Update:  --------------//---------------
