@@ -1,4 +1,5 @@
-﻿using NosiYa.Web.ViewModels.OutfitPart;
+﻿using NosiYa.Services.Data.Interfaces;
+using NosiYa.Web.ViewModels.OutfitPart;
 using NuGet.Protocol;
 
 namespace NosiYa.Web.Controllers
@@ -9,6 +10,13 @@ namespace NosiYa.Web.Controllers
 
 	public class OutfitPartController : Controller
 	{
+		private readonly IOutfitPartService outfitPartService;
+
+		public OutfitPartController(IOutfitPartService outfitPartService)
+		{
+			this.outfitPartService = outfitPartService;
+		}
+
 		[HttpGet]
 		public async Task<IActionResult> Add(int setId)
 		{
@@ -24,6 +32,57 @@ namespace NosiYa.Web.Controllers
 
 			}
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> Delete(int id)
+		{
+			bool outfitPartExists = await this.outfitPartService
+				.ExistByIdAsync(id);
+			if (!outfitPartExists)
+			{
+				this.TempData["ErrorMessage"] = "Елемент на носия с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "OutfitSet");
+			}
+
+			try
+			{
+				OutfitPartForDelete viewModel =
+					await this.outfitPartService.GetOutfitPartForDeleteAsync(id);
+
+				return this.View(viewModel);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Delete(int id, OutfitSetForDelete model)
+		{
+			bool outfitPartExists = await this.outfitPartService
+				.ExistByIdAsync(id);
+			if (!outfitPartExists)
+			{
+				this.TempData["ErrorMessage"] = "Елемент на носия с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "OutfitSet");
+			}
+
+			try
+			{
+				var outfitSetId = await this.outfitPartService.DeleteByIdAsyncAndReturnParentId(id);
+
+				this.TempData["WarningMessage"] = "Елементът беше изтрит успешно!";
+				return this.RedirectToAction("Details", "OutfitSet", new {Id = outfitSetId});
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
 		private IActionResult GeneralError()
 		{
 			this.TempData["ErrorMessage"] =

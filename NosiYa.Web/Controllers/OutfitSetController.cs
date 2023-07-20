@@ -6,6 +6,7 @@ namespace NosiYa.Web.Controllers
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.OutfitSet;
 	using Microsoft.AspNetCore.Mvc;
+	using NosiYa.Web.Infrastructure.Extensions;
 
 	public class OutfitSetController : Controller
 	{
@@ -181,6 +182,56 @@ namespace NosiYa.Web.Controllers
 				return this.View(model);
 			}
         }
+
+		[HttpGet]
+		public async Task<IActionResult> Delete(int id)
+		{
+			bool outfitSetExists = await this.outfitService
+				.ExistByIdAsync(id);
+			if (!outfitSetExists)
+			{
+				this.TempData["ErrorMessage"] = "Носия с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "OutfitSet");
+			}
+
+			try
+			{
+				OutfitSetForDelete viewModel =
+					await this.outfitService.GetOutfitSetForDeleteAsync(id);
+
+				return this.View(viewModel);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Delete(int id, OutfitSetForDelete model)
+		{
+			bool outfitSetExists = await this.outfitService
+				.ExistByIdAsync(id);
+			if (!outfitSetExists)
+			{
+				this.TempData["ErrorMessage"] = "Носия с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "OutfitSet");
+			}
+
+			try
+			{
+				await this.outfitService.DeleteByIdAsync(id);
+
+				this.TempData["WarningMessage"] = "Носията беше изтрита успешно!";
+				return this.RedirectToAction("All", "OutfitSet");
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
 
 		private IActionResult GeneralError()
         {

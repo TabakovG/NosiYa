@@ -39,12 +39,21 @@
                 return part.Id;
         }
 
-        //Delete:  --------------//---------------
-        public async Task<OutfitPartForDelete> GetOutfitPartForDeleteAsync(int id)
+		//Read:   --------------//---------------
+
+		public async Task<bool> ExistByIdAsync(int id)
+		{
+			return await this.context
+				.OutfitParts
+				.AnyAsync(o => o.IsActive && o.Id == id);
+		}
+
+		//Delete:  --------------//---------------
+		public async Task<OutfitPartForDelete> GetOutfitPartForDeleteAsync(int outfitPartId)
         {
 	        OutfitPart outfitPart = await this.context
 		        .OutfitParts
-		        .FirstAsync(o => o.Id == id && o.IsActive);
+		        .FirstAsync(o => o.Id == outfitPartId && o.IsActive);
 
 	        return new OutfitPartForDelete
 	        {
@@ -58,7 +67,7 @@
 			};
         }
 
-        public async Task DeleteByIdAsync(int outfitPartId)
+        public async Task<int> DeleteByIdAsyncAndReturnParentId(int outfitPartId)
         {
 	        var outfitPartForDelete = await this.context
 		        .OutfitParts
@@ -67,6 +76,8 @@
 	        outfitPartForDelete.IsActive = false;
 
 	        await this.context.SaveChangesAsync();
+
+	        return outfitPartForDelete.OutfitSetId;
         }
 	}
 }
