@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Services.Data
+﻿using NosiYa.Data.Models;
+
+namespace NosiYa.Services.Data
 {
     using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +16,20 @@
         public RegionService(NosiYaDbContext _context)
         {
             this.context = _context;
+        }
+
+        public async Task<int> CreateAndReturnIdAsync(RegionFormModel model)
+        {
+	        var region = new Region
+	        {
+		        Name = model.Name,
+		        Description = model.Description,
+	        };
+
+	        await this.context.Regions.AddAsync(region);
+            await this.context.SaveChangesAsync();
+
+            return region.Id;
         }
 
         public async Task<IEnumerable<string>> GetAllRegionsNamesAsync()

@@ -30,6 +30,57 @@ namespace NosiYa.Web.Controllers
 		}
 
 		[HttpGet]
+		public async Task<IActionResult> Add()
+		{
+			try
+			{
+				var region = new RegionFormModel();
+				return this.View(region);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Add(RegionFormModel model)
+		{
+			try
+			{
+				//TODO To check if the user is admin
+
+				if (!this.ModelState.IsValid)
+				{
+					return this.View(model);
+				}
+
+				var isAuthenticated = this.User.Identity.IsAuthenticated;
+				if (!isAuthenticated)
+				{
+					return this.View(model);
+				}
+
+				try
+				{
+					int regionId =
+						await this.regionService.CreateAndReturnIdAsync(model);
+
+					return this.RedirectToAction("Details", "Region", new { Id = regionId });
+				}
+				catch (Exception)
+				{
+					return this.View(model);
+				}
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+
+			}
+		}
+
+		[HttpGet]
 		public async Task<IActionResult> Details(int id)
 		{
 			var regionExists = await this.regionService.ExistsByIdAsync(id);

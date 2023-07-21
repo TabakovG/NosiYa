@@ -3,7 +3,13 @@
 	using Web.ViewModels.Region;
 	public interface IRegionService
     {
-        Task<IEnumerable<string>> GetAllRegionsNamesAsync(); //for outfitSet Query
+        //Create:
+
+        Task<int> CreateAndReturnIdAsync(RegionFormModel model);
+
+		//Read:
+
+		Task<IEnumerable<string>> GetAllRegionsNamesAsync(); //for outfitSet Query
         Task<IEnumerable<PossibleRegionsFormModel>>  GetAllRegionsAsync(); //for create / edit
 
         Task<IEnumerable<RegionAllViewModel>> AllAvailableRegionsAsync(AllRegionsPaginatedModel model); // for All view
@@ -11,6 +17,14 @@
 		Task<bool> ExistsByIdAsync(int id);
 
 		Task<RegionDetailsViewModel> GetDetailsByIdAsync(int id);
+
+        //Update:
+
+
+
+        //Delete:
+
+
 
     }
 }
