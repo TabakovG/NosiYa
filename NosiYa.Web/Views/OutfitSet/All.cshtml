@@ -126,7 +126,7 @@
 }
 
 <div class="row">
-    @foreach (var outfit in Model.Outfits)
+    @foreach (OutfitSetAllViewModel outfit in Model.Outfits)
     {
         <partial name="_OutfitSetPartial" model="@outfit" />
     }

@@ -1,0 +1,21 @@
+﻿@model OutfitPartViewModel
+
+<div class="row">
+	<div class="col-4">
+		<img class="img-thumbnail float" style="width: 10rem;"
+		     src="@Model.imageUrl" alt="OutfitPart Image">
+	</div>
+	<div class="card col-8 border-0">
+		<p style="font-size:25px;"><u>@Model.Name</u></p>
+	</div>
+	<div class="form-inline">
+		@if (this.User.Identity?.IsAuthenticated ?? false)
+		{
+			<a class="btn btn-warning" asp-controller="OutfitPart" asp-action="Edit"
+			   asp-route-id="@Model.Id">Edit</a>
+			<a class="ml-2 btn btn-danger" asp-controller="OutfitPart" asp-action="Delete"
+			   asp-route-id="@Model.Id">Delete</a>
+
+		}
+	</div>
+</div>

@@ -6,6 +6,7 @@
     using NosiYa.Data;
     using Interfaces;
     using Web.ViewModels.OutfitPart;
+	using NosiYa.Web.ViewModels.OutfitSet;
 
     public class OutfitPartService : IOutfitPartService
     {
@@ -70,7 +71,39 @@
             return result;
         }
 
+		//Update: --------------//---------------
+
+		public async Task<OutfitPartDetailsViewModel> GetDetailsByIdAsync(int id)
+        {
+			var outfitPart = await this.context
+				.OutfitParts
+				.Include(p => p.OutfitSet)
+				.Include(p => p.Images)
+				.Include(p=>p.Owner)
+				.FirstAsync(p => p.Id == id); //TODO only admin to be able to see non active
+
+			var outfitPartModel = new OutfitPartDetailsViewModel
+			{
+				Id = outfitPart.Id,
+				Name = outfitPart.Name,
+				Description = outfitPart.Description,
+				Color = outfitPart.Color,
+				RenterType = outfitPart.RenterType.ToString(),
+				OutfitPartType = outfitPart.OutfitPartType.ToString(),
+				OutfitSet = outfitPart.OutfitSet.Name,
+				OwnerEmail = outfitPart.Owner.Email,
+				Size = outfitPart.Size,
+				Images = outfitPart
+					.Images
+					.Select(i=>i.Url)
+					.ToList()
+			};
+
+			return outfitPartModel;
+		}
+
         //Delete:  --------------//---------------
+
 		public async Task<OutfitPartForDelete> GetOutfitPartForDeleteAsync(int outfitPartId)
         {
 	        OutfitPart outfitPart = await this.context

@@ -75,6 +75,33 @@ namespace NosiYa.Web.Controllers
 		}
 
 		[HttpGet]
+		public async Task<IActionResult> Details(int id)
+		{
+			var outfitPartExists = await this.outfitPartService.ExistByIdAsync(id);
+
+			if (!outfitPartExists)
+			{
+				this.TempData["ErrorMessage"] = "Елемент на носия с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "OutfitSet");
+			}
+
+			try
+			{
+				OutfitPartDetailsViewModel viewModel = await this.outfitPartService
+					.GetDetailsByIdAsync(id);
+
+				
+				return View(viewModel);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+
+		}
+
+		[HttpGet]
 		public async Task<IActionResult> Delete(int id)
 		{
 			bool outfitPartExists = await this.outfitPartService

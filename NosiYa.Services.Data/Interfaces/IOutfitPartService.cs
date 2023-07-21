@@ -10,8 +10,12 @@
         //Read
         Task<ICollection<OutfitPartViewModel>> GetAllPartsBySetIdAsync(int id);
 
-        //Delete
-        Task<OutfitPartForDelete> GetOutfitPartForDeleteAsync(int outfitPartId);
+        //Update
+
+        Task<OutfitPartDetailsViewModel> GetDetailsByIdAsync(int id);
+
+		//Delete
+		Task<OutfitPartForDelete> GetOutfitPartForDeleteAsync(int outfitPartId);
         Task<int> DeleteByIdAsyncAndReturnParentId(int outfitPartId);
 	}
 }

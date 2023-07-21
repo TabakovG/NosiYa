@@ -1,7 +1,7 @@
-﻿@model OutfitSetDetailsViewModel
+﻿@model OutfitPartDetailsViewModel
 
 @{
-	ViewBag.Title = "Детайли на носията";
+	ViewBag.Title = "Детайли";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -11,33 +11,28 @@
 	<div class="row">
 		<div class="col-4">
 			<img class="card-img-top" style="width: 20rem;"
-				 src="@Model.Size" alt="OutfitSet Image">
+				 src="@Model.Images.FirstOrDefault() alt="OutfitSet Image">
 		</div>
 		<div class="card col-8 border-0">
 			<p style="font-size:25px;"><u>@Model.Name</u></p>
-			<p>
-				Price Per Day:
-				<b>@($"{Model.PricePerDay:f2}") BGN</b>
-			</p>
+			<p>Елемент тип: @Model.OutfitPartType</p>
 			<p>@Model.Description</p>
-			<p>Region: <b>@Model.Region</b></p>
+			<p>Цвят: <b>@Model.Color</b></p>
 			<p>Подходяща за: <b>@Model.RenterType</b></p>
 			<p>Размер: <b>@Model.Size</b></p>
+			<p>Елемент от носия: <b>@Model.OutfitSet</b></p>
+			<p>Собственик: <b>@Model.OwnerEmail</b></p>
+
 			<div class="form-inline">
 				@if (this.User.Identity?.IsAuthenticated ?? false)
 				{
-					<a class="btn btn-warning" asp-controller="OutfitSet" asp-action="Edit"
+					<a class="btn btn-warning" asp-controller="OutfitPart" asp-action="Edit"
 				   asp-route-id="@Model.Id">Edit</a>
-					<a class="ml-2 btn btn-danger" asp-controller="OutfitSet" asp-action="Delete"
+					<a class="ml-2 btn btn-danger" asp-controller="OutfitPart" asp-action="Delete"
 				   asp-route-id="@Model.Id">Delete</a>
 
 				}
 			</div>
-
-			@foreach (OutfitPartViewModel part in Model.OutfitParts)
-			{
-				<partial name="_OutfitPartPartial" model="@part" />
-			}
 		</div>
 	</div>
 </div>
