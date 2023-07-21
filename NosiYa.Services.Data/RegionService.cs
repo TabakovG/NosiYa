@@ -132,5 +132,16 @@ namespace NosiYa.Services.Data
 
 			await this.context.SaveChangesAsync();
 		}
+
+        public async Task DeleteByIdAsync(int id)
+        {
+			var region = await this.context
+				.Regions
+				.FirstAsync(r => r.IsActive && r.Id == id);
+
+			region.IsActive = false;
+
+			await this.context.SaveChangesAsync();
+        }
     }
 }

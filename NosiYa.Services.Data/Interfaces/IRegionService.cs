@@ -28,7 +28,7 @@
 
 		//Delete:
 
-
+		Task DeleteByIdAsync(int id);
 
 	}
 }

@@ -8,6 +8,7 @@ namespace NosiYa.Web.Controllers
 
 	using NosiYa.Services.Data.Interfaces;
 	using NosiYa.Web.ViewModels.OutfitPart;
+	using NosiYa.Web.ViewModels.OutfitSet;
 
 	public class RegionController : Controller
 	{
@@ -168,6 +169,57 @@ namespace NosiYa.Web.Controllers
 					"Възникна грешка при обработване на заявката. Моля опитайте отново или се свържете с администратор!");
 
 				return this.View(model);
+			}
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Delete(int id)
+		{
+
+			var regionExists = await this.regionService.ExistsByIdAsync(id);
+
+			if (!regionExists)
+			{
+				this.TempData["ErrorMessage"] = "Регион с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "Region");
+			}
+
+			try
+			{
+				RegionDetailsViewModel viewModel =
+					await this.regionService.GetDetailsByIdAsync(id);
+
+				return this.View(viewModel);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Delete(int id, RegionDetailsViewModel model)
+		{
+			var regionExists = await this.regionService.ExistsByIdAsync(id);
+
+			if (!regionExists)
+			{
+				this.TempData["ErrorMessage"] = "Регион с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "Region");
+			}
+
+			try
+			{
+				await this.regionService.DeleteByIdAsync(id);
+
+				this.TempData["WarningMessage"] = "Регионa беше изтрит успешно!";
+				return this.RedirectToAction("All", "Region");
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
 			}
 		}
 
