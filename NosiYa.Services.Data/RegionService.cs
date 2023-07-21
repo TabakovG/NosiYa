@@ -104,5 +104,33 @@ namespace NosiYa.Services.Data
 	        };
             return model;
         }
+
+        public async Task<RegionFormModel> GetForEditByIdAsync(int id)
+        {
+	        var region = await this.context
+		        .Regions
+		        .FirstAsync(r => r.IsActive && r.Id == id);
+
+	        var model = new RegionFormModel
+	        {
+		        Name = region.Name,
+		        Description = region.Description,
+	        };
+
+            return model;
+        }
+
+        public async Task EditByIdAsync(int id, RegionFormModel model)
+        {
+			var region = await this.context
+				.Regions
+				.FirstAsync(r => r.IsActive && r.Id == id);
+
+			region.Name = model.Name;
+			region.Description = model.Description;
+			//TODO images
+
+			await this.context.SaveChangesAsync();
+		}
     }
 }

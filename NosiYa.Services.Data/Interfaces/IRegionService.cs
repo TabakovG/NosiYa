@@ -1,5 +1,6 @@
 ﻿namespace NosiYa.Services.Data.Interfaces
 {
+	using NosiYa.Web.ViewModels.OutfitPart;
 	using Web.ViewModels.Region;
 	public interface IRegionService
     {
@@ -17,14 +18,17 @@
 		Task<bool> ExistsByIdAsync(int id);
 
 		Task<RegionDetailsViewModel> GetDetailsByIdAsync(int id);
+		
 
-        //Update:
+		//Update:
+
+		Task<RegionFormModel> GetForEditByIdAsync(int id);
+		Task EditByIdAsync(int id, RegionFormModel model);
+
+
+		//Delete:
 
 
 
-        //Delete:
-
-
-
-    }
+	}
 }

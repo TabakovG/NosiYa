@@ -8,7 +8,6 @@ namespace NosiYa.Services.Data
     using NosiYa.Data;
     using Interfaces;
     using Web.ViewModels.OutfitPart;
-	using NosiYa.Web.ViewModels.OutfitSet;
 
     public class OutfitPartService : IOutfitPartService
     {
