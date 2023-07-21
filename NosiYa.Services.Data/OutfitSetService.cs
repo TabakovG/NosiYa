@@ -112,7 +112,10 @@
                 {
                     Id = o.Id,
                     Name = o.Name,
-                    ImageUrl = o.Images.FirstOrDefault(i => i.IsDefault) != null ? o.Images.FirstOrDefault(i => i.IsDefault)!.Url : DefaultOutfitImagePath
+                    ImageUrl = o.Images
+	                    .FirstOrDefault(i => i.IsDefault) != null 
+	                    ? o.Images.FirstOrDefault(i => i.IsDefault)!.Url 
+	                    : DefaultOutfitImagePath
                 })
                 .ToArrayAsync();
 

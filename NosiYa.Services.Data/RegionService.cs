@@ -5,6 +5,7 @@
     using NosiYa.Data;
     using Interfaces;
     using Web.ViewModels.Region;
+	using NosiYa.Web.ViewModels.OutfitSet;
 
     public class RegionService : IRegionService
     {
@@ -38,6 +39,25 @@
                 })
                 .ToArrayAsync();
         }
+
+        public async Task<IEnumerable<RegionAllViewModel>> AllAvailableRegionsAsync(AllRegionsPaginatedModel model)
+        {
+			return await this.context
+				.Regions
+				.AsNoTracking()
+				.Where(r => r.IsActive)
+				.Include(r=>r.Images)
+				.Select(r => new RegionAllViewModel()
+				{
+					Id = r.Id,
+					Name = r.Name,
+                    ImageUrl = r.Images
+	                    .Where(i=>i.IsDefault)
+	                    .Select(i=>i.Url)
+	                    .FirstOrDefault() ?? string.Empty
+				})
+				.ToArrayAsync();
+		}
 
         public async Task<bool> RegionExistsByIdAsync(int id)
         {

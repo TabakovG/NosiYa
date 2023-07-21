@@ -18,9 +18,6 @@
 
         [Display(Name = "Търси...:")]
         public string? SearchTerm { get; set; }
-/*
-        [Display(Name = "Цвят:")]
-        public string? Color { get; set; }*/
 
         [Display(Name = "Регион:")]
         public string? Region { get; set; }

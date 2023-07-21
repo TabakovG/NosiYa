@@ -1,0 +1,21 @@
+﻿@model RegionAllViewModel
+
+<div class="col-md-4">
+	<div class="card mb-3">
+		<img class="card-img-top" src="@Model.ImageUrl" alt="Outfit Image">
+		<div class="card-body text-center">
+			<h4>@Model.Name</h4>
+			<br />
+			<a asp-controller="Region" asp-action="Details" asp-route-id="@Model.Id"
+			   class="btn btn-success">Детайли</a>
+			@if (this.User.Identity?.IsAuthenticated ?? false)
+			{
+				<a asp-controller="Region" asp-action="Edit" asp-route-id="@Model.Id"
+				   class="btn btn-warning">Промени</a>
+				<a asp-controller="Region" asp-action="Delete" asp-route-id="@Model.Id"
+				   class="btn btn-danger">Изтрий</a>
+				<p></p>
+			}
+		</div>
+	</div>
+</div>

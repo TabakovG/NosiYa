@@ -1,12 +1,8 @@
-﻿using NosiYa.Data.Models.Enums;
-using NosiYa.Services.Data.Model;
-
-namespace NosiYa.Web.Controllers
+﻿namespace NosiYa.Web.Controllers
 {
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.OutfitSet;
 	using Microsoft.AspNetCore.Mvc;
-	using NosiYa.Web.Infrastructure.Extensions;
 
 	public class OutfitSetController : Controller
 	{
