@@ -1,21 +1,23 @@
-﻿using NosiYa.Services.Data.Interfaces;
-using NosiYa.Web.Infrastructure.Extensions;
-using NosiYa.Web.ViewModels.OutfitPart;
-using NuGet.Protocol;
-
-namespace NosiYa.Web.Controllers
+﻿namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
-	using NosiYa.Services.Data.Model;
-	using NosiYa.Web.ViewModels.OutfitSet;
+
+	using NosiYa.Services.Data.Interfaces;
+
+	using ViewModels.OutfitSet;
+	using ViewModels.OutfitPart;
 
 	public class OutfitPartController : Controller
 	{
 		private readonly IOutfitPartService outfitPartService;
+		private readonly IOutfitSetService outfitSetService;
+		private readonly IUserService userService;
 
-		public OutfitPartController(IOutfitPartService outfitPartService)
+		public OutfitPartController(IOutfitPartService outfitPartService, IOutfitSetService outfitSetService, IUserService userService)
 		{
 			this.outfitPartService = outfitPartService;
+			this.outfitSetService = outfitSetService;
+			this.userService = userService;
 		}
 
 		[HttpGet]
@@ -25,6 +27,7 @@ namespace NosiYa.Web.Controllers
 			{
 				var outfitPart = new OutfitPartFormModel()
 				{
+					OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync(),
 					OutfitSetId = id
 				};
 				return this.View(outfitPart);
@@ -44,16 +47,27 @@ namespace NosiYa.Web.Controllers
 
 				if (!this.ModelState.IsValid)
 				{
+					model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
+					
 					return this.View(model);
 				}
 
 				var isAuthenticated = this.User.Identity.IsAuthenticated;
 				if (!isAuthenticated)
 				{
+					model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
 					return this.View(model);
 				}
 
-				model.OwnerId = Guid.Parse(this.User.GetId()!);
+				var ownerExist = await this.userService.UserExistByEmail(model.OwnerEmail);
+				if (!ownerExist)
+				{
+					model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
+					this.TempData["ErrorMessage"] = "Посочения собственик на елемента няма акаунт в системата!";
+					return this.View(model);
+				}
+
+				model.OwnerId = await this.userService.GetUserIdFromEmailAsync(model.OwnerEmail);
 
 				try
 				{
@@ -64,6 +78,7 @@ namespace NosiYa.Web.Controllers
 				}
 				catch (Exception)
 				{
+					model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
 					return this.View(model);
 				}
 			}
@@ -91,7 +106,7 @@ namespace NosiYa.Web.Controllers
 				OutfitPartDetailsViewModel viewModel = await this.outfitPartService
 					.GetDetailsByIdAsync(id);
 
-				
+
 				return View(viewModel);
 			}
 			catch (Exception)
@@ -99,6 +114,84 @@ namespace NosiYa.Web.Controllers
 				return this.GeneralError();
 			}
 
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
+		{
+			var outfitPartExists = await this.outfitPartService.ExistByIdAsync(id);
+
+			if (!outfitPartExists)
+			{
+				this.TempData["ErrorMessage"] = "Елемент на носия с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "OutfitSet");
+			}
+
+			try
+			{
+				OutfitPartFormModel formModel = await this.outfitPartService
+					.GetForEditByIdAsync(id);
+				formModel.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
+
+				return View(formModel);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(int id, OutfitPartFormModel model)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
+				return this.View(model);
+			}
+
+			var outfitPartExists = await this.outfitPartService.ExistByIdAsync(id);
+
+			if (!outfitPartExists)
+			{
+				this.TempData["ErrorMessage"] = "Елемент на носия с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "OutfitSet");
+			}
+			var isAuthenticated = this.User.Identity.IsAuthenticated;
+
+			if (!isAuthenticated)
+			{
+				model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
+				return this.View(model);
+			}
+
+			var ownerExist = await this.userService.UserExistByEmail(model.OwnerEmail);
+			if (!ownerExist)
+			{
+				model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
+				this.TempData["ErrorMessage"] = "Посочения собственик на елемента няма акаунт в системата!";
+				return this.View(model);
+			}
+
+			model.OwnerId = await this.userService.GetUserIdFromEmailAsync(model.OwnerEmail);
+
+			try
+			{
+				await this.outfitPartService.EditByIdAsync(id, model);
+				this.TempData["SuccessMessage"] = "Промените са запазени успешно!";
+				return this.RedirectToAction("Details", "OutfitSet", new { model.OutfitSetId });
+			}
+			catch (Exception)
+			{
+				this.ModelState.AddModelError(string.Empty,
+					"Възникна грешка при обработване на заявката. Моля опитайте отново или се свържете с администратор!");
+				
+				model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
+
+				return this.View(model);
+			}
 		}
 
 		[HttpGet]

@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Web.ViewModels.OutfitPart
+﻿using NosiYa.Web.ViewModels.OutfitSet;
+
+namespace NosiYa.Web.ViewModels.OutfitPart
 {
     using System.ComponentModel.DataAnnotations;
     using Data.Models.Enums;
@@ -11,6 +13,7 @@
         public OutfitPartFormModel()
         {
             this.PartImages = new HashSet<ImageFormModel>();
+            this.OutfitSets = new HashSet<OutfitSetForOptionsViewModel>();
         }
 
         [Required]
@@ -31,6 +34,7 @@
         public OutfitPartType OutfitPartType { get; set;}
 
         public int OutfitSetId { get; set; }
+        public IEnumerable<OutfitSetForOptionsViewModel> OutfitSets { get; set; }
 
         public Guid OwnerId { get; set; }
 

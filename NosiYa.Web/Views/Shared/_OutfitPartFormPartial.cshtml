@@ -1,0 +1,72 @@
+﻿@model OutfitPartFormModel
+
+<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+		<form method="post">
+			<div class="form-group">
+				<label asp-for="OutfitPartType"></label>
+				<select asp-for="OutfitPartType" class="form-control">
+					<option value="0">Аксесоар</option>
+					<option value="1">Пояс</option>
+					<option value="2">Престилка</option>
+					<option value="3">Шалвари</option>
+					<option value="4">Риза</option>
+					<option value="5">Елек</option>
+					<option value="6">Сукман</option>
+					<option value="7">Пола</option>
+				</select>
+				<span asp-validation-for="OutfitPartType" class="small text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Name"></label>
+				<input asp-for="Name" class="form-control" placeholder="Name...">
+				<span asp-validation-for="Name" class="small text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Size"></label>
+				<input asp-for="Size" class="form-control" placeholder="-XS-S-...">
+				<span asp-validation-for="Size" class="small text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Description"></label>
+				<textarea asp-for="Description" rows="4" class="form-control" placeholder="Description..."></textarea>
+				<span asp-validation-for="Description" class="small text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Color"></label>
+				<input asp-for="Color" class="form-control" placeholder="Color...">
+				<span asp-validation-for="Color" class="small text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="RenterType"></label>
+				<select asp-for="RenterType" class="form-control">
+					<option value="0">Всички</option>
+					<option value="1">Мъж</option>
+					<option value="2">Жена</option>
+					<option value="3">Момче</option>
+					<option value="4">Момиче</option>
+				</select>
+				<span asp-validation-for="RenterType" class="small text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="OutfitSetId">Outfit</label>
+				<select asp-for="OutfitSetId" class="form-control">
+					@foreach (var outfitSet in Model.OutfitSets)
+					{
+						<option value="@outfitSet.Id">@outfitSet.Name</option>
+					}
+				</select>
+				<span asp-validation-for="OutfitSetId" class="small text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="OwnerEmail"></label>
+				<input asp-for="OwnerEmail" class="form-control" placeholder="OwnerEmail...">
+				<span asp-validation-for="OwnerEmail" class="small text-danger"></span>
+			</div>
+			<div class="text-center">
+				<input class="btn btn-primary mt-3" type="submit" value="Запази" />
+			</div>
+		</form>
+	</div>
+</div>
+

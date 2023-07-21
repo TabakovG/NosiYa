@@ -131,6 +131,20 @@
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<OutfitSetForOptionsViewModel>> GetAllOutfitSetsForOptionsAsync()
+        {
+			return await this.context
+				.OutfitSets
+				.AsNoTracking()
+				.Where(o => o.IsActive)
+				.Select(o => new OutfitSetForOptionsViewModel()
+				{
+					Id = o.Id,
+					Name = o.Name
+				})
+				.ToArrayAsync();
+		}
+
         public async Task<bool> ExistByIdAsync(int outfitId)
         {
 	        return await this.context

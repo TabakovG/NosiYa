@@ -12,6 +12,7 @@ namespace NosiYa.Services.Data.Interfaces
         //Read
         Task<AllOutfitsFilteredAndPagedServiceModel> AllAvailableOutfitSetsAsync(AllOutfitsQueryModel queryModel);
         Task<IEnumerable<OutfitSetAllViewModel>> AllOutfitSetsByUserIdAsync(string userId);
+        Task<IEnumerable<OutfitSetForOptionsViewModel>> GetAllOutfitSetsForOptionsAsync();
         Task<bool> ExistByIdAsync(int outfitId);
         
         //Update

@@ -9,10 +9,12 @@
 
         //Read
         Task<ICollection<OutfitPartViewModel>> GetAllPartsBySetIdAsync(int id);
+        Task<OutfitPartDetailsViewModel> GetDetailsByIdAsync(int id);
 
         //Update
 
-        Task<OutfitPartDetailsViewModel> GetDetailsByIdAsync(int id);
+        Task<OutfitPartFormModel> GetForEditByIdAsync(int id);
+        Task EditByIdAsync(int id, OutfitPartFormModel model);
 
 		//Delete
 		Task<OutfitPartForDelete> GetOutfitPartForDeleteAsync(int outfitPartId);

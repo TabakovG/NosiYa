@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Services.Data
+﻿using NosiYa.Data.Models.Enums;
+
+namespace NosiYa.Services.Data
 {
 	using Microsoft.EntityFrameworkCore;
 
@@ -70,9 +72,6 @@
 
             return result;
         }
-
-		//Update: --------------//---------------
-
 		public async Task<OutfitPartDetailsViewModel> GetDetailsByIdAsync(int id)
         {
 			var outfitPart = await this.context
@@ -102,7 +101,50 @@
 			return outfitPartModel;
 		}
 
-        //Delete:  --------------//---------------
+		//Update: --------------//---------------
+
+		public async Task<OutfitPartFormModel> GetForEditByIdAsync(int id)
+		{
+			var outfitPart = await this.context
+				.OutfitParts
+				.Include(p=>p.Owner)
+				.FirstAsync(p=>p.IsActive && p.Id == id);
+
+			var editModel = new OutfitPartFormModel
+			{
+				Name = outfitPart.Name,
+				Description = outfitPart.Description,
+				Color = outfitPart.Color,
+				RenterType = outfitPart.RenterType,
+				OutfitPartType = outfitPart.OutfitPartType,
+				OutfitSetId = outfitPart.OutfitSetId,
+				OwnerId = outfitPart.OwnerId, //TODO do i need that
+				OwnerEmail = outfitPart.Owner.Email,
+				Size = outfitPart.Size,
+			};
+
+			return editModel;
+		}
+
+		public async Task EditByIdAsync(int id, OutfitPartFormModel model)
+		{
+			var outfitPart = await this.context
+				.OutfitParts
+				.FirstAsync(p => p.IsActive && p.Id == id);
+
+			outfitPart.Name = model.Name;
+			outfitPart.Description = model.Description;
+			outfitPart.Color = model.Color;
+			outfitPart.RenterType = model.RenterType;
+			outfitPart.OutfitPartType = model.OutfitPartType;
+			outfitPart.OwnerId = model.OwnerId;
+			outfitPart.Size = model.Size;
+			outfitPart.OutfitSetId = model.OutfitSetId;
+
+			await this.context.SaveChangesAsync();
+		}
+
+		//Delete:  --------------//---------------
 
 		public async Task<OutfitPartForDelete> GetOutfitPartForDeleteAsync(int outfitPartId)
         {
