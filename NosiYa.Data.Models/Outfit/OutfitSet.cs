@@ -29,7 +29,8 @@
 
         [ForeignKey(nameof(Region))]
         public int RegionId { get; set; }
-        public Region Region { get; set; }
+
+        public Region Region { get; set; } = null!;
 
         public decimal PricePerDay { get; set; }
 

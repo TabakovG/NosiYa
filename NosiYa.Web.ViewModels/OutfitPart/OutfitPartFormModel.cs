@@ -39,8 +39,8 @@ namespace NosiYa.Web.ViewModels.OutfitPart
         public Guid OwnerId { get; set; }
 
         [Required]
-        [StringLength(OwnerEmailMaxLength, MinimumLength= OwnerEmailMinLength)]
-		public string OwnerEmail { get; set; }
+        [StringLength(OwnerEmailMaxLength, MinimumLength = OwnerEmailMinLength)]
+        public string OwnerEmail { get; set; } = null!;
 
         [Required]
         [StringLength(SizeMaxLength, MinimumLength = SizeMinLength)]

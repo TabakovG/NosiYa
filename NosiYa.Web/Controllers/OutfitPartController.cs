@@ -52,7 +52,8 @@
 					return this.View(model);
 				}
 
-				var isAuthenticated = this.User.Identity.IsAuthenticated;
+				var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
 				if (!isAuthenticated)
 				{
 					model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
@@ -159,7 +160,7 @@
 
 				return this.RedirectToAction("All", "OutfitSet");
 			}
-			var isAuthenticated = this.User.Identity.IsAuthenticated;
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
 			if (!isAuthenticated)
 			{

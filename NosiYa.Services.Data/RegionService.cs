@@ -8,6 +8,7 @@ namespace NosiYa.Services.Data
     using Interfaces;
     using Web.ViewModels.Region;
 	using NosiYa.Web.ViewModels.OutfitSet;
+	using NosiYa.Services.Data.Model;
 
     public class RegionService : IRegionService
     {
@@ -56,13 +57,21 @@ namespace NosiYa.Services.Data
                 .ToArrayAsync();
         }
 
-        public async Task<IEnumerable<RegionAllViewModel>> AllAvailableRegionsAsync(AllRegionsPaginatedModel model)
+        public async Task<AllRegionsPagedServiceModel> AllAvailableRegionsAsync(AllRegionsPaginatedModel model)
         {
-			return await this.context
-				.Regions
-				.AsNoTracking()
-				.Where(r => r.IsActive)
+	        var regions = this.context
+		        .Regions
+		        .AsNoTracking()
+		        .Where(r => r.IsActive)
+		        .AsQueryable();
+
+			int regionsCount = regions.Count();
+
+			var result =  await regions
 				.Include(r=>r.Images)
+				.OrderBy(r=>r.Name)
+				.Skip((model.CurrentPage - 1) * model.RegionsPerPage)
+				.Take(model.RegionsPerPage)
 				.Select(r => new RegionAllViewModel()
 				{
 					Id = r.Id,
@@ -73,6 +82,12 @@ namespace NosiYa.Services.Data
 	                    .FirstOrDefault() ?? string.Empty
 				})
 				.ToArrayAsync();
+
+			return new AllRegionsPagedServiceModel()
+			{
+				RegionsCount = regionsCount,
+				Regions = result
+			};
 		}
 
         public async Task<bool> ExistsByIdAsync(int id)

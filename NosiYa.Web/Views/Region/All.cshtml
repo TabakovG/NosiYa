@@ -44,11 +44,12 @@
 		<a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
 		   asp-controller="Region"
 		   asp-action="All"
+		   asp-route-regionsperpage="@Model.RegionsPerPage"
 		   asp-route-currentPage="@previousPage"><<</a>
 	</div>
 
 	@{
-		bool shouldNextPageBeDisabled = Model.CurrentPage == maxPage ||
+		bool shouldNextPageBeDisabled = Model.CurrentPage  == maxPage ||
 		!Model.Regions.Any();
 	}
 
@@ -57,7 +58,8 @@
            @(shouldNextPageBeDisabled ? "disabled" : string.Empty)"
 		   asp-controller="Region"
 		   asp-action="All"
-		   asp-route-currentPage="@previousPage">>></a>
+		   asp-route-regionsperpage="@Model.RegionsPerPage"
+		   asp-route-currentPage="@(Model.CurrentPage + 1)">>></a>
 	</div>
 </div>
 

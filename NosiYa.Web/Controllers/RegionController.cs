@@ -1,14 +1,9 @@
-﻿
-using NosiYa.Web.ViewModels.Region;
-
-namespace NosiYa.Web.Controllers
+﻿namespace NosiYa.Web.Controllers
 {
-	using Microsoft.AspNetCore.Mvc.Infrastructure;
 	using Microsoft.AspNetCore.Mvc;
 
 	using NosiYa.Services.Data.Interfaces;
-	using NosiYa.Web.ViewModels.OutfitPart;
-	using NosiYa.Web.ViewModels.OutfitSet;
+	using ViewModels.Region;
 
 	public class RegionController : Controller
 	{
@@ -21,10 +16,10 @@ namespace NosiYa.Web.Controllers
 
 		public async Task<IActionResult> All([FromQuery] AllRegionsPaginatedModel model)
 		{
-			var query = await this.regionService.AllAvailableRegionsAsync(model);
+			var serviceModel = await this.regionService.AllAvailableRegionsAsync(model);
 
-			model.Regions = query ?? new HashSet<RegionAllViewModel>();
-			model.RegionsCount = model.Regions.Count();
+			model.Regions = serviceModel.Regions;
+			model.RegionsCount = serviceModel.RegionsCount;
 
 			return View(model);
 
@@ -56,7 +51,8 @@ namespace NosiYa.Web.Controllers
 					return this.View(model);
 				}
 
-				var isAuthenticated = this.User.Identity.IsAuthenticated;
+				var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
 				if (!isAuthenticated)
 				{
 					return this.View(model);
@@ -150,7 +146,7 @@ namespace NosiYa.Web.Controllers
 				return this.RedirectToAction("All", "Region");
 			}
 
-			var isAuthenticated = this.User.Identity.IsAuthenticated;
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
 			if (!isAuthenticated)
 			{

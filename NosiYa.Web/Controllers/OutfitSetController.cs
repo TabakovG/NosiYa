@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Web.Controllers
+﻿using NosiYa.Services.Data.Model;
+
+namespace NosiYa.Web.Controllers
 {
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.OutfitSet;
@@ -19,7 +21,7 @@
 		[HttpGet]
 		public async Task<IActionResult> All([FromQuery] AllOutfitsQueryModel queryModel)
 		{
-			var queryAndSorting = await this.outfitService.AllAvailableOutfitSetsAsync(queryModel);
+			AllOutfitsFilteredAndPagedServiceModel queryAndSorting = await this.outfitService.AllAvailableOutfitSetsAsync(queryModel);
 
 			queryModel.Outfits = queryAndSorting.OutfitSets;
 			queryModel.OutfitsCount = queryAndSorting.TotalOutfits;

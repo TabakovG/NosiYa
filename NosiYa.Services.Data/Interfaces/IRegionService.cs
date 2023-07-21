@@ -1,5 +1,6 @@
 ﻿namespace NosiYa.Services.Data.Interfaces
 {
+	using NosiYa.Services.Data.Model;
 	using NosiYa.Web.ViewModels.OutfitPart;
 	using Web.ViewModels.Region;
 	public interface IRegionService
@@ -13,7 +14,7 @@
 		Task<IEnumerable<string>> GetAllRegionsNamesAsync(); //for outfitSet Query
         Task<IEnumerable<PossibleRegionsFormModel>>  GetAllRegionsAsync(); //for create / edit
 
-        Task<IEnumerable<RegionAllViewModel>> AllAvailableRegionsAsync(AllRegionsPaginatedModel model); // for All view
+        Task<AllRegionsPagedServiceModel> AllAvailableRegionsAsync(AllRegionsPaginatedModel model); // for All view
 
 		Task<bool> ExistsByIdAsync(int id);
 

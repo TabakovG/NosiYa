@@ -1,6 +1,6 @@
 ﻿namespace NosiYa.Services.Data.Model
 {
-	using NosiYa.Web.ViewModels.OutfitSet;
+	using Web.ViewModels.OutfitSet;
     public class AllOutfitsFilteredAndPagedServiceModel
     {
         public AllOutfitsFilteredAndPagedServiceModel()

@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace NosiYa.Web.ViewModels.Region
+﻿namespace NosiYa.Web.ViewModels.Region
 {
+	using System.ComponentModel.DataAnnotations;
 	using static Common.ApplicationConstants;
 
     public class AllRegionsPaginatedModel

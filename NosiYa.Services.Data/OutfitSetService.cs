@@ -53,7 +53,7 @@
         {
             IQueryable<OutfitSet> outfitQuery = this.context
                 .OutfitSets
-                .Where(o => o.IsAvailable == true)
+                .Where(o => o.IsAvailable && o.IsActive)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
@@ -199,7 +199,7 @@
             var editModel = new OutfitSetFormModel
             {
                 Name = outfitSet.Name,
-                Description = outfitSet.Description,
+                Description = outfitSet.Description ?? string.Empty,
                 RegionId = outfitSet.RegionId,
                 PricePerDay = outfitSet.PricePerDay,
                 Color = outfitSet.Color,
@@ -217,7 +217,7 @@
 		        .OutfitSets
 		        .FindAsync(outfitId);
 
-            outfit.Name = model.Name;
+            outfit!.Name = model.Name;
             outfit.Description = model.Description;
             outfit.RegionId = model.RegionId;
             outfit.PricePerDay = model.PricePerDay;
