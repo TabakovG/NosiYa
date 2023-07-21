@@ -7,7 +7,7 @@ namespace NosiYa.Web.Controllers
 	using Microsoft.AspNetCore.Mvc;
 
 	using NosiYa.Services.Data.Interfaces;
-	using ViewModels.OutfitSet;
+	using NosiYa.Web.ViewModels.OutfitPart;
 
 	public class RegionController : Controller
 	{
@@ -27,6 +27,41 @@ namespace NosiYa.Web.Controllers
 
 			return View(model);
 
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Details(int id)
+		{
+			var regionExists = await this.regionService.ExistsByIdAsync(id);
+
+			if (!regionExists)
+			{
+				this.TempData["ErrorMessage"] = "Регионът не съществува!";
+
+				return this.RedirectToAction("All", "Region");
+			}
+
+			try
+			{
+				RegionDetailsViewModel viewModel = await this.regionService
+					.GetDetailsByIdAsync(id);
+
+
+				return View(viewModel);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+
+		}
+
+		private IActionResult GeneralError()
+		{
+			this.TempData["ErrorMessage"] =
+				"Unexpected error occurred! Please try again later or contact administrator";
+
+			return this.RedirectToAction("Index", "Home");
 		}
 	}
 }

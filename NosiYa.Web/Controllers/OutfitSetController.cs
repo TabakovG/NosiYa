@@ -54,7 +54,7 @@
 	        {
 		        //TODO To check if the user is admin
 
-		        bool regionExists = await this.regionService.RegionExistsByIdAsync(model.RegionId);
+		        bool regionExists = await this.regionService.ExistsByIdAsync(model.RegionId);
 		        if (!regionExists)
 		        {
 			        this.ModelState.AddModelError(nameof(model.RegionId), "Selected region does not exist!");

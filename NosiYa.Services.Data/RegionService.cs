@@ -59,12 +59,34 @@
 				.ToArrayAsync();
 		}
 
-        public async Task<bool> RegionExistsByIdAsync(int id)
+        public async Task<bool> ExistsByIdAsync(int id)
         {
 	        return await this.context
 		        .Regions
 		        .AsNoTracking()
 		        .AnyAsync(r => r.Id == id && r.IsActive);
+        }
+
+        public async Task<RegionDetailsViewModel> GetDetailsByIdAsync(int id)
+        {
+	        var region = await this.context
+		        .Regions
+		        .AsNoTracking()
+		        .Include(r=>r.Images)
+		        .Where(r => r.IsActive)
+		        .FirstAsync(r => r.Id == id);
+
+	        var model = new RegionDetailsViewModel
+	        {
+		        Id = region.Id,
+		        Name = region.Name,
+		        Description = region.Description,
+		        Images = region
+			        .Images
+			        .Select(i => i.Url)
+			        .ToArray()
+	        };
+            return model;
         }
     }
 }

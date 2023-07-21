@@ -8,7 +8,9 @@
 
         Task<IEnumerable<RegionAllViewModel>> AllAvailableRegionsAsync(AllRegionsPaginatedModel model); // for All view
 
-		Task<bool> RegionExistsByIdAsync(int id); 
+		Task<bool> ExistsByIdAsync(int id);
+
+		Task<RegionDetailsViewModel> GetDetailsByIdAsync(int id);
 
     }
 }
