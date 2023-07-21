@@ -152,6 +152,15 @@
 		        .AnyAsync(o => o.IsActive && o.Id == outfitId);
         }
 
+        public async Task<RenterType> GetRenterTypeByIdAsync(int id)
+        {
+			var outfitSet = await this.context
+				.OutfitSets
+				.FirstAsync(o => o.Id == id); //TODO only admin to be able to see non active
+
+			return outfitSet.RenterType;
+        }
+
         public async Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync(int id)
         {
 	        var outfitSet = await this.context

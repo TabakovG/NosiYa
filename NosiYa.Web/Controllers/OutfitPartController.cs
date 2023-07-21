@@ -177,6 +177,14 @@
 
 			model.OwnerId = await this.userService.GetUserIdFromEmailAsync(model.OwnerEmail);
 
+			var outfitSetType = await this.outfitSetService.GetRenterTypeByIdAsync(model.OutfitSetId);
+			if (outfitSetType != model.RenterType)
+			{
+				model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
+				this.TempData["ErrorMessage"] = $"Елементът трябва да съответсва на носията и да е подходящ за ${outfitSetType.ToString()}";
+				return this.View(model);
+			}
+
 			try
 			{
 				await this.outfitPartService.EditByIdAsync(id, model);

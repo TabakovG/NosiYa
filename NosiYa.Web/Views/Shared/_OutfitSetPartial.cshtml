@@ -8,7 +8,6 @@
 			<br />
 			<a asp-controller="OutfitSet" asp-action="Details" asp-route-id="@Model.Id"
 			   class="btn btn-success">Детайли</a>
-
 			@if (this.User.Identity?.IsAuthenticated ?? false)
 			{
 				<a asp-controller="OutfitSet" asp-action="Edit" asp-route-id="@Model.Id"
@@ -17,6 +16,8 @@
 				   class="btn btn-danger">Изтрий</a>
 				<p></p>
 			}
+			<a asp-controller="OutfitSet" asp-action="Rent" asp-route-id="@Model.Id"
+			   class="btn btn-success">Резервирай</a>
 		</div>
 	</div>
 </div>

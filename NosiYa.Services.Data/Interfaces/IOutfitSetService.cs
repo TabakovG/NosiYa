@@ -1,4 +1,5 @@
-﻿using NosiYa.Services.Data.Model;
+﻿using NosiYa.Data.Models.Enums;
+using NosiYa.Services.Data.Model;
 using NosiYa.Web.ViewModels.OutfitSet;
 
 namespace NosiYa.Services.Data.Interfaces
@@ -14,9 +15,10 @@ namespace NosiYa.Services.Data.Interfaces
         Task<IEnumerable<OutfitSetAllViewModel>> AllOutfitSetsByUserIdAsync(string userId);
         Task<IEnumerable<OutfitSetForOptionsViewModel>> GetAllOutfitSetsForOptionsAsync();
         Task<bool> ExistByIdAsync(int outfitId);
-        
-        //Update
-        Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync(int id);
+        Task<RenterType> GetRenterTypeByIdAsync(int id);
+
+		//Update
+		Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync(int id);
         Task<OutfitSetFormModel> GetForEditByIdAsync(int id);
         Task EditByIdAsync(int outfitId, OutfitSetFormModel model);
 
