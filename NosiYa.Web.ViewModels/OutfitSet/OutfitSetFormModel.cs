@@ -47,7 +47,7 @@
         public string Size { get; set; } = null!;
 
         public ICollection<ImageFormModel> SetImages { get; set; }
-        public ICollection<OutfitPartFormModel> OutfitParts { get; set; }
+        public ICollection<OutfitPartFormModel> OutfitParts { get; set; } //TODO not needed ?
 
     }
 }

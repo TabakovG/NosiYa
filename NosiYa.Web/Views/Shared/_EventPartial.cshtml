@@ -1,0 +1,22 @@
+﻿@model EventAllViewModel
+
+<div class="col-md-4">
+	<div class="card mb-3">
+		<img class="card-img-top" src="@Model.ImageUrl" alt="Outfit Image">
+		<div class="card-body text-center">
+			<h4>@Model.Name</h4>
+			<h3>@Model.EventStartDate - @Model.EventEndDate</h3>
+			<br />
+			<a asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id"
+	  class="btn btn-success">Детайли</a>
+			@if (this.User.Identity?.IsAuthenticated ?? false)
+			{
+				<a asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id"
+		  class="btn btn-warning">Промени</a>
+				<a asp-controller="Event" asp-action="Delete" asp-route-id="@Model.Id"
+		  class="btn btn-danger">Изтрий</a>
+				<p></p>
+			}
+		</div>
+	</div>
+</div>

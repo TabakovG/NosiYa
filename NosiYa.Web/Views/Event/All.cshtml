@@ -1,0 +1,77 @@
+﻿@model AllEventsPaginatedModel
+
+@{
+	ViewBag.Title = "Събития";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<form method="get">
+	<div class="row">
+		<div class="form-group">
+			<label asp-for="EventsPerPage"></label>
+			<select asp-for="EventsPerPage" class="form-control">
+				<option value="3">3</option>
+				<option value="6">6</option>
+				<option value="9">9</option>
+			</select>
+		</div>
+
+		<div class="col-md-3">
+			<div class="form-group mt-4 p-2">
+				<input type="submit" value="Приложи" class="btn btn-primary" />
+			</div>
+		</div>
+	</div>
+</form>
+
+<a class="btn btn-warning" asp-controller="Event" asp-action="Add">Добави</a>
+
+@{
+	int previousPage = Model.CurrentPage - 1;
+	if (previousPage < 1)
+	{
+		previousPage = 1;
+	}
+
+	int maxPage = (int)Math.Ceiling((double)Model.EventsCount /
+		Model.EventsPerPage);
+}
+
+<div class="row mb-5">
+	<div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
+		<a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+		   asp-controller="Event"
+		   asp-action="All"
+		   asp-route-eventsperpage="@Model.EventsPerPage"
+		   asp-route-currentPage="@previousPage"><<</a>
+	</div>
+
+	@{
+		bool shouldNextPageBeDisabled = Model.CurrentPage  == maxPage ||
+		!Model.Events.Any();
+	}
+
+	<div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+		<a class="btn btn-primary
+           @(shouldNextPageBeDisabled ? "disabled" : string.Empty)"
+		   asp-controller="Event"
+		   asp-action="All"
+		   asp-route-eventsperpage="@Model.EventsPerPage"
+		   asp-route-currentPage="@(Model.CurrentPage + 1)">>></a>
+	</div>
+</div>
+
+@if (!Model.Events.Any())
+{
+	<h2 class="text-center">Няма намерени събития!!</h2>
+}
+
+<div class="row">
+	@foreach (EventAllViewModel еvent in Model.Events)
+	{
+		<partial name="_EventPartial" model="@еvent" />
+	}
+</div>
+

@@ -9,6 +9,8 @@
         {
             this.Comments = new HashSet<Comment>();
             this.Images = new HashSet<Image>();
+            this.IsActive = true;
+            this.IsApproved = false;
         }
 
         [Key]
@@ -27,9 +29,12 @@
         public string Location { get; set; } = null!;
 
         [Required]
-        public bool IsApproved { get; set; } = false;
+        public bool IsApproved { get; set; }
 
-        public Guid OwnerId { get; set; }
+        [Required]
+        public bool IsActive { get; set; }
+
+		public Guid OwnerId { get; set; }
         public ApplicationUser Owner { get; set; } = null!;
 
         [Required]

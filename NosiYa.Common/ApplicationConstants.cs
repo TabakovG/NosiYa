@@ -5,9 +5,9 @@
         //Layout
         public const int ReleaseYear = 2023;
 
-        //Outfits
-        public const int DefaultOutfitsFirstPage = 1;
-        public const int DefaultOutfitsPerPage = 6;
+        //Pagination
+        public const int DefaultFirstPage = 1;
+        public const int DefaultResultsPerPage = 6;
 
         //Messages
         public const string DefaultOutfitImagePath = "";

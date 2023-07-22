@@ -10,8 +10,8 @@
     {
         public AllOutfitsQueryModel()
         {
-            CurrentPage = DefaultOutfitsFirstPage;
-            OutfitsPerPage = DefaultOutfitsPerPage; 
+            CurrentPage = DefaultFirstPage;
+            OutfitsPerPage = DefaultResultsPerPage; 
             this.Outfits = new HashSet<OutfitSetAllViewModel>();
             this.Regions = new HashSet<string>();
         }

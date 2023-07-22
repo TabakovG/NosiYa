@@ -7,6 +7,12 @@
 
     public class Comment
     {
+	    public Comment()
+	    {
+		    this.IsActive = true;
+		    this.IsApproved = false;
+	    }
+
         [Key]
         public int Id { get; set; }
 
@@ -24,7 +30,11 @@
         public int EventId { get; set; }
         public Event Event { get; set; } = null!;
 
-        public bool IsApproved { get; set; } = false;
+        [Required]
+        public bool IsApproved { get; set; }
+
+        [Required] 
+        public bool IsActive { get; set; }
 
     }
 }

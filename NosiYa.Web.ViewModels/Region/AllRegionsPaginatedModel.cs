@@ -7,8 +7,8 @@
     {
         public AllRegionsPaginatedModel()
         {
-            CurrentPage = DefaultOutfitsFirstPage;
-            RegionsPerPage = DefaultOutfitsPerPage; 
+            CurrentPage = DefaultFirstPage;
+            RegionsPerPage = DefaultResultsPerPage; 
             this.Regions = new HashSet<RegionAllViewModel>();
         }
 
