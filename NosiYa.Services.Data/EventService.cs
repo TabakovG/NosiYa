@@ -30,7 +30,7 @@
             var events = context
                 .Events
                 .AsNoTracking()
-                .Where(e => e.IsActive)
+                .Where(e => e.IsActive && e.IsApproved)
                 .AsQueryable();
 
             int evetCount = events.Count();

@@ -5,7 +5,7 @@
 		<img class="card-img-top" src="@Model.ImageUrl" alt="Outfit Image">
 		<div class="card-body text-center">
 			<h4>@Model.Name</h4>
-			<h3>@Model.EventStartDate - @Model.EventEndDate</h3>
+			<h5>@Model.EventStartDate - @Model.EventEndDate</h5>
 			<br />
 			<a asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id"
 	  class="btn btn-success">Детайли</a>
