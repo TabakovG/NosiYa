@@ -1,11 +1,9 @@
-﻿using NosiYa.Web.Infrastructure.Extensions;
-
-namespace NosiYa.Web.Controllers
+﻿namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
 
+	using Infrastructure.Extensions;
 	using NosiYa.Services.Data.Interfaces;
-	using NosiYa.Web.ViewModels.OutfitPart;
 	using ViewModels.Event;
 
 	public class EventController : Controller

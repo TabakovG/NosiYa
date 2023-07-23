@@ -48,7 +48,7 @@ namespace NosiYa.Services.Data
                 .Where(e => e.IsActive && e.IsApproved)
                 .AsQueryable();
 
-            int evetCount = events.Count();
+            int eventsCount = events.Count();
 
             var eventModels = await events
                 .Where(e => e.EventStartDate.Date >= DateTime.UtcNow.Date)
@@ -71,22 +71,42 @@ namespace NosiYa.Services.Data
 
             return new AllEventsPagedServiceModel
             {
-                EventsCount = evetCount,
+                EventsCount = eventsCount,
                 Events = eventModels
             };
         }
 
-        public Task<bool> ExistsByIdAsync(int id)
+        public async Task<bool> ExistsByIdAsync(int id)
         {
-	        return this.context
+	        return await this.context
 		        .Events
 		        .Where(e => e.IsActive && e.IsApproved) //TODO to separate active from approved in another method
 		        .AnyAsync(e => e.Id == id);
         }
 
-        public Task<EventDetailsViewModel> GetDetailsByIdAsync(int id)
+        public async Task<EventDetailsViewModel> GetDetailsByIdAsync(int id)
         {
-            throw new NotImplementedException();
+	        var evnt = await this.context
+		        .Events
+		        .AsNoTracking()
+		        .Include(i => i.Images)
+		        .Where(e => e.IsActive && e.IsApproved) //TODO to separate active from approved in another method
+		        .FirstAsync(e => e.Id == id);
+
+	        var model = new EventDetailsViewModel
+	        {
+		        Id = evnt.Id,
+		        Name = evnt.Name,
+		        Description = evnt.Description,
+		        Location = evnt.Location,
+		        OwnerId = evnt.OwnerId,
+		        Owner = evnt.Owner, //TODO do I need the owner or only the id as string ?
+		        EventStartDate = evnt.EventStartDate,
+		        EventEndDate = evnt.EventEndDate,
+		        Images = evnt.Images.Select(i => i.Url).ToArray()
+
+			};
+            return model;
         }
 
         //Update:

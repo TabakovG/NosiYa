@@ -168,7 +168,9 @@
         {
 	        var outfitSet = await this.context
 		        .OutfitSets
+		        .AsNoTracking()
                 .Include(r=>r.Region)
+		        .Include(i=>i.Images)
 		        .FirstAsync(o => o.Id == id); //TODO only admin to be able to see non active
 
 	            var outfitModel = new OutfitSetDetailsViewModel
