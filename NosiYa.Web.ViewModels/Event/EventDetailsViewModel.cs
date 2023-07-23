@@ -30,5 +30,7 @@ namespace NosiYa.Web.ViewModels.Event
 		public IEnumerable<CommentViewModel> Comments { get; set; }
 
 		public ICollection<string> Images { get; set; }
+
+		public CommentFormModel CommentForm { get; set; }
 	}
 }

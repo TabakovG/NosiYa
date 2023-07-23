@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Web.Controllers
+﻿using NosiYa.Web.ViewModels.Comment;
+
+namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
 
@@ -100,6 +102,10 @@
 				EventDetailsViewModel viewModel = await this.eventService
 					.GetDetailsByIdAsync(id);
 				viewModel.Comments = await this.commentService.GetCommentsByEventIdAsync(id);
+				viewModel.CommentForm = new CommentFormModel()
+				{
+					EventId = id
+				};
 
 				return View(viewModel);
 			}
