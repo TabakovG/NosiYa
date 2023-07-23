@@ -178,5 +178,19 @@ namespace NosiYa.Services.Data
 
 	        return outfitPartForDelete.OutfitSetId;
         }
-	}
+
+        public async Task DeleteByOutfitSetIdAsync(int setId)
+        {
+	        var partsToDelete = await this.context
+		        .OutfitParts
+		        .Where(p => p.IsActive && p.OutfitSetId == setId)
+		        .ToArrayAsync();
+
+	        foreach (var outfitPart in partsToDelete)
+	        {
+		        outfitPart.IsActive = false;
+	        }
+			await this.context.SaveChangesAsync();
+        }
+    }
 }

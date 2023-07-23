@@ -1,9 +1,7 @@
-﻿using NosiYa.Web.ViewModels.Event;
-
-namespace NosiYa.Services.Data.Interfaces
+﻿namespace NosiYa.Services.Data.Interfaces
 {
 	using Models;
-	using NosiYa.Web.ViewModels.Region;
+	using Web.ViewModels.Event;
 
 	public interface IEventService
 	{
@@ -27,7 +25,7 @@ namespace NosiYa.Services.Data.Interfaces
 
 
 		//Delete:
-
+		Task<EventForDeleteViewModel> GetForDeleteByIdAsync(int id);
 		Task DeleteByIdAsync(int id);
 	}
 }

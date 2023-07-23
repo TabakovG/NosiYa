@@ -1,10 +1,9 @@
-﻿using NosiYa.Data.Models;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
 	using Microsoft.EntityFrameworkCore;
 
 	using NosiYa.Data;
+	using NosiYa.Data.Models;
 	using Interfaces;
 	using Models;
 	using Web.ViewModels.Event;
@@ -145,11 +144,37 @@ namespace NosiYa.Services.Data
             await this.context.SaveChangesAsync();
         }
 
+        public async Task<EventForDeleteViewModel> GetForDeleteByIdAsync(int id)
+        {
+	        return await this.context
+		        .Events
+		        .AsNoTracking()
+		        .Include(i=>i.Images)
+		        .Where(e => e.IsActive && e.Id == id)
+		        .Select(e => new EventForDeleteViewModel
+		        {
+			        Name = e.Name,
+			        Description = e.Description,
+			        ImageUrl = e.Images
+				        .Where(i => i.IsDefault)
+				        .Select(i => i.Url)
+				        .FirstOrDefault() ?? string.Empty
+		        })
+		        .FirstAsync();
+        }
+
         //Delete:
 
-        public Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var eventToDelete = await this.context
+	            .Events
+	            .Where(e => e.IsActive)
+	            .FirstAsync(e => e.Id == id);
+
+			eventToDelete.IsActive = false;
+
+			await this.context.SaveChangesAsync();
         }
     }
 }

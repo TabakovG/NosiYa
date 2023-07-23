@@ -33,5 +33,20 @@ namespace NosiYa.Services.Data
 
 			return comments;
 		}
+
+		public async Task DeleteByEventIdAsync(int eventId)
+		{
+			var comments = await this.context
+				.Comments
+				.Where(c=>c.IsActive && c.EventId == eventId)
+				.ToArrayAsync();
+
+			foreach (var comment in comments)
+			{
+				comment.IsActive = false;
+			}
+
+			await this.context.SaveChangesAsync();
+		}
 	}
 }

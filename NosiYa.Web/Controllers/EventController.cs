@@ -5,7 +5,6 @@
 	using Infrastructure.Extensions;
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.Event;
-	using NosiYa.Web.ViewModels.Region;
 
 	public class EventController : Controller
 	{
@@ -174,6 +173,60 @@
 				return this.View(model);
 			}
 		}
+
+
+		[HttpGet]
+		public async Task<IActionResult> Delete(int id)
+		{
+
+			var eventExists = await this.eventService.ExistsByIdAsync(id);
+
+			if (!eventExists)
+			{
+				this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "Event");
+			}
+
+			try
+			{
+				var viewModel =
+					await this.eventService.GetForDeleteByIdAsync(id);
+
+				return this.View(viewModel);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Delete(int id, EventForDeleteViewModel model)
+		{
+			var eventExists = await this.eventService.ExistsByIdAsync(id);
+
+			if (!eventExists)
+			{
+				this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "Event");
+			}
+
+			try
+			{
+				await this.eventService.DeleteByIdAsync(id);
+				await this.commentService.DeleteByEventIdAsync(id);
+
+				this.TempData["WarningMessage"] = "Събитието беше изтрит успешно!";
+				return this.RedirectToAction("All", "Event");
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
 
 		private IActionResult GeneralError()
 		{

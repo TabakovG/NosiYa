@@ -19,5 +19,7 @@
 		//Delete
 		Task<OutfitPartForDelete> GetOutfitPartForDeleteAsync(int outfitPartId);
         Task<int> DeleteByIdAsyncAndReturnParentId(int outfitPartId);
-	}
+
+        Task DeleteByOutfitSetIdAsync(int setId);
+    }
 }

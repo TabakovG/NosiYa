@@ -224,6 +224,9 @@ namespace NosiYa.Web.Controllers
 			try
 			{
 				await this.outfitService.DeleteByIdAsync(id);
+				await this.partService.DeleteByOutfitSetIdAsync(id);
+
+				//TODO delete pictures async
 
 				this.TempData["WarningMessage"] = "Носията беше изтрита успешно!";
 				return this.RedirectToAction("All", "OutfitSet");
