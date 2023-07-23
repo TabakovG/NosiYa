@@ -11,11 +11,12 @@
 	<div class="form-inline">
 		@if (this.User.Identity?.IsAuthenticated ?? false)
 		{
+			<a class="btn btn-warning" asp-controller="OutfitPart" asp-action="Details"
+		   asp-route-id="@Model.Id">Details</a>
 			<a class="btn btn-warning" asp-controller="OutfitPart" asp-action="Edit"
 			   asp-route-id="@Model.Id">Edit</a>
 			<a class="ml-2 btn btn-danger" asp-controller="OutfitPart" asp-action="Delete"
 			   asp-route-id="@Model.Id">Delete</a>
-
 		}
 	</div>
 </div>

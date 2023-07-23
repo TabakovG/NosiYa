@@ -5,6 +5,7 @@
 	using Infrastructure.Extensions;
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.Event;
+	using NosiYa.Web.ViewModels.Region;
 
 	public class EventController : Controller
 	{
@@ -110,7 +111,69 @@
 
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
+		{
+			var eventExists = await this.eventService.ExistsByIdAsync(id);
 
+			if (!eventExists)
+			{
+				this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "Event");
+			}
+
+			try
+			{
+				EventFormModel formModel = await this.eventService
+					.GetForEditByIdAsync(id);
+
+				return View(formModel);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(int id, EventFormModel model)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				return this.View(model);
+			}
+
+			var eventExists = await this.eventService.ExistsByIdAsync(id);
+
+			if (!eventExists)
+			{
+				this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "Event");
+			}
+
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+			if (!isAuthenticated)
+			{
+				return this.View(model);
+			}
+
+			try
+			{
+				await this.eventService.EditByIdAsync(id, model);
+				this.TempData["SuccessMessage"] = "Промените са запазени успешно!";
+				return this.RedirectToAction("Details", "Event", new { Id = id });
+			}
+			catch (Exception)
+			{
+				this.ModelState.AddModelError(string.Empty,
+					"Възникна грешка при обработване на заявката. Моля опитайте отново или се свържете с администратор!");
+
+				return this.View(model);
+			}
+		}
 
 		private IActionResult GeneralError()
 		{

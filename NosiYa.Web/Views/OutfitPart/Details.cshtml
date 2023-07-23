@@ -21,7 +21,7 @@
 			<p>Подходяща за: <b>@Model.RenterType</b></p>
 			<p>Размер: <b>@Model.Size</b></p>
 			<p>Елемент от носия: <b>@Model.OutfitSet</b></p>
-			<p>Собственик: <b>@Model.OwnerEmail</b></p>
+			<p>Собственик: <b>@Model.OwnerEmail</b></p>            @*TODO samo Admina*@
 
 			<div class="form-inline">
 				@if (this.User.Identity?.IsAuthenticated ?? false)

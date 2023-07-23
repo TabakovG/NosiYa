@@ -111,14 +111,38 @@ namespace NosiYa.Services.Data
 
         //Update:
 
-        public Task<EventFormModel> GetForEditByIdAsync(int id)
+        public async Task<EventFormModel> GetForEditByIdAsync(int id)
         {
-            throw new NotImplementedException();
+	        return await this.context
+		        .Events
+		        .Where(e => e.IsActive && e.IsApproved) //TODO to separate active from approved in another method
+		        .Where(e => e.Id == id)
+		        .Select(e => new EventFormModel
+		        {
+			        Name = e.Name,
+			        Description = e.Description,
+			        Location = e.Location,
+			        EventStartDate = e.EventStartDate,
+			        EventEndDate = e.EventEndDate,
+		        })
+		        .FirstAsync();
         }
 
-        public Task EditByIdAsync(int id, EventFormModel model)
+        public async Task EditByIdAsync(int id, EventFormModel model)
         {
-            throw new NotImplementedException();
+	        var evnt = await this.context
+		        .Events
+		        .Where(e => e.IsActive && e.IsApproved) //TODO to separate active from approved in another method
+		        .Where(e => e.Id == id)
+		        .FirstAsync();
+
+	        evnt.Name = model.Name;
+            evnt.Description = model.Description;
+            evnt.Location = model.Location;
+            evnt.EventStartDate = model.EventStartDate;
+            evnt.EventEndDate = model.EventEndDate;
+
+            await this.context.SaveChangesAsync();
         }
 
         //Delete:
