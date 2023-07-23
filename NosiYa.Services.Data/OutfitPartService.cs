@@ -52,24 +52,23 @@ namespace NosiYa.Services.Data
 
         public async Task<ICollection<OutfitPartViewModel>> GetAllPartsBySetIdAsync(int setId)
         {
-            var outfitSet =  await this.context
-                .OutfitSets
-                .AsNoTracking()
-                .Include(o=>o.OutfitParts)
-                .FirstAsync(os=>os.IsActive && os.Id == setId);
-
-            var result = outfitSet
-                .OutfitParts
-                .Where(p=>p.IsActive)
-                .Select(p => new OutfitPartViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    imageUrl = p.Images.FirstOrDefault()?.Url ?? ""
-                })
-                .ToList();
-
-            return result;
+	        return await this.context
+		        .OutfitParts
+		        .AsNoTracking()
+		        .Include(i=>i.Images)
+		        .Where(p => p.IsActive && p.OutfitSetId == setId)
+		        .Select(p => new OutfitPartViewModel
+		        {
+			        Id = p.Id,
+			        Name = p.Name,
+					imageUrl = p.Images
+						.Where(i=>i.IsDefault)
+						.Select(i=>i.Url)
+						.FirstOrDefault() ?? string.Empty
+					
+		        })
+		        .ToListAsync();
+			
         }
 		public async Task<OutfitPartDetailsViewModel> GetDetailsByIdAsync(int id)
         {

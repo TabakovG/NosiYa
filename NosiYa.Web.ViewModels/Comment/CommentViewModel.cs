@@ -8,8 +8,8 @@
 
 		public string Content { get; set; } = null!;
 
-		public string OwnerId { get; set; }
-		public ApplicationUser Owner { get; set; } = null!; //TODO to be replaced by stringOwnerId
+		public string OwnerId { get; set; } = null!;
+		public string OwnerEmail { get; set; } = null!;
 
 		public DateTime CreatedOn { get; set; }
 

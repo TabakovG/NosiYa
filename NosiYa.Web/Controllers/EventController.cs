@@ -9,10 +9,12 @@
 	public class EventController : Controller
 	{
 		private readonly IEventService eventService;
+		private readonly ICommentService commentService;
 
-		public EventController(IEventService eventService)
+		public EventController(IEventService eventService, ICommentService commentService)
 		{
 			this.eventService = eventService;
+			this.commentService = commentService;
 		}
 
 		public async Task<IActionResult> All([FromQuery] AllEventsPaginatedModel model)
@@ -97,7 +99,7 @@
 			{
 				EventDetailsViewModel viewModel = await this.eventService
 					.GetDetailsByIdAsync(id);
-
+				viewModel.Comments = await this.commentService.GetCommentsByEventIdAsync(id);
 
 				return View(viewModel);
 			}

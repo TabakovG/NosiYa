@@ -4,5 +4,6 @@
 	{
 		Task<bool> UserExistByEmail(string email);
 		Task<Guid> GetUserIdFromEmailAsync(string email);
+
 	}
 }

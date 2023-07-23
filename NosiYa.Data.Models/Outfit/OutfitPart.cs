@@ -42,7 +42,8 @@
         [Required]
         [ForeignKey(nameof(Owner))]
         public Guid OwnerId { get; set; }
-        public ApplicationUser Owner { get; set; }
+
+        public ApplicationUser Owner { get; set; } = null!;
 
         [Required]
         [MaxLength(SizeMaxLength)]

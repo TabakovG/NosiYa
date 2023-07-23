@@ -27,7 +27,7 @@ namespace NosiYa.Web.ViewModels.Event
 
 		public DateTime EventEndDate { get; set; }
 
-		public ICollection<CommentViewModel> Comments { get; set; }
+		public IEnumerable<CommentViewModel> Comments { get; set; }
 
 		public ICollection<string> Images { get; set; }
 	}
