@@ -1,14 +1,12 @@
-﻿using NosiYa.Data.Models;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
     using Microsoft.EntityFrameworkCore;
 
     using NosiYa.Data;
+	using NosiYa.Data.Models;
+	using Models;
     using Interfaces;
     using Web.ViewModels.Region;
-	using NosiYa.Web.ViewModels.OutfitSet;
-	using NosiYa.Services.Data.Model;
 
     public class RegionService : IRegionService
     {

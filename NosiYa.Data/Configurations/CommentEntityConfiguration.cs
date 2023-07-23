@@ -4,7 +4,7 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     using Models;
-    using static NosiYa.Common.SeedingConstants;
+    using static Common.SeedingConstants;
 
     public class CommentEntityConfiguration : IEntityTypeConfiguration<Comment>
     {
@@ -15,7 +15,11 @@
                 .WithMany(x => x.Comments)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasData(this.CreateComments());
+			builder
+				.Property(h => h.CreatedOn)
+				.HasDefaultValueSql("GETDATE()");
+
+			builder.HasData(this.CreateComments());
 
         }
 

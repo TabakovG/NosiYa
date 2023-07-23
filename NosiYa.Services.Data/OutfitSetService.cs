@@ -7,7 +7,7 @@
     using NosiYa.Data.Models.Enums;
 
     using Interfaces;
-    using Model;
+    using Models;
     using Web.ViewModels.OutfitSet;
     using Web.ViewModels.OutfitSet.Enums;
     using static Common.ApplicationConstants;

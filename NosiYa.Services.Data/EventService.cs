@@ -1,10 +1,12 @@
-﻿namespace NosiYa.Services.Data
+﻿using NosiYa.Data.Models;
+
+namespace NosiYa.Services.Data
 {
 	using Microsoft.EntityFrameworkCore;
 
 	using NosiYa.Data;
 	using Interfaces;
-	using Model;
+	using Models;
 	using Web.ViewModels.Event;
 
     public class EventService : IEventService
@@ -18,9 +20,22 @@
 
         //Create:
 
-        public Task<int> CreateAndReturnIdAsync(EventFormModel model)
+        public async Task<int> CreateAndReturnIdAsync(EventFormModel model, Guid userId)
         {
-            throw new NotImplementedException();
+	        var newEvent = new Event
+	        {
+		        Name = model.Name,
+		        Description = model.Description,
+		        Location = model.Location,
+		        OwnerId = userId,
+		        EventStartDate = model.EventStartDate,
+		        EventEndDate = model.EventEndDate,
+	        };
+
+	        await this.context.Events.AddAsync(newEvent);
+            await this.context.SaveChangesAsync();
+
+            return newEvent.Id;
         }
 
         //Read: 
@@ -63,7 +78,10 @@
 
         public Task<bool> ExistsByIdAsync(int id)
         {
-            throw new NotImplementedException();
+	        return this.context
+		        .Events
+		        .Where(e => e.IsActive && e.IsApproved) //TODO to separate active from approved in another method
+		        .AnyAsync(e => e.Id == id);
         }
 
         public Task<EventDetailsViewModel> GetDetailsByIdAsync(int id)

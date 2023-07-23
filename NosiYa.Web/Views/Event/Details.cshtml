@@ -1,0 +1,44 @@
+﻿@using NosiYa.Web.ViewModels.Comment
+@using NosiYa.Web.Infrastructure.Extensions
+@model EventDetailsViewModel
+
+@{
+	ViewBag.Title = "Детайли на Събитието";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="container" style="display:inline">
+	<div class="row">
+		<div class="col-4">
+			<img class="card-img-top" style="width: 20rem;"
+				 src="@Model.Images.FirstOrDefault()" alt="OutfitSet Image">
+		</div>
+		<div class="card col-8 border-0">
+			<p style="font-size:25px;"><u>@Model.Name</u></p>
+			<p>@Model.Description</p>
+			<p>@Model.Location</p>
+			<p>@Model.EventStartDate</p>
+			<p>@Model.EventEndDate</p>
+			<div class="form-inline">
+				@if (this.User.Identity?.IsAuthenticated ?? false)
+				{
+					@*if (this.User.GetId() == Model.OwnerId.ToString()) //TODO owner or admin
+					{
+					}*@
+					<a class="btn btn-warning" asp-controller="Event" asp-action="Edit"
+				   asp-route-id="@Model.Id">Edit</a>
+						<a class="ml-2 btn btn-danger" asp-controller="Event" asp-action="Delete"
+				   asp-route-id="@Model.Id">Delete</a>
+					
+				}
+			</div>
+
+			@foreach (CommentViewModel part in Model.Comments)
+			{
+				<partial name="_CommentPartial" model="@part" />
+			}
+		</div>
+	</div>
+</div>

@@ -1,6 +1,6 @@
 ﻿namespace NosiYa.Services.Data.Interfaces
 {
-	using Model;
+	using Models;
 	using Web.ViewModels.Region;
 	public interface IRegionService
     {

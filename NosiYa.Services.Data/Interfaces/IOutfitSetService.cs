@@ -1,5 +1,5 @@
 ﻿using NosiYa.Data.Models.Enums;
-using NosiYa.Services.Data.Model;
+using NosiYa.Services.Data.Models;
 using NosiYa.Web.ViewModels.OutfitSet;
 
 namespace NosiYa.Services.Data.Interfaces

@@ -1,4 +1,4 @@
-﻿namespace NosiYa.Services.Data.Model
+﻿namespace NosiYa.Services.Data.Models
 {
 	using Web.ViewModels.Region;
 	

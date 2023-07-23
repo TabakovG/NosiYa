@@ -1,4 +1,4 @@
-﻿using NosiYa.Services.Data.Model;
+﻿using NosiYa.Services.Data.Models;
 
 namespace NosiYa.Web.Controllers
 {

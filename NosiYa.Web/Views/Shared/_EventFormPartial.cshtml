@@ -1,0 +1,38 @@
+﻿@model EventFormModel
+
+<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+		<form method="post">
+			
+			<div class="form-group">
+				<label asp-for="Name"></label>
+				<input asp-for="Name" class="form-control" placeholder="Name...">
+				<span asp-validation-for="Name" class="small text-danger"></span>
+			</div>
+			
+			<div class="form-group">
+				<label asp-for="Description"></label>
+				<textarea asp-for="Description" rows="4" class="form-control" placeholder="Description..."></textarea>
+				<span asp-validation-for="Description" class="small text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Location"></label>
+				<input asp-for="Location" rows="4" class="form-control" placeholder="Description..."></input>
+				<span asp-validation-for="Location" class="small text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="EventStartDate"></label>
+				<input asp-for="EventStartDate" rows="4" class="form-control" placeholder="Description..."></input>
+				<span asp-validation-for="EventStartDate" class="small text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="EventEndDate"></label>
+				<input asp-for="EventEndDate" rows="4" class="form-control" placeholder="Description..."></input>
+				<span asp-validation-for="EventEndDate" class="small text-danger"></span>
+			</div>
+			<div class="text-center">
+				<input class="btn btn-primary mt-3" type="submit" value="Запази" />
+			</div>
+		</form>
+	</div>
+</div>

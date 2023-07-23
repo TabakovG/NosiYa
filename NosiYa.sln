@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NosiYa.Services.Data", "Nos
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NosiYa.Web.Infrastructure", "NosiYa.Web.Infrastructure\NosiYa.Web.Infrastructure.csproj", "{55C79D06-7772-4094-AFFF-79B0A241FCAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NosiYa.Services.Data.Model", "NosiYa.Services.Data.Model\NosiYa.Services.Data.Model.csproj", "{479C6451-3937-42CA-92D9-B8166ED3F777}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NosiYa.Services.Data.Models", "NosiYa.Services.Data.Model\NosiYa.Services.Data.Models.csproj", "{479C6451-3937-42CA-92D9-B8166ED3F777}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

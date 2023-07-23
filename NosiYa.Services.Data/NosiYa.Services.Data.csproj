@@ -10,7 +10,7 @@
     <ProjectReference Include="..\NosiYa.Common\NosiYa.Common.csproj" />
     <ProjectReference Include="..\NosiYa.Data.Models\NosiYa.Data.Models.csproj" />
     <ProjectReference Include="..\NosiYa.Data\NosiYa.Data.csproj" />
-    <ProjectReference Include="..\NosiYa.Services.Data.Model\NosiYa.Services.Data.Model.csproj" />
+    <ProjectReference Include="..\NosiYa.Services.Data.Model\NosiYa.Services.Data.Models.csproj" />
     <ProjectReference Include="..\NosiYa.Web.ViewModels\NosiYa.Web.ViewModels.csproj" />
   </ItemGroup>
 

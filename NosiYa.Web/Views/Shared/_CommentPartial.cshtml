@@ -1,0 +1,23 @@
+﻿@model CommentViewModel
+
+<div class="row">
+	<div class="card col-8 border-0">
+		<p style="font-size:25px;"><u>@Model.Owner.Email</u></p>
+	</div>
+	<div class="card col-8 border-0">
+		<p style="font-size:25px;"><u>@Model.CreatedOn</u></p>
+	</div>
+	<div class="card col-8 border-0">
+		<p style="font-size:25px;"><u>@Model.Content</u></p>
+	</div>
+	<div class="form-inline">
+		@if (this.User.Identity?.IsAuthenticated ?? false)
+		{
+			<a class="btn btn-warning" asp-controller="Comment" asp-action="Edit"
+			   asp-route-id="@Model.Id">Edit</a>
+			<a class="ml-2 btn btn-danger" asp-controller="Comment" asp-action="Delete"
+			   asp-route-id="@Model.Id">Delete</a>
+
+		}
+	</div>
+</div>

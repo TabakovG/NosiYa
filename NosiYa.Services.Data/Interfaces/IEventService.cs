@@ -2,14 +2,14 @@
 
 namespace NosiYa.Services.Data.Interfaces
 {
-	using NosiYa.Services.Data.Model;
+	using Models;
 	using NosiYa.Web.ViewModels.Region;
 
 	public interface IEventService
 	{
 		//Create:
 
-		Task<int> CreateAndReturnIdAsync(EventFormModel model);
+		Task<int> CreateAndReturnIdAsync(EventFormModel model, Guid userId);
 
 		//Read:
 
