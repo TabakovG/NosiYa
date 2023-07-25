@@ -119,7 +119,49 @@
             }
         }
 
-        private IActionResult GeneralError()
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, [FromQuery] int eventId)
+        {	
+			var commentExists = await this.commentService
+				.ExistsByIdAsync(id);
+
+			if (!commentExists)
+			{
+				this.TempData["ErrorMessage"] = "Коментар с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "Event");
+			}
+
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+			if (!isAuthenticated)
+			{
+				return RedirectToAction("All", "Event");
+			}
+
+			try
+	        {
+		        await this.commentService.DeleteByIdAsync(id);
+
+		        this.TempData["WarningMessage"] = "Коментара беше изтрит успешно!";
+
+
+		        if (eventId > 0)
+		        {
+			        // After deleting the comment, redirect back to the Event Details view
+			        return RedirectToAction("Details", "Event", new { id = eventId });
+		        }
+
+
+				return RedirectToAction("Details", "Event", new { Id = eventId});
+	        }
+			catch (Exception)
+	        {
+		        return this.GeneralError();
+	        }
+        }
+
+		private IActionResult GeneralError()
 		{
 			this.TempData["ErrorMessage"] =
 				"Unexpected error occurred! Please try again later or contact administrator";

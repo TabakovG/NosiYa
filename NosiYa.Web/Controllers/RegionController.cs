@@ -194,9 +194,9 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Delete(int id, RegionDetailsViewModel model)
+		public async Task<IActionResult> Delete(RegionDetailsViewModel model)
 		{
-			var regionExists = await this.regionService.ExistsByIdAsync(id);
+			var regionExists = await this.regionService.ExistsByIdAsync(model.Id);
 
 			if (!regionExists)
 			{
@@ -207,7 +207,7 @@
 
 			try
 			{
-				await this.regionService.DeleteByIdAsync(id);
+				await this.regionService.DeleteByIdAsync(model.Id);
 
 				this.TempData["WarningMessage"] = "Регионa беше изтрит успешно!";
 				return this.RedirectToAction("All", "Region");

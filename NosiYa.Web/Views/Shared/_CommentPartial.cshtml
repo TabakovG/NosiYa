@@ -1,5 +1,6 @@
 ﻿@model CommentViewModel
 
+
 <div class="row" id="comment-@Model.Id">
 	<div class="card col-8 border-0">
 		<p style="font-size:25px;">@Model.OwnerEmail</p>
@@ -16,14 +17,16 @@
 	<div class="form-inline">
 		@if (this.User.Identity?.IsAuthenticated ?? false)
 		{
+
 			<a class="btn btn-warning" asp-controller="Comment" asp-action="Edit"
 			   asp-route-id="@Model.Id">Edit</a>
 
 			@* Display Edit Comment link *@
 			<a href="#" class="edit-comment-link" data-comment-id="@Model.Id">Edit Comment</a>
 
-			<a class="ml-2 btn btn-danger" asp-controller="Comment" asp-action="Delete"
-			   asp-route-id="@Model.Id">Delete</a>
+			<form method="post" asp-action="Delete" asp-controller="Comment" asp-route-eventId="@ViewContext.RouteData.Values["id"]" asp-route-id="@Model.Id">
+				<input type="submit" value="Изтрии" class="btn btn-danger" />
+			</form>
 
 		}
 	</div>

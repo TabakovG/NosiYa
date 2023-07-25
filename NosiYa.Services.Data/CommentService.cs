@@ -84,7 +84,7 @@ namespace NosiYa.Services.Data
 			await this.context.SaveChangesAsync();
 		}
 
-		public async Task DeleteByEventIdAsync(int eventId)
+		public async Task DeleteAllByEventIdAsync(int eventId)
 		{
 			var comments = await this.context
 				.Comments
@@ -96,6 +96,17 @@ namespace NosiYa.Services.Data
 				comment.IsActive = false;
 			}
 
+			await this.context.SaveChangesAsync();
+		}
+
+		public async Task DeleteByIdAsync(int id)
+		{
+			var comment = await this.context
+				.Comments
+				.Where(c => c.IsActive && c.Id == id)
+				.FirstAsync();
+
+			comment.IsActive = false;
 			await this.context.SaveChangesAsync();
 		}
 	}

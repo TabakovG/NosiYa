@@ -222,7 +222,7 @@ namespace NosiYa.Web.Controllers
 			try
 			{
 				await this.eventService.DeleteByIdAsync(id);
-				await this.commentService.DeleteByEventIdAsync(id);
+				await this.commentService.DeleteAllByEventIdAsync(id);
 
 				this.TempData["WarningMessage"] = "Събитието беше изтрит успешно!";
 				return this.RedirectToAction("All", "Event");

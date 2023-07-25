@@ -16,7 +16,8 @@ namespace NosiYa.Services.Data.Interfaces
 		Task EditByModelAsync(CommentForEditFormModel model);
 
 		//Delete:
-		Task DeleteByEventIdAsync(int eventId);
-		
+		Task DeleteAllByEventIdAsync(int eventId);
+		Task DeleteByIdAsync(int id);
+
 	}
 }
