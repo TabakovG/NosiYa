@@ -13,7 +13,7 @@
 		{
 			this.commentService = commentService;
 		}
-
+		[HttpPost]
 		public async Task<IActionResult> Add(CommentFormModel model)
 		{
 			try

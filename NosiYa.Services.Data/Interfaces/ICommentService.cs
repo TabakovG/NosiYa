@@ -1,7 +1,7 @@
-﻿using NosiYa.Web.ViewModels.Comment;
-
-namespace NosiYa.Services.Data.Interfaces
+﻿namespace NosiYa.Services.Data.Interfaces
 {
+	using Web.ViewModels.Comment;
+
 	public interface ICommentService
 	{
 		//Create:

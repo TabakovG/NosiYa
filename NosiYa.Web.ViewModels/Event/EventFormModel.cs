@@ -2,14 +2,13 @@
 {
 	using System.ComponentModel.DataAnnotations;
 	
-	using Image;
 	using static Common.EntityValidationConstants.Event;
 
 	public class EventFormModel
 	{
 		public EventFormModel()
 		{
-			this.Images = new HashSet<ImageFormModel>();
+			this.Images = new HashSet<string>();
 		}
 
 		[Required]
@@ -30,7 +29,7 @@
 		[Required]
 		public DateTime EventEndDate { get; set; }
 
-		public ICollection<ImageFormModel> Images { get; set; }
+		public ICollection<string> Images { get; set; }
 
 	}
 }

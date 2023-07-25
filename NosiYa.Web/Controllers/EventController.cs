@@ -1,4 +1,7 @@
-﻿using NosiYa.Web.ViewModels.Comment;
+﻿using Newtonsoft.Json;
+using NosiYa.Web.ViewModels.Comment;
+using NosiYa.Web.ViewModels.Image;
+using NuGet.Protocol;
 
 namespace NosiYa.Web.Controllers
 {
@@ -7,16 +10,22 @@ namespace NosiYa.Web.Controllers
 	using Infrastructure.Extensions;
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.Event;
+	using System.Collections.Generic;
+	using Microsoft.Data.SqlClient.Server;
 
 	public class EventController : Controller
 	{
 		private readonly IEventService eventService;
 		private readonly ICommentService commentService;
+		private readonly IImageService imageService;
+		private readonly IWebHostEnvironment webHostEnvironment;
 
-		public EventController(IEventService eventService, ICommentService commentService)
+		public EventController(IEventService eventService, ICommentService commentService, IImageService imageService, IWebHostEnvironment webHostEnvironment)
 		{
 			this.eventService = eventService;
 			this.commentService = commentService;
+			this.imageService = imageService;
+			this.webHostEnvironment = webHostEnvironment;
 		}
 
 		public async Task<IActionResult> All([FromQuery] AllEventsPaginatedModel model)
@@ -36,7 +45,7 @@ namespace NosiYa.Web.Controllers
 		{
 			try
 			{
-				var  eventModel = new EventFormModel();
+				var eventModel = new EventFormModel();
 				return this.View(eventModel);
 			}
 			catch (Exception)
@@ -46,7 +55,7 @@ namespace NosiYa.Web.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add(EventFormModel model)
+		public async Task<IActionResult> Add(EventFormModel model, [FromForm] List<IFormFile> elementImages)
 		{
 			try
 			{
@@ -68,8 +77,23 @@ namespace NosiYa.Web.Controllers
 				{
 					var userId = Guid.Parse(this.User!.GetId()!);
 
+					//Create event
 					int eventId =
 						await this.eventService.CreateAndReturnIdAsync(model, userId);
+
+					//Add images to the event
+					if (elementImages.Count > 0)
+					{
+						// Call Add from ImageController without redirecting
+						var imageController = new ImageController(imageService, webHostEnvironment);
+						imageController.ControllerContext = ControllerContext;
+
+						string entityType = "event"; //TODO replace with constants
+
+						// Invoke AddImagesOnEntityCreate Action 
+						model.Images = await imageController.AddImagesOnEntityCreate(eventId, entityType, elementImages);
+
+					}
 
 					return this.RedirectToAction("Details", "Event", new { Id = eventId });
 				}

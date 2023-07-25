@@ -87,22 +87,22 @@
             }
 
 
-            outfitQuery = queryModel.OutfitSorting switch
-            {
-                OutfitsSorting.Newest => outfitQuery
-                    .OrderByDescending(o => o.CreatedOn),
-                OutfitsSorting.Oldest => outfitQuery
-                    .OrderBy(o => o.CreatedOn),
-                OutfitsSorting.PriceAscending => outfitQuery
-                    .OrderBy(o => o.PricePerDay),
-                OutfitsSorting.PriceDescending => outfitQuery
-                    .OrderByDescending(h => h.PricePerDay),
-                OutfitsSorting.PopularityDescending => outfitQuery
-                    .OrderByDescending(o => o.OutfitRenterDates.Count()),
-                _ => outfitQuery
-                    .OrderBy(o => o.Name)
-                    .ThenByDescending(h => h.CreatedOn)
-            };
+	            outfitQuery = queryModel.OutfitSorting switch
+	            {
+	                OutfitsSorting.Newest => outfitQuery
+	                    .OrderByDescending(o => o.CreatedOn),
+	                OutfitsSorting.Oldest => outfitQuery
+	                    .OrderBy(o => o.CreatedOn),
+	                OutfitsSorting.PriceAscending => outfitQuery
+	                    .OrderBy(o => o.PricePerDay),
+	                OutfitsSorting.PriceDescending => outfitQuery
+	                    .OrderByDescending(h => h.PricePerDay),
+	                OutfitsSorting.PopularityDescending => outfitQuery
+	                    .OrderByDescending(o => o.OutfitRenterDates.Count()),
+	                _ => outfitQuery
+	                    .OrderBy(o => o.Name)
+	                    .ThenByDescending(h => h.CreatedOn)
+	            };
 
             IEnumerable<OutfitSetAllViewModel> allOutfits = await outfitQuery
                 .Where(o => o.IsActive)
