@@ -10,9 +10,10 @@ namespace NosiYa.Services.Data.Interfaces
 		//Read:
 		Task<IEnumerable<CommentViewModel>> GetCommentsByEventIdAsync(int eventId);
 		Task<CommentFormModel> GetForEditByIdAsync(int id);
-		
+		Task<bool> ExistsByIdAsync(int id);
+
 		//Update:
-		Task EditByIdAsync(int id, CommentFormModel model);
+		Task EditByModelAsync(CommentForEditFormModel model);
 
 		//Delete:
 		Task DeleteByEventIdAsync(int eventId);

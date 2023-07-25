@@ -42,11 +42,19 @@ namespace NosiYa.Services.Data
 					Id = c.Id,
 					Content = c.Content,
 					OwnerId = c.OwnerId.ToString(),
-					OwnerEmail = c.Owner.Email
-				})
+					OwnerEmail = c.Owner.Email,
+					IsWaitingForReview = c.ModifiedContent != null
+                })
 				.ToArrayAsync();
 
 			return comments;
+		}
+		public async Task<bool> ExistsByIdAsync(int id)
+		{
+			return await this.context
+				.Comments
+				.AsNoTracking()
+				.AnyAsync(c => c.IsActive && c.Id == id);
 		}
 
 		public async Task<CommentFormModel> GetForEditByIdAsync(int id)
@@ -58,21 +66,20 @@ namespace NosiYa.Services.Data
 
 			return new CommentFormModel
 			{
-				Content = comment.Content,
+				Content = comment.ModifiedContent ?? comment.Content,
 				EventId = comment.EventId,
 			};
 
 		}
 
-		public async Task EditByIdAsync(int id, CommentFormModel model)
+		public async Task EditByModelAsync(CommentForEditFormModel model)
 		{
 			var comment = await this.context
 				.Comments
-				.Where(c => c.IsActive && c.Id == id)
+				.Where(c => c.IsActive && c.Id == model.Id)
 				.FirstAsync();
 
-			comment.Content = model.Content;
-			comment.EventId = model.EventId;
+			comment.ModifiedContent = model.ModifiedContent;
 
 			await this.context.SaveChangesAsync();
 		}

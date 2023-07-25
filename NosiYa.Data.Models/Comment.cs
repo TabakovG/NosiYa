@@ -11,6 +11,7 @@
 	    {
 		    this.IsActive = true;
 		    this.IsApproved = false;
+            this.ModifiedContent = null;
 	    }
 
         [Key]
@@ -19,6 +20,9 @@
         [Required]
         [MaxLength(ContentMaxLength)]
         public string Content { get; set; } = null!;
+
+        [MaxLength(ContentMaxLength)]
+        public string? ModifiedContent { get; set; }
 
         [Required]
         [ForeignKey(nameof(Owner))]

@@ -1,6 +1,5 @@
 ﻿namespace NosiYa.Web.ViewModels.Comment
 {
-	using Data.Models;
 
 	public class CommentViewModel
 	{
@@ -12,6 +11,8 @@
 		public string OwnerEmail { get; set; } = null!;
 
 		public DateTime CreatedOn { get; set; }
+
+		public bool IsWaitingForReview { get; set; }
 
 
 	}
