@@ -1,13 +1,12 @@
-﻿using System.Runtime.CompilerServices;
-using Microsoft.EntityFrameworkCore;
-using NosiYa.Common;
-using NosiYa.Data;
-using NosiYa.Data.Models;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
+	using Microsoft.EntityFrameworkCore;
+
 	using Interfaces;
 	using Web.ViewModels.Image;
+	using Common;
+	using NosiYa.Data;
+	using NosiYa.Data.Models;
 
 	public class ImageService : IImageService
 	{

@@ -164,6 +164,26 @@
 			return outfitSet.RenterType;
         }
 
+        public async Task<OutfitSetForRentViewModel> GetForRentByIdAsync(int id)
+        {
+			var outfitSet = await this.context
+				.OutfitSets
+				.AsNoTracking()
+				.Include(r => r.Region)
+				.Include(i => i.Images)
+				.FirstAsync(o => o.Id == id);
+
+			return new OutfitSetForRentViewModel
+			{
+				Id = outfitSet.Id,
+				Name = outfitSet.Name,
+				Description = outfitSet.Description ?? string.Empty,
+				Size = outfitSet.Size,
+				RenterType = outfitSet.RenterType.ToString(),
+				Images = outfitSet.Images.Select(i => i.Url).ToList()
+			};
+        }
+
         public async Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync(int id)
         {
 	        var outfitSet = await this.context

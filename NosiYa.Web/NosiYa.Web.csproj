@@ -27,8 +27,8 @@
   <ItemGroup>
     <Folder Include="wwwroot\images\event\" />
     <Folder Include="wwwroot\images\region\" />
-    <Folder Include="wwwroot\images\set\" />
-    <Folder Include="wwwroot\images\part\" />
+    <Folder Include="wwwroot\images\outfitSet\" />
+    <Folder Include="wwwroot\images\outfitPart\" />
   </ItemGroup>
 
 </Project>

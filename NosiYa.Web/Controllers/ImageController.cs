@@ -129,6 +129,8 @@
 
 			await this.imageService.SetDefaultImageAsync(entityId, entityType, id);
 
+			this.TempData["SuccessMessage"] = "Снимката за корица беше сменена успешно!";
+
 			return this.RedirectToAction("Edit", entityType, new { id = entityId });
 
 		}

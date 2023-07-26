@@ -16,6 +16,7 @@ namespace NosiYa.Services.Data.Interfaces
         Task<IEnumerable<OutfitSetForOptionsViewModel>> GetAllOutfitSetsForOptionsAsync();
         Task<bool> ExistByIdAsync(int outfitId);
         Task<RenterType> GetRenterTypeByIdAsync(int id);
+        Task<OutfitSetForRentViewModel> GetForRentByIdAsync(int id);
 
 		//Update
 		Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync(int id);
