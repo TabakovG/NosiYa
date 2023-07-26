@@ -1,4 +1,4 @@
-﻿@using Newtonsoft.Json
+﻿
 @model CartFormModel
 @{
 	ViewData["Title"] = "Наеми носия";
@@ -12,39 +12,39 @@
 <div class="row">
 	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
 		<form method="post">
-			<input asp-for="@Model.OutfitModel.Id" class="visually-hidden disabled" />
+			<input asp-for="@Model.OutfitModel.Id" class="visually-hidden " readonly />
 			<div class="form-group">
 				<label asp-for="@Model.OutfitModel.Name"></label>
-				<input asp-for="@Model.OutfitModel.Name" class="form-control disabled" placeholder="Name...">
+				<input asp-for="@Model.OutfitModel.Name" class="form-control " readonly placeholder="Name...">
 				<span asp-validation-for="@Model.OutfitModel.Name" class="small text-danger"></span>
 			</div>
 
 			<div class="form-group">
 				<label asp-for="@Model.OutfitModel.Description"></label>
-				<textarea asp-for="@Model.OutfitModel.Description" rows="4" class="form-control disabled" placeholder="Description..."></textarea>
+				<textarea asp-for="@Model.OutfitModel.Description" rows="4" class="form-control " readonly placeholder="Description..."></textarea>
 				<span asp-validation-for="@Model.OutfitModel.Description" class="small text-danger"></span>
 			</div>
 
 			<div class="form-group">
 				<label asp-for="@Model.OutfitModel.Size"></label>
-				<textarea asp-for="@Model.OutfitModel.Size" rows="4" class="form-control disabled" placeholder="Description..."></textarea>
+				<textarea asp-for="@Model.OutfitModel.Size" rows="4" class="form-control " readonly placeholder="Description..."></textarea>
 				<span asp-validation-for="@Model.OutfitModel.Size" class="small text-danger"></span>
 			</div>
 
 			<div class="form-group">
 				<label asp-for="@Model.OutfitModel.RenterType"></label>
-				<textarea asp-for="@Model.OutfitModel.RenterType" rows="4" class="form-control disabled" placeholder="Description..."></textarea>
+				<textarea asp-for="@Model.OutfitModel.RenterType" rows="4" class="form-control" readonly placeholder="Description..."></textarea>
 				<span asp-validation-for="@Model.OutfitModel.RenterType" class="small text-danger"></span>
 			</div>
 
 			<div class="form-group">
 				<label asp-for="FromDate"></label>
-				<input asp-for="FromDate" rows="4" class="form-control" placeholder="Description..." />
+				<input asp-for="FromDate" id="fromDate" rows="4" class="form-control" readonly placeholder="Description..." />
 				<span asp-validation-for="FromDate" class="small text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="ToDate"></label>
-				<input asp-for="ToDate" rows="4" class="form-control" placeholder="Description..." />
+				<input asp-for="ToDate" id="toDate" rows="4" class="form-control" readonly placeholder="Description..." />
 				<span asp-validation-for="ToDate" class="small text-danger"></span>
 			</div>
 
@@ -62,23 +62,45 @@
 {
 	<script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.8/index.global.min.js'></script>
 	<script>
-
 		document.addEventListener('DOMContentLoaded', function () {
 			var calendarEl = document.getElementById('calendar');
-			var calendar = new FullCalendar.Calendar(calendarEl, {
+			var calendar = new FullCalendar.Calendar(calendarEl,{
 				initialDate: '2023-07-26',
 				initialView: 'dayGridMonth',
+				selectable: true,
+				timeZone: 'UTC',
+				allDayDefault: true,
+				validRange: {
+					start: new Date().toISOString().slice(0, 10) // Disable dates before the current date
+				},
+				selectOverlap: function (event) {
+					return event.rendering === 'background';
+				},
+				select: function (info) {
+					// Update the datetime input field with the selected date's start time
+					var selectedStartDate = new Date(info.start);
+					var selectedEndDate = new Date(info.end);
+					selectedEndDate.setMinutes(selectedEndDate.getMinutes() - 1); // Adjust for end date on the correct day
+
+					document.getElementById('fromDate').value = selectedStartDate.toISOString().slice(0, 16);
+					document.getElementById('toDate').value = selectedEndDate.toISOString().slice(0, 16);	
+				},
 				events: [
 					{
 						start: '2023-07-26',
 						end: '2023-07-29',
-						display: 'background'
-					}
+						backgroundColor: 'red'
+					},
+					{
+						start: '2023-08-06',
+						end: '2023-08-09',
+						backgroundColor: 'blue'
+					},
 				]
 			});
 			calendar.render();
 		});
 
 	</script>
-	<partial name="_ValidationScriptsPartial" />
+	<partial name="_ValidationScriptsPartial"/>
 }
