@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
+using NosiYa.Common;
 using NosiYa.Data;
 using NosiYa.Data.Models;
 
@@ -40,16 +41,16 @@ namespace NosiYa.Services.Data
 			ICollection<Image> images = new HashSet<Image>();
 			switch (entity)
 			{
-				case "event":
+				case EntityTypesConst.Event:
 					images = await this.context.Images.Where(i => i.EventId == relatedEntityId).ToListAsync();
 					break;
-				case "set":
+				case EntityTypesConst.OutfitSet:
 					images = await this.context.Images.Where(i => i.OutfitSetId == relatedEntityId).ToListAsync();
 					break;
-				case "region":
+				case EntityTypesConst.Region:
 					images = await this.context.Images.Where(i => i.RegionId == relatedEntityId).ToListAsync();
 					break;
-				case "part":
+				case EntityTypesConst.OutfitPart:
 					images = await this.context.Images.Where(i => i.OutfitPartId == relatedEntityId).ToListAsync();
 					break;
 			}
@@ -73,22 +74,22 @@ namespace NosiYa.Services.Data
 		public async Task SetDefaultImageAsync(int relatedEntityId, string entity, int? imageId = null)
 		{
 			ICollection<Image> images = new HashSet<Image>();
-			switch (entity)
+			
+			switch (entity.ToLower())
 			{
-				case "event":
+				case EntityTypesConst.Event:
 					images = await this.context.Images.Where(i => i.EventId == relatedEntityId).ToListAsync();
 					break;
-				case "set":
+				case EntityTypesConst.OutfitSet:
 					images = await this.context.Images.Where(i => i.OutfitSetId == relatedEntityId).ToListAsync();
 					break;
-				case "region":
+				case EntityTypesConst.Region:
 					images = await this.context.Images.Where(i => i.RegionId == relatedEntityId).ToListAsync();
 					break;
-				case "part":
+				case EntityTypesConst.OutfitPart:
 					images = await this.context.Images.Where(i => i.OutfitPartId == relatedEntityId).ToListAsync();
 					break;
 			}
-
 			imageId = imageId ?? images.First().Id;
 
 			foreach (var image in images)

@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http.Extensions
-@model ICollection<ImageViewModel>
+﻿@model ICollection<ImageViewModel>
 
 	<div class="row">
 		@foreach (var image in Model)
@@ -7,11 +6,15 @@
 			<!-- Gallery -->
 			<div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
 				<img src="@image.ImageUrl"
-					 class="w-100 shadow-1-strong rounded mb-4"
-					 alt="Boat on Calm Water" />
+					 class="w-100 shadow-1-strong rounded mb-4"/>
 				<form method="post" asp-action="Delete" asp-controller="Image" asp-route-id="@image.Id">
-				<input class="visually-hidden disabled" name="returnUrl" value="@Context.Request.GetDisplayUrl()" />
+					<input class="visually-hidden disabled" name="returnUrl" value="@Context.Request.GetDisplayUrl()" />
 					<input type="submit" value="Изтрии" class="btn btn-danger" />
+				</form>
+				<form method="post" asp-action="MakeDefaultById" asp-controller="Image" asp-route-id="@image.Id">
+				<input class="visually-hidden disabled" name="entityType" value="@ViewContext.RouteData.Values["controller"]?.ToString()?.ToLower()" />
+				<input class="visually-hidden disabled" name="entityId" value="@ViewContext.RouteData.Values["id"]" />
+				<input type="submit" value="Заглавна" class="btn btn-warning" />
 				</form>
 			</div>
 		}

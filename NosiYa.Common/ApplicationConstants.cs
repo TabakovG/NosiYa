@@ -13,6 +13,16 @@
         public const string DefaultOutfitImagePath = "";
     }
 
+    //Should match the related calling controller name !
+    public static class EntityTypesConst 
+    {
+	    public const string OutfitSet = "outfitset";
+	    public const string OutfitPart = "outfitpart";
+	    public const string Region = "region";
+	    public const string Event = "event";
+
+    }
+
     public static class SeedingConstants
     {
         public const string FirstUserId = "7C34FB52-0FDB-4CD7-027F-08DB822AA1B7";

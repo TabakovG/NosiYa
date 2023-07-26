@@ -3,6 +3,7 @@
 	using System.Collections.Generic;
 
 	using Microsoft.AspNetCore.Mvc;
+	using Common;	
 
 	using Infrastructure.Extensions;
 	using NosiYa.Services.Data.Interfaces;
@@ -85,7 +86,7 @@
 						var imageController = new ImageController(imageService, webHostEnvironment);
 						imageController.ControllerContext = ControllerContext;
 
-						string entityType = "event"; //TODO replace with constants
+						string entityType = EntityTypesConst.Event;
 
 						// Invoke AddImagesOnEntityCreate Action 
 						await imageController.AddImagesOnEntityCreateAsync(eventId, entityType, elementImages);
@@ -153,7 +154,7 @@
 			{
 				EventFormModel formModel = await this.eventService
 					.GetForEditByIdAsync(id);
-				formModel.Images = await this.imageService.GetRelatedImagesAsync(id, "event");
+				formModel.Images = await this.imageService.GetRelatedImagesAsync(id, EntityTypesConst.Event);
 				return View(formModel);
 			}
 			catch (Exception)
@@ -197,7 +198,7 @@
 					var imageController = new ImageController(imageService, webHostEnvironment);
 					imageController.ControllerContext = ControllerContext;
 
-					string entityType = "event"; //TODO replace with constants
+					string entityType = EntityTypesConst.Event; 
 
 					// Invoke AddImagesOnEntityCreate Action 
 					await imageController.UploadImagesAsync(id, entityType, elementImages);

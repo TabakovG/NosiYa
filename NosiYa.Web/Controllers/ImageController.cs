@@ -98,16 +98,39 @@
 
 		private async Task<string> UploadImage(IFormFile image, string entityType)
 		{
-			var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-			var imagePath = Path.Combine(this.hostingEnvironment.WebRootPath, $"images/{entityType}", fileName);
-
-			using (var fileStream = new FileStream(imagePath, FileMode.Create))
+			try
 			{
-				await image.CopyToAsync(fileStream);
+				var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+				var imagePath = Path.Combine(this.hostingEnvironment.WebRootPath, $"images/{entityType}", fileName);
+
+				await using (var fileStream = new FileStream(imagePath, FileMode.Create))
+				{
+					await image.CopyToAsync(fileStream);
+				}
+
+				return $"/images/{entityType}/" + fileName; // Return the relative path to the image
+			}
+			catch (Exception)
+			{
+				throw new FileNotFoundException("Error during image uploading to the file store.");
+			}
+		}
+
+		public async Task<IActionResult> MakeDefaultById( int entityId, string entityType, int id)
+		{
+			var imageExists = await this.imageService.ImageExistByIdAsync(id);
+
+			if (!imageExists)
+			{
+				this.TempData["ErrorMessage"] = "Снимка с този идентификатор не съществува!";
+
+				return this.RedirectToAction("Edit", entityType, new {id=entityId});
 			}
 
-			return $"/images/{entityType}/" + fileName; // Return the relative path to the image
-			
+			await this.imageService.SetDefaultImageAsync(entityId, entityType, id);
+
+			return this.RedirectToAction("Edit", entityType, new { id = entityId });
+
 		}
 
 		private IActionResult GeneralError()
