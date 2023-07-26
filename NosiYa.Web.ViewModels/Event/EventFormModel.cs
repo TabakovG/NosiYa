@@ -1,5 +1,6 @@
 ﻿namespace NosiYa.Web.ViewModels.Event
 {
+	using Image;
 	using System.ComponentModel.DataAnnotations;
 	
 	using static Common.EntityValidationConstants.Event;
@@ -8,7 +9,7 @@
 	{
 		public EventFormModel()
 		{
-			this.Images = new HashSet<string>();
+			this.Images = new HashSet<ImageViewModel>();
 		}
 
 		[Required]
@@ -29,7 +30,7 @@
 		[Required]
 		public DateTime EventEndDate { get; set; }
 
-		public ICollection<string> Images { get; set; }
+		public ICollection<ImageViewModel> Images { get; set; }
 
 	}
 }

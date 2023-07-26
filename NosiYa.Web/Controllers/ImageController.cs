@@ -1,12 +1,13 @@
-﻿using Newtonsoft.Json;
-using NosiYa.Services.Data.Interfaces;
-using NosiYa.Web.ViewModels.Image;
-using NuGet.Protocol;
-
-namespace NosiYa.Web.Controllers
+﻿namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
 	using Infrastructure.Extensions;
+
+	using NosiYa.Services.Data.Interfaces;
+	using NosiYa.Web.ViewModels.Image;
+	using Microsoft.EntityFrameworkCore.Metadata.Internal;
+	using System.Collections.Generic;
+	using NosiYa.Web.ViewModels.Region;
 
 	public class ImageController : Controller
 	{
@@ -19,17 +20,20 @@ namespace NosiYa.Web.Controllers
 			this.hostingEnvironment = hostingEnvironment;
 		}
 
-		[HttpPost]
-		public async Task<List<string>> AddImagesOnEntityCreate(int entityId, string entityType, List<IFormFile> elementImages)
+		public async Task AddImagesOnEntityCreateAsync(int entityId, string entityType, ICollection<IFormFile> elementImages)
 		{
-			var result = new List<string>();
+
+			await this.UploadImagesAsync(entityId, entityType, elementImages);
+			await this.imageService.SetDefaultImageAsync(entityId, entityType);
+		}
+
+		public async Task UploadImagesAsync(int entityId, string entityType, ICollection<IFormFile> elementImages)
+		{
 			try
 			{
-				foreach (var imageStr in elementImages)
+				foreach (var imageFormFile in elementImages)
 				{
-
-					var imagePath = SaveImageToWwwRoot(imageStr, entityType);
-					result.Add(imagePath);
+					var imagePath = await UploadImage(imageFormFile, entityType);
 
 					var imageModel = new ImageFormModel
 					{
@@ -50,76 +54,60 @@ namespace NosiYa.Web.Controllers
 						case "region":
 							imageModel.RegionId = entityId;
 							break;
-						default:
-							continue;
 					}
 
 					var userId = Guid.Parse(this.User!.GetId()!);
+					
+					//Create DB CIs and relations
 
-					await this.imageService.AddImageAsync(imageModel, userId);
+					await this.imageService.AddImageAndReturnIdAsync(imageModel, userId);
 				}
-
-				await this.imageService.SetDefaultImageAsync(entityId, entityType, null);
 			}
 			catch (Exception)
 			{
 				this.TempData["ErrorMessage"] =
 					"Unexpected error occurred during the images processing! Please try again later or contact administrator";
 			}
-
-			return result;
 		}
 
+
 		[HttpPost]
-		public async Task<IActionResult> Upload(ImageFormModel model, string returnUrl)
+		public async Task<IActionResult> Delete(int id, [FromForm] string returnUrl)
 		{
+			var imageExists = await this.imageService.ImageExistByIdAsync(id);
+
+			if (!imageExists)
+			{
+				this.TempData["ErrorMessage"] = "Снимка с този идентификатор не съществува!";
+
+				return this.Redirect(returnUrl);
+			}
+
 			try
 			{
-				//TODO To check if the user is admin
+				await this.imageService.DeleteImageByIdAsync(id, this.hostingEnvironment.WebRootPath);
 
-				if (!this.ModelState.IsValid)
-				{
-					return Redirect(returnUrl);
-
-				}
-
-				var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
-
-				if (!isAuthenticated)
-				{
-					return Redirect(returnUrl);
-				}
-
-				try
-				{
-					var userId = Guid.Parse(this.User!.GetId()!);
-					await this.imageService.AddImageAsync(model, userId);
-
-					return Redirect(returnUrl);
-				}
-				catch (Exception)
-				{
-					return Redirect(returnUrl);
-				}
+				this.TempData["WarningMessage"] = "Снимката беше изтрита успешно!";
+				return this.Redirect(returnUrl);
 			}
 			catch (Exception)
 			{
 				return this.GeneralError();
-
 			}
 		}
 
-		private string SaveImageToWwwRoot(IFormFile image, string entityType)
+		private async Task<string> UploadImage(IFormFile image, string entityType)
 		{
 			var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
 			var imagePath = Path.Combine(this.hostingEnvironment.WebRootPath, $"images/{entityType}", fileName);
 
 			using (var fileStream = new FileStream(imagePath, FileMode.Create))
 			{
-				image.CopyTo(fileStream);
+				await image.CopyToAsync(fileStream);
 			}
 
 			return $"/images/{entityType}/" + fileName; // Return the relative path to the image
+			
 		}
 
 		private IActionResult GeneralError()

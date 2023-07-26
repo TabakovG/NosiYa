@@ -7,18 +7,21 @@ namespace NosiYa.Services.Data.Interfaces
 	{
 		//Create:
 
-		Task AddImageAsync(ImageFormModel model, Guid userId);
+		Task<int> AddImageAndReturnIdAsync(ImageFormModel model, Guid userId);
+
 
 		//Read:
+		Task<ICollection<ImageViewModel>> GetRelatedImagesAsync(int relatedEntityId, string entity);
 
 		Task<bool> ImageExistByIdAsync(int id);
 
 		//Update:
 
-		Task SetDefaultImageAsync(int relatedEntityId, string entity, int? imageId);
+		Task SetDefaultImageAsync(int relatedEntityId, string entity, int? imageId = null);
 
 		//Delete:
-		Task DeleteImageByIdAsync(int id);
+		Task DeleteImageByIdAsync(int id, string root);
+
 
 	}
 }

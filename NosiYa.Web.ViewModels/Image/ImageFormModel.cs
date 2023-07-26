@@ -15,6 +15,5 @@
         public int? OutfitPartId { get; set; }
         public int? RegionId { get; set; }
         public int? EventId { get; set; }
-
     }
 }

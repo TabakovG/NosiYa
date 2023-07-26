@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore;
 using NosiYa.Data;
 using NosiYa.Data.Models;
 
@@ -16,7 +17,7 @@ namespace NosiYa.Services.Data
 			this.context = _context;
 		}
 
-		public async Task AddImageAsync(ImageFormModel model, Guid userId)
+		public async Task<int> AddImageAndReturnIdAsync(ImageFormModel model, Guid userId)
 		{
 			var image = new Image
 			{
@@ -30,14 +31,46 @@ namespace NosiYa.Services.Data
 
 			await this.context.Images.AddAsync(image);
 			await this.context.SaveChangesAsync();
+
+			return image.Id;
 		}
 
-		public Task<bool> ImageExistByIdAsync(int id)
+		public async Task<ICollection<ImageViewModel>> GetRelatedImagesAsync(int relatedEntityId, string entity)
 		{
-			throw new NotImplementedException();
+			ICollection<Image> images = new HashSet<Image>();
+			switch (entity)
+			{
+				case "event":
+					images = await this.context.Images.Where(i => i.EventId == relatedEntityId).ToListAsync();
+					break;
+				case "set":
+					images = await this.context.Images.Where(i => i.OutfitSetId == relatedEntityId).ToListAsync();
+					break;
+				case "region":
+					images = await this.context.Images.Where(i => i.RegionId == relatedEntityId).ToListAsync();
+					break;
+				case "part":
+					images = await this.context.Images.Where(i => i.OutfitPartId == relatedEntityId).ToListAsync();
+					break;
+			}
+
+			return images.Select(i => new ImageViewModel()
+				{
+					Id = i.Id,
+					ImageUrl = i.Url
+				})
+				.ToList();
 		}
 
-		public async Task SetDefaultImageAsync(int relatedEntityId, string entity, int? imageId)
+
+		public async Task<bool> ImageExistByIdAsync(int id)
+		{
+			return await this.context
+				.Images
+				.AnyAsync(i => i.Id == id);
+		}
+
+		public async Task SetDefaultImageAsync(int relatedEntityId, string entity, int? imageId = null)
 		{
 			ICollection<Image> images = new HashSet<Image>();
 			switch (entity)
@@ -66,9 +99,23 @@ namespace NosiYa.Services.Data
 			await this.context.SaveChangesAsync();
 		}
 
-		public Task DeleteImageByIdAsync(int id)
+		public async Task DeleteImageByIdAsync(int id, string root) 
 		{
-			throw new NotImplementedException();
+			var image = await this.context
+				.Images
+				.Where(i => i.Id == id)
+				.FirstAsync();
+
+			this.context.Images.Remove(image);
+
+			if (File.Exists(root+image.Url))
+			{
+				File.Delete(root + image.Url);
+			}
+
+			await this.context.SaveChangesAsync();	
 		}
+
+
 	}
 }

@@ -4,7 +4,9 @@
 	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
 		<form enctype="multipart/form-data" method="post">
 
-			<input asp-for="Images" type="file" name="elementImages" multiple />
+			<input asp-for="Images" type="file" name="elementImages" multiple/>
+			<div name="previewContainer" class="img img-fluid justify-content-center" ></div>
+			@*TODO create _addImagePartial*@
 
 			<div class="form-group">
 				<label asp-for="Name"></label>

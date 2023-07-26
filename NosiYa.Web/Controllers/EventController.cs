@@ -1,17 +1,14 @@
-﻿using Newtonsoft.Json;
-using NosiYa.Web.ViewModels.Comment;
-using NosiYa.Web.ViewModels.Image;
-using NuGet.Protocol;
-
-namespace NosiYa.Web.Controllers
+﻿namespace NosiYa.Web.Controllers
 {
+	using System.Collections.Generic;
+
 	using Microsoft.AspNetCore.Mvc;
 
 	using Infrastructure.Extensions;
 	using NosiYa.Services.Data.Interfaces;
+	using ViewModels.Comment;
 	using ViewModels.Event;
-	using System.Collections.Generic;
-	using Microsoft.Data.SqlClient.Server;
+
 
 	public class EventController : Controller
 	{
@@ -55,7 +52,7 @@ namespace NosiYa.Web.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add(EventFormModel model, [FromForm] List<IFormFile> elementImages)
+		public async Task<IActionResult> Add(EventFormModel model, [FromForm] ICollection<IFormFile> elementImages) //TODO BUG: edit requires new picture 
 		{
 			try
 			{
@@ -82,7 +79,7 @@ namespace NosiYa.Web.Controllers
 						await this.eventService.CreateAndReturnIdAsync(model, userId);
 
 					//Add images to the event
-					if (elementImages.Count > 0)
+					if (elementImages.Any())
 					{
 						// Call Add from ImageController without redirecting
 						var imageController = new ImageController(imageService, webHostEnvironment);
@@ -91,7 +88,7 @@ namespace NosiYa.Web.Controllers
 						string entityType = "event"; //TODO replace with constants
 
 						// Invoke AddImagesOnEntityCreate Action 
-						model.Images = await imageController.AddImagesOnEntityCreate(eventId, entityType, elementImages);
+						await imageController.AddImagesOnEntityCreateAsync(eventId, entityType, elementImages);
 
 					}
 
@@ -156,7 +153,7 @@ namespace NosiYa.Web.Controllers
 			{
 				EventFormModel formModel = await this.eventService
 					.GetForEditByIdAsync(id);
-
+				formModel.Images = await this.imageService.GetRelatedImagesAsync(id, "event");
 				return View(formModel);
 			}
 			catch (Exception)
@@ -166,7 +163,7 @@ namespace NosiYa.Web.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Edit(int id, EventFormModel model)
+		public async Task<IActionResult> Edit(int id, EventFormModel model, [FromForm] ICollection<IFormFile> elementImages)
 		{
 			if (!this.ModelState.IsValid)
 			{
@@ -192,6 +189,21 @@ namespace NosiYa.Web.Controllers
 			try
 			{
 				await this.eventService.EditByIdAsync(id, model);
+
+				//Add images to the event
+				if (elementImages.Count > 0)
+				{
+					// Call Add from ImageController without redirecting
+					var imageController = new ImageController(imageService, webHostEnvironment);
+					imageController.ControllerContext = ControllerContext;
+
+					string entityType = "event"; //TODO replace with constants
+
+					// Invoke AddImagesOnEntityCreate Action 
+					await imageController.UploadImagesAsync(id, entityType, elementImages);
+
+				}
+
 				this.TempData["SuccessMessage"] = "Промените са запазени успешно!";
 				return this.RedirectToAction("Details", "Event", new { Id = id });
 			}

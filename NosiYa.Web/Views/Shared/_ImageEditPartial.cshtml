@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@model ICollection<ImageViewModel>
+
+	<div class="row">
+		@foreach (var image in Model)
+		{
+			<!-- Gallery -->
+			<div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+				<img src="@image.ImageUrl"
+					 class="w-100 shadow-1-strong rounded mb-4"
+					 alt="Boat on Calm Water" />
+				<form method="post" asp-action="Delete" asp-controller="Image" asp-route-id="@image.Id">
+				<input class="visually-hidden disabled" name="returnUrl" value="@Context.Request.GetDisplayUrl()" />
+					<input type="submit" value="Изтрии" class="btn btn-danger" />
+				</form>
+			</div>
+		}
+	</div>
+
