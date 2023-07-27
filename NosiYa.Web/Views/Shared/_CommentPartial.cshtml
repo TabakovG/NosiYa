@@ -23,8 +23,8 @@
 			@* Display Edit Comment link *@
 			<a href="#" class="edit-comment-link" data-comment-id="@Model.Id">Edit Comment</a>
 
-			<form method="post" asp-action="Delete" asp-controller="Comment" asp-route-eventId="@ViewContext.RouteData.Values["id"]" asp-route-id="@Model.Id">
-				<input type="submit" value="Изтрии" class="btn btn-danger" />
+			<form method="post" asp-action="Delete" asp-controller="Comment" asp-route-eventId="@ViewContext.RouteData.Values["id"]" asp-route-id="@Model.Id" class="delete-comment-form">
+				<input type="submit" value="Изтрии" class="btn btn-danger " />
 			</form>
 
 		}

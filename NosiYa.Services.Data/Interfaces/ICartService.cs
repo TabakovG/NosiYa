@@ -5,10 +5,26 @@ namespace NosiYa.Services.Data.Interfaces
 	using Web.ViewModels.Cart;
 	public interface ICartService
 	{
-		Task<ICollection<ReservationsServiceModel>> GetReservedDates(DateTime start, DateTime end);
+		//Create:
+		Task CreateCartItemAsync(CartPreOrderFormModel model);
+		Task CartOrderCompleteAsync(CartCompleteOrderFormModel model, string userId);
 
+
+		//Read:
+		Task<ICollection<CartPreOrderViewModel>> GetAllItemsFromUserCartAsync(string userId);
 		Task<int> GetCartIdByUserIdAsync(string user);
+		Task<bool> OrderExistsById(int id);
 
-		Task CreateCartItemAsync(CartFormModel model);
+		//Update:
+
+
+		//Delete:
+		Task DeleteItemFromUserCartAsync(int id);
+
+		//TODO:
+
+		Task<ICollection<ReservationsServiceModel>> GetReservedDates(DateTime start, DateTime end); //TODO move to calendar controller!!
+
+
 	}
 }

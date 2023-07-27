@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using NosiYa.Web.ViewModels.OutfitSet;
-
-namespace NosiYa.Web.ViewModels.Cart
+﻿namespace NosiYa.Web.ViewModels.Cart
 {
-	public class CartFormModel
+	using System.ComponentModel.DataAnnotations;
+
+	using OutfitSet;
+
+	public class CartPreOrderFormModel
 	{
 
 		[Required]

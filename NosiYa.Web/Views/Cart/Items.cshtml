@@ -1,0 +1,49 @@
+﻿@using NosiYa.Web.Infrastructure.Extensions
+@model ICollection<CartPreOrderViewModel>
+
+@{
+	ViewBag.Title = "Количка";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+@if (!Model.Any())
+{
+	<h2 class="text-center">Количката е празна!</h2>
+}
+
+<div class="row">
+	@foreach (CartPreOrderViewModel order in Model)
+	{
+		<div class="col-md-4">
+			<div class="card mb-3">
+				<img class="card-img-top" src="@order.setImage" alt="Outfit Image">
+				<div class="card-body text-center">
+					<form method="post" asp-controller="Cart" asp-action="Order" asp-route-id="@order.Id">
+						<input name="OutfitId" class="visually-hidden " readonly value="@order.OutfitId" />
+						<input name="RenterId" class="visually-hidden " readonly value="@this.User.GetId()" />
+						<input name="FromDate" class="visually-hidden " readonly value="@order.FromDate" />
+						<input name="ToDate" class="visually-hidden " readonly value="@order.ToDate"/>
+						<div class="text-center">
+							<input class="btn btn-primary mt-3" type="submit" value="Поръчай" />
+						</div>
+					</form>
+					
+					<h4>@order.Name</h4>
+					<br />
+					<p class="">@order.FromDate</p>
+					<p class="">@order.ToDate</p>
+
+					@if (this.User.Identity?.IsAuthenticated ?? false)
+					{
+						<a asp-controller="Cart" asp-action="Edit" asp-route-id="@order.Id" class="btn btn-warning">Промени</a>
+						<a asp-controller="Cart" asp-action="Delete" asp-route-id="@order.Id" class="btn btn-danger">Изтрий</a>
+						<p></p>
+					}
+				</div>
+			</div>
+		</div>
+	}
+</div>
+

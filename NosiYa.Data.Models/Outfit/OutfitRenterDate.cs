@@ -4,8 +4,6 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    using Outfit;
-
     public class OutfitRenterDate
     {
         [ForeignKey(nameof(Outfit))]
@@ -21,6 +19,8 @@
         public DateTime Date { get; set; }
 
         public bool IsActive { get; set; } = true;
+        public bool IsApproved { get; set; } = false;
 
-    }
+
+	}
 }

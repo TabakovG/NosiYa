@@ -24,5 +24,7 @@
         [ForeignKey(nameof(Cart))]
         public int CartId { get; set; }
         public Cart Cart { get; set; } = null!;
+
+        public bool IsActive { get; set; } = true;
     }
 }

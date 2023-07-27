@@ -6,6 +6,7 @@ using NosiYa.Web.ViewModels.Cart;
 namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
+	using NosiYa.Web.ViewModels.Region;
 	using System.Globalization;
 
 	public class CartController : Controller
@@ -20,13 +21,67 @@ namespace NosiYa.Web.Controllers
 		}
 
 		[HttpGet]
+		public async Task<IActionResult> Items()
+		{
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+			if (!isAuthenticated)
+			{
+				return this.RedirectToAction("Index", "Home"); //TODO to login page
+			}
+
+			ICollection<CartPreOrderViewModel> orderModel = await this.cartService.GetAllItemsFromUserCartAsync(this.User!.GetId()!);
+
+			return View(orderModel);
+		}
+
+		[HttpPost]
+
+		public async Task<IActionResult> Order(int id,[FromForm] CartCompleteOrderFormModel model)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				return this.RedirectToAction("Items", "Cart");
+			}
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+			if (!isAuthenticated)
+			{
+				return this.RedirectToAction("Index", "Home");
+			}
+
+			var orderExists = await this.cartService.OrderExistsById(id);
+			if (!orderExists)
+			{
+				this.TempData["ErrorMessage"] = "Поръчка с посочения идентификатор не съществува!";
+				return this.RedirectToAction("Index", "Home");
+			}
+
+			//TODO validate dates
+			
+			try
+			{
+				await this.cartService.CartOrderCompleteAsync(model, this.User!.GetId()!);
+				await this.cartService.DeleteItemFromUserCartAsync(id);
+				return this.RedirectToAction("Items", "Cart");
+
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
+
+		}
+
+		[HttpGet]
 		public async Task<IActionResult> Add(int id)
 		{
 			try
 			{
 				var outfit = await this.outfitSetService.GetForRentByIdAsync(id);
 
-				var rentModel = new CartFormModel
+				var rentModel = new CartPreOrderFormModel
 				{
 					OutfitModel = outfit
 				};
@@ -41,7 +96,7 @@ namespace NosiYa.Web.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add(CartFormModel model)
+		public async Task<IActionResult> Add(CartPreOrderFormModel model)
 		{
 			try
 			{

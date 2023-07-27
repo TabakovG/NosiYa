@@ -42,33 +42,27 @@
 		[HttpPost]
 		public async Task<IActionResult> Add(RegionFormModel model)
 		{
+
+			//TODO To check if the user is admin
+
+			if (!this.ModelState.IsValid)
+			{
+				return this.View(model);
+			}
+
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+			if (!isAuthenticated)
+			{
+				return this.View(model);
+			}
+
 			try
 			{
-				//TODO To check if the user is admin
+				int regionId =
+					await this.regionService.CreateAndReturnIdAsync(model);
 
-				if (!this.ModelState.IsValid)
-				{
-					return this.View(model);
-				}
-
-				var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
-
-				if (!isAuthenticated)
-				{
-					return this.View(model);
-				}
-
-				try
-				{
-					int regionId =
-						await this.regionService.CreateAndReturnIdAsync(model);
-
-					return this.RedirectToAction("Details", "Region", new { Id = regionId });
-				}
-				catch (Exception)
-				{
-					return this.View(model);
-				}
+				return this.RedirectToAction("Details", "Region", new { Id = regionId });
 			}
 			catch (Exception)
 			{
