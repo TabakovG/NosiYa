@@ -1,0 +1,37 @@
+﻿@model ICollection<PreOrderViewModel>
+
+@{
+	ViewBag.Title = "Количка";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+@if (!Model.Any())
+{
+	<h2 class="text-center">Количката е празна!</h2>
+}
+
+<div class="row">
+	@foreach (PreOrderViewModel order in Model)
+	{
+		<div class="col-md-4">
+			<div class="card mb-3">
+				<img class="card-img-top" src="order.ImageUrl" alt="Outfit Image">
+				<div class="card-body text-center">
+					<h4>order.Name</h4>
+					<br />
+					@if (this.User.Identity?.IsAuthenticated ?? false)
+					{
+						<a asp-controller="Cart" asp-action="Edit" asp-route-id="order.Id"
+						   class="btn btn-warning">Промени</a>
+						<a asp-controller="Cart" asp-action="Delete" asp-route-id="order.Id"
+						   class="btn btn-danger">Изтрий</a>
+						<p></p>
+					}
+				</div>
+			</div>
+		</div>
+	}
+</div>
+

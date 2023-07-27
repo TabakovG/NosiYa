@@ -239,7 +239,7 @@ namespace NosiYa.Data.Migrations
                     b.HasIndex("OwnerId")
                         .IsUnique();
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("NosiYa.Data.Models.Comment", b =>
@@ -282,7 +282,7 @@ namespace NosiYa.Data.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
 
                     b.HasData(
                         new
@@ -359,7 +359,7 @@ namespace NosiYa.Data.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
 
                     b.HasData(
                         new
@@ -426,7 +426,7 @@ namespace NosiYa.Data.Migrations
 
                     b.HasIndex("RegionId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
 
                     b.HasData(
                         new
@@ -492,7 +492,7 @@ namespace NosiYa.Data.Migrations
 
                     b.HasIndex("OutfitId");
 
-                    b.ToTable("OutfitsForCarts");
+                    b.ToTable("OutfitsForCarts", (string)null);
                 });
 
             modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitPart", b =>
@@ -543,7 +543,7 @@ namespace NosiYa.Data.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("OutfitParts");
+                    b.ToTable("OutfitParts", (string)null);
 
                     b.HasData(
                         new
@@ -592,7 +592,7 @@ namespace NosiYa.Data.Migrations
 
                     b.HasIndex("RenterId");
 
-                    b.ToTable("OutfitRenterDates");
+                    b.ToTable("OutfitRenterDates", (string)null);
                 });
 
             modelBuilder.Entity("NosiYa.Data.Models.Outfit.OutfitSet", b =>
@@ -647,7 +647,7 @@ namespace NosiYa.Data.Migrations
 
                     b.HasIndex("RegionId");
 
-                    b.ToTable("OutfitSets");
+                    b.ToTable("OutfitSets", (string)null);
 
                     b.HasData(
                         new
@@ -689,7 +689,7 @@ namespace NosiYa.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Regions");
+                    b.ToTable("Regions", (string)null);
 
                     b.HasData(
                         new

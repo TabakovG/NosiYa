@@ -1,13 +1,12 @@
 ﻿namespace NosiYa.Web.Controllers
 {
+	using System.Collections.Generic;
 	using Microsoft.AspNetCore.Mvc;
+
 	using Infrastructure.Extensions;
 
 	using NosiYa.Services.Data.Interfaces;
-	using NosiYa.Web.ViewModels.Image;
-	using Microsoft.EntityFrameworkCore.Metadata.Internal;
-	using System.Collections.Generic;
-	using NosiYa.Web.ViewModels.Region;
+	using ViewModels.Image;
 
 	public class ImageController : Controller
 	{

@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 using NosiYa.Web.ViewModels.OutfitSet;
 
-namespace NosiYa.Web.ViewModels.Rent
+namespace NosiYa.Web.ViewModels.Cart
 {
 	public class CartFormModel
 	{
@@ -18,6 +17,5 @@ namespace NosiYa.Web.ViewModels.Rent
 		[Required]
 		public DateTime ToDate { get; set; }
 
-		public ICollection<string> ReservedDates { get; set; } = new HashSet<string>();
 	}
 }

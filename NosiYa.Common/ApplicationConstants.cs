@@ -11,6 +11,12 @@
 
         //Messages
         public const string DefaultOutfitImagePath = "";
+
+        //Reservations
+        public const string Reserved = "Резервирана";
+        public const string WaitingForReview = "Изчаква потвърждение";
+        
+
     }
 
     //Should match the related calling controller name !

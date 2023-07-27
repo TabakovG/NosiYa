@@ -1,5 +1,5 @@
 ﻿
-@model CartFormModel
+@model NosiYa.Web.ViewModels.Cart.CartFormModel
 @{
 	ViewData["Title"] = "Наеми носия";
 }
@@ -67,12 +67,20 @@
 			var calendar = new FullCalendar.Calendar(calendarEl,{
 				initialDate: '2023-07-26',
 				initialView: 'dayGridMonth',
+				validRange: function (nowDate) {
+
+					// Convert nowDate to a Moment.js object
+					var nowDate = new Date();
+					var endDate = new Date();
+
+					return {
+						start: nowDate,
+						end: endDate.setMonth(endDate.getMonth() + 4)
+					};
+				},
 				selectable: true,
 				timeZone: 'UTC',
 				allDayDefault: true,
-				validRange: {
-					start: new Date().toISOString().slice(0, 10) // Disable dates before the current date
-				},
 				selectOverlap: function (event) {
 					return event.rendering === 'background';
 				},
@@ -85,18 +93,7 @@
 					document.getElementById('fromDate').value = selectedStartDate.toISOString().slice(0, 16);
 					document.getElementById('toDate').value = selectedEndDate.toISOString().slice(0, 16);	
 				},
-				events: [
-					{
-						start: '2023-07-26',
-						end: '2023-07-29',
-						backgroundColor: 'red'
-					},
-					{
-						start: '2023-08-06',
-						end: '2023-08-09',
-						backgroundColor: 'blue'
-					},
-				]
+				events: '/cart/PopulateCalendar'
 			});
 			calendar.render();
 		});
