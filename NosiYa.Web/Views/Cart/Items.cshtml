@@ -38,7 +38,9 @@
 					@if (this.User.Identity?.IsAuthenticated ?? false)
 					{
 						<a asp-controller="Cart" asp-action="Edit" asp-route-id="@order.Id" class="btn btn-warning">Промени</a>
-						<a asp-controller="Cart" asp-action="Delete" asp-route-id="@order.Id" class="btn btn-danger">Изтрий</a>
+						<form method="post" asp-action="Delete" asp-controller="Cart" asp-route-id="@order.Id" class="delete-comment-form">
+							<input type="submit" value="Изтрии" class="btn btn-danger " />
+						</form>
 						<p></p>
 					}
 				</div>
@@ -46,4 +48,7 @@
 		</div>
 	}
 </div>
+
+<script src="~/js/alert-confirm.js"></script>
+
 

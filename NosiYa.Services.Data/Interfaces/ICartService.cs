@@ -13,13 +13,14 @@ namespace NosiYa.Services.Data.Interfaces
 		//Read:
 		Task<ICollection<CartPreOrderViewModel>> GetAllItemsFromUserCartAsync(string userId);
 		Task<int> GetCartIdByUserIdAsync(string user);
-		Task<bool> OrderExistsById(int id);
+		Task<bool> CartItemExistsById(int id);
 
 		//Update:
 
 
 		//Delete:
 		Task DeleteItemFromUserCartAsync(int id);
+		Task DeleteCompletedOrderAsync(int id, DateTime date);
 
 		//TODO:
 

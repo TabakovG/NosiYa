@@ -6,6 +6,7 @@ using NosiYa.Web.ViewModels.Cart;
 namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.Extensions.Logging;
 	using NosiYa.Web.ViewModels.Region;
 	using System.Globalization;
 
@@ -50,7 +51,7 @@ namespace NosiYa.Web.Controllers
 				return this.RedirectToAction("Index", "Home");
 			}
 
-			var orderExists = await this.cartService.OrderExistsById(id);
+			var orderExists = await this.cartService.CartItemExistsById(id);
 			if (!orderExists)
 			{
 				this.TempData["ErrorMessage"] = "Поръчка с посочения идентификатор не съществува!";
@@ -132,6 +133,42 @@ namespace NosiYa.Web.Controllers
 
 			}
 		}
+
+
+		[HttpPost]
+		public async Task<IActionResult> Delete(int id)
+		{
+			var cartItem = await this.cartService
+				.CartItemExistsById(id);
+
+			if (!cartItem)
+			{
+				this.TempData["ErrorMessage"] = "Продукт с този идентификатор не съществува!";
+
+				return this.RedirectToAction("Items", "Cart");
+			}
+
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+			if (!isAuthenticated)
+			{
+				return RedirectToAction("All", "OutfitSet"); //TODO better to login page
+			}
+
+			try
+			{
+				await this.cartService.DeleteItemFromUserCartAsync(id);
+
+				this.TempData["WarningMessage"] = "Продукта беше изтрит успешно!";
+
+				return this.RedirectToAction("Items", "Cart");
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
 
 		[HttpGet]
 		public async Task<string> PopulateCalendar(string start, string end)

@@ -118,7 +118,7 @@
                 return RedirectToAction("Details", "Event", new { Id = model.EventId });
             }
         }
-
+			
         [HttpPost]
         public async Task<IActionResult> Delete(int id, [FromQuery] int eventId)
         {	
@@ -145,15 +145,7 @@
 
 		        this.TempData["WarningMessage"] = "Коментара беше изтрит успешно!";
 
-
-		        if (eventId > 0)
-		        {
-			        // After deleting the comment, redirect back to the Event Details view
-			        return RedirectToAction("Details", "Event", new { id = eventId });
-		        }
-
-
-				return RedirectToAction("Details", "Event", new { Id = eventId});
+		        return RedirectToAction("Details", "Event", new { Id = eventId});
 	        }
 			catch (Exception)
 	        {

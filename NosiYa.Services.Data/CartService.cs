@@ -18,7 +18,7 @@
 			this.context = _context;
 		}
 
-		public async Task<bool> OrderExistsById(int id) //TODO isActive
+		public async Task<bool> CartItemExistsById(int id)
 		{
 			return await this.context
 				.OutfitsForCarts
@@ -35,6 +35,18 @@
 
 			item.IsActive = false;
 
+			await this.context.SaveChangesAsync();
+		}
+
+		public async Task DeleteCompletedOrderAsync(int id, DateTime date)
+		{
+			var order = await this.context
+				.OutfitRenterDates
+				.Where(o => o.OutfitId == id && o.Date == date)
+				.Where(o => o.IsActive)
+				.FirstAsync();
+
+			order.IsActive = false;
 			await this.context.SaveChangesAsync();
 		}
 
