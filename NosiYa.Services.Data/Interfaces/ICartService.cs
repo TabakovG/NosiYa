@@ -22,10 +22,5 @@ namespace NosiYa.Services.Data.Interfaces
 		Task DeleteItemFromUserCartAsync(int id);
 		Task DeleteCompletedOrderAsync(int id, DateTime date);
 
-		//TODO:
-
-		Task<ICollection<ReservationsServiceModel>> GetReservedDates(DateTime start, DateTime end); //TODO move to calendar controller!!
-
-
 	}
 }

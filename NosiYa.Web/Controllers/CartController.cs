@@ -1,24 +1,25 @@
-﻿using Newtonsoft.Json;
-using NosiYa.Services.Data.Interfaces;
-using NosiYa.Web.Infrastructure.Extensions;
-using NosiYa.Web.ViewModels.Cart;
-
-namespace NosiYa.Web.Controllers
+﻿namespace NosiYa.Web.Controllers
 {
-	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.Extensions.Logging;
-	using NosiYa.Web.ViewModels.Region;
 	using System.Globalization;
+
+	using Microsoft.AspNetCore.Mvc;
+	using Newtonsoft.Json;
+
+	using NosiYa.Services.Data.Interfaces;
+	using Infrastructure.Extensions;
+	using ViewModels.Cart;
 
 	public class CartController : Controller
 	{
 		private readonly ICartService cartService;
 		private readonly IOutfitSetService outfitSetService;
+		private readonly ICalendarService calendarService;
 
-		public CartController(ICartService cartService, IOutfitSetService outfitSetService)
+		public CartController(ICartService cartService, IOutfitSetService outfitSetService, ICalendarService calendarService)
 		{
 			this.outfitSetService = outfitSetService;
 			this.cartService = cartService;
+			this.calendarService = calendarService;
 		}
 
 		[HttpGet]
@@ -62,8 +63,16 @@ namespace NosiYa.Web.Controllers
 			
 			try
 			{
-				await this.cartService.CartOrderCompleteAsync(model, this.User!.GetId()!);
-				await this.cartService.DeleteItemFromUserCartAsync(id);
+				var stillFree = await this.calendarService.ValidateDatesAsync(model.FromDate, model.ToDate, model.OutfitId);
+
+				if (stillFree)
+				{
+					await this.cartService.CartOrderCompleteAsync(model, this.User!.GetId()!);
+					await this.cartService.DeleteItemFromUserCartAsync(id);
+					return this.RedirectToAction("Items", "Cart");
+				}
+				this.TempData["ErrorMessage"] = "Носията вече е заета за посочените дати!";
+
 				return this.RedirectToAction("Items", "Cart");
 
 			}
@@ -191,7 +200,7 @@ namespace NosiYa.Web.Controllers
 					return "";
 				}
 
-				var reservedDates = await this.cartService.GetReservedDates(startDate, endDate);
+				var reservedDates = await this.calendarService.GetReservedDates(startDate, endDate);
 
 				return JsonConvert.SerializeObject(reservedDates);
 			}

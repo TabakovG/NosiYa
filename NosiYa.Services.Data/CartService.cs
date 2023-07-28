@@ -5,9 +5,7 @@
 	using NosiYa.Data;
 	using NosiYa.Data.Models.Outfit;
 	using Web.ViewModels.Cart;
-	using static Common.ApplicationConstants;
 	using Interfaces;
-	using Models;
 
 	public class CartService : ICartService
 	{
@@ -48,23 +46,6 @@
 
 			order.IsActive = false;
 			await this.context.SaveChangesAsync();
-		}
-
-		public async Task<ICollection<ReservationsServiceModel>> GetReservedDates(DateTime start, DateTime end) //TODO can be moved in separate controller ??
-		{
-			var reservations = await this.context
-				.OutfitRenterDates
-				.Where(x => x.Date >= start.Date && x.Date <= end.Date)
-				.Where(x => x.IsActive)
-				.Select(r => new ReservationsServiceModel
-				{
-					title = r.IsApproved ? Reserved : WaitingForReview,
-					date = r.Date.ToString("yyyy-MM-ddTHH:mm:ss"),
-					backgroundColor = r.IsApproved ? "green" : "gray"
-				})
-				.ToArrayAsync();
-
-			return reservations;
 		}
 
 		public async Task CartOrderCompleteAsync(CartCompleteOrderFormModel model, string userId)
