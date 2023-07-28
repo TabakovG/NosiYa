@@ -1,6 +1,4 @@
-﻿using NosiYa.Common;
-
-namespace NosiYa.Web.Controllers
+﻿namespace NosiYa.Web.Controllers
 {
 	using System.Collections.Generic;
 	using Microsoft.AspNetCore.Mvc;
@@ -9,6 +7,8 @@ namespace NosiYa.Web.Controllers
 
 	using NosiYa.Services.Data.Interfaces;
 	using static Common.EntityTypesConst;
+	using static Common.NotificationMessagesConstants;
+
 	using ViewModels.Image;
 
 	public class ImageController : Controller
@@ -44,16 +44,16 @@ namespace NosiYa.Web.Controllers
 
 					switch (entityType)
 					{
-						case EntityTypesConst.OutfitSet:
+						case OutfitSet:
 							imageModel.OutfitSetId = entityId;
 							break;
-						case EntityTypesConst.OutfitPart:
+						case OutfitPart:
 							imageModel.OutfitPartId = entityId;
 							break;
-						case EntityTypesConst.Event:
+						case Event:
 							imageModel.EventId = entityId;
 							break;
-						case EntityTypesConst.Region:
+						case Region:
 							imageModel.RegionId = entityId;
 							break;
 					}
@@ -67,7 +67,7 @@ namespace NosiYa.Web.Controllers
 			}
 			catch (Exception)
 			{
-				this.TempData["ErrorMessage"] =
+				this.TempData[ErrorMessage] =
 					"Unexpected error occurred during the images processing! Please try again later or contact administrator";
 			}
 		}
@@ -80,7 +80,7 @@ namespace NosiYa.Web.Controllers
 
 			if (!imageExists)
 			{
-				this.TempData["ErrorMessage"] = "Снимка с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Снимка с този идентификатор не съществува!";
 
 				return this.Redirect(returnUrl);
 			}
@@ -89,7 +89,7 @@ namespace NosiYa.Web.Controllers
 			{
 				await this.imageService.DeleteImageByIdAsync(id, this.hostingEnvironment.WebRootPath);
 
-				this.TempData["WarningMessage"] = "Снимката беше изтрита успешно!";
+				this.TempData[WarningMessage] = "Снимката беше изтрита успешно!";
 				return this.Redirect(returnUrl);
 			}
 			catch (Exception)
@@ -124,14 +124,14 @@ namespace NosiYa.Web.Controllers
 
 			if (!imageExists)
 			{
-				this.TempData["ErrorMessage"] = "Снимка с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Снимка с този идентификатор не съществува!";
 
 				return this.RedirectToAction("Edit", entityType, new {id=entityId});
 			}
 
 			await this.imageService.SetDefaultImageAsync(entityId, entityType, id);
 
-			this.TempData["SuccessMessage"] = "Снимката за корица беше сменена успешно!";
+			this.TempData[SuccessMessage] = "Снимката за корица беше сменена успешно!";
 
 			return this.RedirectToAction("Edit", entityType, new { id = entityId });
 
@@ -139,7 +139,7 @@ namespace NosiYa.Web.Controllers
 
 		private IActionResult GeneralError()
 		{
-			this.TempData["ErrorMessage"] =
+			this.TempData[ErrorMessage] =
 				"Unexpected error occurred! Please try again later or contact administrator";
 
 			return this.RedirectToAction("Index", "Home");

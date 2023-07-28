@@ -8,6 +8,8 @@
 	using ViewModels.OutfitPart;
 	using Microsoft.AspNetCore.Hosting;
 	using Common;
+	using static Common.NotificationMessagesConstants;
+
 
 	public class OutfitPartController : Controller
 	{
@@ -70,7 +72,7 @@
 				if (!ownerExist)
 				{
 					model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
-					this.TempData["ErrorMessage"] = "Посочения собственик на елемента няма акаунт в системата!";
+					this.TempData[ErrorMessage] = "Посочения собственик на елемента няма акаунт в системата!";
 					return this.View(model);
 				}
 
@@ -117,7 +119,7 @@
 
 			if (!outfitPartExists)
 			{
-				this.TempData["ErrorMessage"] = "Елемент на носия с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
 
 				return this.RedirectToAction("All", "OutfitSet");
 			}
@@ -144,7 +146,7 @@
 
 			if (!outfitPartExists)
 			{
-				this.TempData["ErrorMessage"] = "Елемент на носия с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
 
 				return this.RedirectToAction("All", "OutfitSet");
 			}
@@ -181,7 +183,7 @@
 
 			if (!outfitPartExists)
 			{
-				this.TempData["ErrorMessage"] = "Елемент на носия с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
 
 				return this.RedirectToAction("All", "OutfitSet");
 			}
@@ -197,7 +199,7 @@
 			if (!ownerExist)
 			{
 				model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
-				this.TempData["ErrorMessage"] = "Посочения собственик на елемента няма акаунт в системата!";
+				this.TempData[ErrorMessage] = "Посочения собственик на елемента няма акаунт в системата!";
 				return this.View(model);
 			}
 
@@ -207,7 +209,7 @@
 			if (outfitSetType != model.RenterType)
 			{
 				model.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
-				this.TempData["ErrorMessage"] = $"Елементът трябва да съответсва на носията и да е подходящ за ${outfitSetType.ToString()}";
+				this.TempData[ErrorMessage] = $"Елементът трябва да съответсва на носията и да е подходящ за ${outfitSetType.ToString()}";
 				return this.View(model);
 			}
 
@@ -229,7 +231,7 @@
 
 				}
 
-				this.TempData["SuccessMessage"] = "Промените са запазени успешно!";
+				this.TempData[SuccessMessage] = "Промените са запазени успешно!";
 				return this.RedirectToAction("Details", "OutfitSet", new { model.OutfitSetId });
 			}
 			catch (Exception)
@@ -250,7 +252,7 @@
 				.ExistByIdAsync(id);
 			if (!outfitPartExists)
 			{
-				this.TempData["ErrorMessage"] = "Елемент на носия с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
 
 				return this.RedirectToAction("All", "OutfitSet");
 			}
@@ -275,7 +277,7 @@
 				.ExistByIdAsync(id);
 			if (!outfitPartExists)
 			{
-				this.TempData["ErrorMessage"] = "Елемент на носия с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
 
 				return this.RedirectToAction("All", "OutfitSet");
 			}
@@ -284,7 +286,7 @@
 			{
 				var outfitSetId = await this.outfitPartService.DeleteByIdAsyncAndReturnParentId(id);
 
-				this.TempData["WarningMessage"] = "Елементът беше изтрит успешно!";
+				this.TempData[WarningMessage] = "Елементът беше изтрит успешно!";
 				return this.RedirectToAction("Details", "OutfitSet", new { Id = outfitSetId });
 			}
 			catch (Exception)
@@ -295,7 +297,7 @@
 
 		private IActionResult GeneralError()
 		{
-			this.TempData["ErrorMessage"] =
+			this.TempData[ErrorMessage] =
 				"Unexpected error occurred! Please try again later or contact administrator";
 
 			return this.RedirectToAction("Index", "Home");

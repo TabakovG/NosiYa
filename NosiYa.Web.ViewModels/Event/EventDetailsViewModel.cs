@@ -31,6 +31,6 @@ namespace NosiYa.Web.ViewModels.Event
 
 		public ICollection<string> Images { get; set; }
 
-		public CommentFormModel CommentForm { get; set; }
+		public CommentFormModel CommentForm { get; set; } = null!;
 	}
 }

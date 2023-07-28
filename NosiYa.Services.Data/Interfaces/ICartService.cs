@@ -1,6 +1,4 @@
-﻿using NosiYa.Services.Data.Models;
-
-namespace NosiYa.Services.Data.Interfaces
+﻿namespace NosiYa.Services.Data.Interfaces
 {
 	using Web.ViewModels.Cart;
 	public interface ICartService

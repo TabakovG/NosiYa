@@ -8,6 +8,8 @@
 	using NosiYa.Services.Data.Interfaces;
 	using Infrastructure.Extensions;
 	using ViewModels.Cart;
+	using static Common.NotificationMessagesConstants;
+
 
 	public class CartController : Controller
 	{
@@ -55,7 +57,7 @@
 			var orderExists = await this.cartService.CartItemExistsById(id);
 			if (!orderExists)
 			{
-				this.TempData["ErrorMessage"] = "Поръчка с посочения идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Поръчка с посочения идентификатор не съществува!";
 				return this.RedirectToAction("Index", "Home");
 			}
 
@@ -71,7 +73,7 @@
 					await this.cartService.DeleteItemFromUserCartAsync(id);
 					return this.RedirectToAction("Items", "Cart");
 				}
-				this.TempData["ErrorMessage"] = "Носията вече е заета за посочените дати!";
+				this.TempData[ErrorMessage] = "Носията вече е заета за посочените дати!";
 
 				return this.RedirectToAction("Items", "Cart");
 
@@ -152,7 +154,7 @@
 
 			if (!cartItem)
 			{
-				this.TempData["ErrorMessage"] = "Продукт с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Продукт с този идентификатор не съществува!";
 
 				return this.RedirectToAction("Items", "Cart");
 			}
@@ -168,7 +170,7 @@
 			{
 				await this.cartService.DeleteItemFromUserCartAsync(id);
 
-				this.TempData["WarningMessage"] = "Продукта беше изтрит успешно!";
+				this.TempData[WarningMessage] = "Продукта беше изтрит успешно!";
 
 				return this.RedirectToAction("Items", "Cart");
 			}
@@ -189,13 +191,13 @@
 
 				if (!DateTime.TryParseExact(start, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate))
 				{
-					this.TempData["ErrorMessage"] =
+					this.TempData[ErrorMessage] =
 						"Unexpected error occurred during calendar population request! ";
 					return "";
 				}
 				if (!DateTime.TryParseExact(end, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate))
 				{
-					this.TempData["ErrorMessage"] =
+					this.TempData[ErrorMessage] =
 						"Unexpected error occurred during calendar population request! ";
 					return "";
 				}
@@ -206,7 +208,7 @@
 			}
 			catch (Exception)
 			{
-				this.TempData["ErrorMessage"] =
+				this.TempData[ErrorMessage] =
 					"Unexpected error occurred during calendar population! ";
 				return "";
 			}
@@ -214,7 +216,7 @@
 
 		private IActionResult GeneralError()
 		{
-			this.TempData["ErrorMessage"] =
+			this.TempData[ErrorMessage] =
 				"Unexpected error occurred! Please try again later or contact administrator";
 
 			return this.RedirectToAction("Index", "Home");

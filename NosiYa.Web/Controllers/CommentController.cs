@@ -5,6 +5,8 @@
     using NosiYa.Services.Data.Interfaces;
     using Infrastructure.Extensions;
     using ViewModels.Comment;
+	using static Common.NotificationMessagesConstants;
+
 
 	public class CommentController : Controller
 	{
@@ -60,7 +62,7 @@
 
 			if (!commentExists)
 			{
-				this.TempData["ErrorMessage"] = "Коментар с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Коментар с този идентификатор не съществува!";
 
 				return this.RedirectToAction("All", "Event");
 			}
@@ -92,7 +94,7 @@
 
             if (!commentExists)
             {
-                this.TempData["ErrorMessage"] = "Коментар с този идентификатор не съществува!";
+                this.TempData[ErrorMessage] = "Коментар с този идентификатор не съществува!";
 
                 return this.RedirectToAction("All", "Event");
             }
@@ -107,7 +109,7 @@
             try
             {
                 await this.commentService.EditByModelAsync(model);
-                this.TempData["SuccessMessage"] = "Промените са запазени успешно и скоро ще бъдат видими! ";
+                this.TempData[SuccessMessage] = "Промените са запазени успешно и скоро ще бъдат видими! ";
                 return RedirectToAction("Details", "Event", new { Id = model.EventId });
             }
             catch (Exception)
@@ -127,7 +129,7 @@
 
 			if (!commentExists)
 			{
-				this.TempData["ErrorMessage"] = "Коментар с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Коментар с този идентификатор не съществува!";
 
 				return this.RedirectToAction("All", "Event");
 			}
@@ -143,7 +145,7 @@
 	        {
 		        await this.commentService.DeleteByIdAsync(id);
 
-		        this.TempData["WarningMessage"] = "Коментара беше изтрит успешно!";
+		        this.TempData[WarningMessage] = "Коментара беше изтрит успешно!";
 
 		        return RedirectToAction("Details", "Event", new { Id = eventId});
 	        }
@@ -155,7 +157,7 @@
 
 		private IActionResult GeneralError()
 		{
-			this.TempData["ErrorMessage"] =
+			this.TempData[ErrorMessage] =
 				"Unexpected error occurred! Please try again later or contact administrator";
 
 			return this.RedirectToAction("Index", "Home");

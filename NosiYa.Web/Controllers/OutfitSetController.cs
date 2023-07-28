@@ -1,11 +1,11 @@
-﻿using NosiYa.Common;
-using NosiYa.Services.Data.Models;
-
-namespace NosiYa.Web.Controllers
+﻿namespace NosiYa.Web.Controllers
 {
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.OutfitSet;
 	using Microsoft.AspNetCore.Mvc;
+	using Common;
+	using NosiYa.Services.Data.Models;
+	using static Common.NotificationMessagesConstants;
 
 	public class OutfitSetController : Controller
 	{
@@ -94,6 +94,10 @@ namespace NosiYa.Web.Controllers
 
 			        }
 
+			        this.TempData[SuccessMessage] = "Носията е създадена успешно!";
+			        this.TempData[WarningMessage] = "Моля добавете поне една част на носията, преди активация!";
+
+
 					return this.RedirectToAction("Add", "OutfitPart", new {Id = outfitSetId});
 		        }
 		        catch (Exception)
@@ -117,7 +121,7 @@ namespace NosiYa.Web.Controllers
 
 	        if (!outfitSetExists)
 	        {
-		        this.TempData["ErrorMessage"] = "Носия с този идентификатор не съществува!";
+		        this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
 
 		        return this.RedirectToAction("All", "OutfitSet");
 	        }
@@ -143,7 +147,7 @@ namespace NosiYa.Web.Controllers
 
             if (!outfitSetExists)
             {
-                this.TempData["ErrorMessage"] = "Носия с този идентификатор не съществува!";
+                this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
 
                 return this.RedirectToAction("All", "OutfitSet");
             }
@@ -180,7 +184,7 @@ namespace NosiYa.Web.Controllers
 
 	        if (!outfitSetExists)
 	        {
-		        this.TempData["ErrorMessage"] = "Носия с този идентификатор не съществува!";
+		        this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
 
 		        return this.RedirectToAction("All", "OutfitSet");
 	        }
@@ -203,7 +207,7 @@ namespace NosiYa.Web.Controllers
 
 		        }
 
-				this.TempData["SuccessMessage"] = "Промените са запазени успешно!";
+				this.TempData[SuccessMessage] = "Промените са запазени успешно!";
 		        return this.RedirectToAction("Details", "OutfitSet", new { id });
 			}
 	        catch (Exception)
@@ -223,7 +227,7 @@ namespace NosiYa.Web.Controllers
 				.ExistByIdAsync(id);
 			if (!outfitSetExists)
 			{
-				this.TempData["ErrorMessage"] = "Носия с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
 
 				return this.RedirectToAction("All", "OutfitSet");
 			}
@@ -248,7 +252,7 @@ namespace NosiYa.Web.Controllers
 				.ExistByIdAsync(id);
 			if (!outfitSetExists)
 			{
-				this.TempData["ErrorMessage"] = "Носия с този идентификатор не съществува!";
+				this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
 
 				return this.RedirectToAction("All", "OutfitSet");
 			}
@@ -260,7 +264,7 @@ namespace NosiYa.Web.Controllers
 
 				//TODO delete pictures async
 
-				this.TempData["WarningMessage"] = "Носията беше изтрита успешно!";
+				this.TempData[WarningMessage] = "Носията беше изтрита успешно!";
 				return this.RedirectToAction("All", "OutfitSet");
 			}
 			catch (Exception)
@@ -271,7 +275,7 @@ namespace NosiYa.Web.Controllers
 
 		private IActionResult GeneralError()
         {
-            this.TempData["ErrorMessage"] =
+            this.TempData[ErrorMessage] =
                 "Unexpected error occurred! Please try again later or contact administrator";
 
             return this.RedirectToAction("Index", "Home");
