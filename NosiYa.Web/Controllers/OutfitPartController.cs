@@ -6,18 +6,24 @@
 
 	using ViewModels.OutfitSet;
 	using ViewModels.OutfitPart;
+	using Microsoft.AspNetCore.Hosting;
+	using Common;
 
 	public class OutfitPartController : Controller
 	{
 		private readonly IOutfitPartService outfitPartService;
 		private readonly IOutfitSetService outfitSetService;
 		private readonly IUserService userService;
+		private readonly IImageService imageService;
+		private readonly IWebHostEnvironment webHostEnvironment;
 
-		public OutfitPartController(IOutfitPartService outfitPartService, IOutfitSetService outfitSetService, IUserService userService)
+		public OutfitPartController(IOutfitPartService outfitPartService, IOutfitSetService outfitSetService, IUserService userService, IImageService imageService, IWebHostEnvironment webHostEnvironment)
 		{
 			this.outfitPartService = outfitPartService;
 			this.outfitSetService = outfitSetService;
 			this.userService = userService;
+			this.imageService = imageService;
+			this.webHostEnvironment = webHostEnvironment;
 		}
 
 		[HttpGet]
@@ -39,7 +45,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add(OutfitPartFormModel model)
+		public async Task<IActionResult> Add(OutfitPartFormModel model, [FromForm] ICollection<IFormFile> elementImages)
 		{
 			try
 			{
@@ -74,6 +80,20 @@
 				{
 					int outfitPartId =
 						await this.outfitPartService.CreateAndReturnIdAsync(model);
+
+					//Add images to the event
+					if (elementImages.Any())
+					{
+						// Call Add from ImageController without redirecting
+						var imageController = new ImageController(imageService, webHostEnvironment);
+						imageController.ControllerContext = ControllerContext;
+
+						string entityType = EntityTypesConst.OutfitPart;
+
+						// Invoke AddImagesOnEntityCreate Action 
+						await imageController.AddImagesOnEntityCreateAsync(outfitPartId, entityType, elementImages);
+
+					}
 
 					return this.RedirectToAction("Details", "OutfitSet", new { Id = model.OutfitSetId });
 				}
@@ -133,7 +153,12 @@
 			{
 				OutfitPartFormModel formModel = await this.outfitPartService
 					.GetForEditByIdAsync(id);
+
+				//Populate OutfitSet Options
 				formModel.OutfitSets = await this.outfitSetService.GetAllOutfitSetsForOptionsAsync();
+
+				//Populate related Images
+				formModel.Images = await this.imageService.GetRelatedImagesAsync(id, EntityTypesConst.OutfitPart);
 
 				return View(formModel);
 			}
@@ -144,7 +169,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Edit(int id, OutfitPartFormModel model)
+		public async Task<IActionResult> Edit(int id, OutfitPartFormModel model, [FromForm] ICollection<IFormFile> elementImages)
 		{
 			if (!this.ModelState.IsValid)
 			{
@@ -189,6 +214,21 @@
 			try
 			{
 				await this.outfitPartService.EditByIdAsync(id, model);
+
+				//Add images to the outfitPart
+				if (elementImages.Count > 0)
+				{
+					// Call Add from ImageController without redirecting
+					var imageController = new ImageController(imageService, webHostEnvironment);
+					imageController.ControllerContext = ControllerContext;
+
+					string entityType = EntityTypesConst.OutfitPart;
+
+					// Invoke AddImagesOnEntityCreate Action 
+					await imageController.UploadImagesAsync(id, entityType, elementImages);
+
+				}
+
 				this.TempData["SuccessMessage"] = "Промените са запазени успешно!";
 				return this.RedirectToAction("Details", "OutfitSet", new { model.OutfitSetId });
 			}

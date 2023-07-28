@@ -12,7 +12,7 @@ namespace NosiYa.Web.ViewModels.OutfitPart
     {
         public OutfitPartFormModel()
         {
-            this.PartImages = new HashSet<ImageFormModel>();
+            this.Images = new HashSet<ImageViewModel>();
             this.OutfitSets = new HashSet<OutfitSetForOptionsViewModel>();
         }
 
@@ -46,8 +46,6 @@ namespace NosiYa.Web.ViewModels.OutfitPart
         [StringLength(SizeMaxLength, MinimumLength = SizeMinLength)]
         public string Size { get; set; } = null!;
 
-        public ICollection<ImageFormModel> PartImages { get; set; }
-
-
+        public ICollection<ImageViewModel> Images { get; set; }
     }
 }

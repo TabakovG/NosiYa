@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Web.Controllers
+﻿using NosiYa.Common;
+
+namespace NosiYa.Web.Controllers
 {
 	using System.Collections.Generic;
 	using Microsoft.AspNetCore.Mvc;
@@ -6,6 +8,7 @@
 	using Infrastructure.Extensions;
 
 	using NosiYa.Services.Data.Interfaces;
+	using static Common.EntityTypesConst;
 	using ViewModels.Image;
 
 	public class ImageController : Controller
@@ -41,16 +44,16 @@
 
 					switch (entityType)
 					{
-						case "set":
+						case EntityTypesConst.OutfitSet:
 							imageModel.OutfitSetId = entityId;
 							break;
-						case "part":
+						case EntityTypesConst.OutfitPart:
 							imageModel.OutfitPartId = entityId;
 							break;
-						case "event":
+						case EntityTypesConst.Event:
 							imageModel.EventId = entityId;
 							break;
-						case "region":
+						case EntityTypesConst.Region:
 							imageModel.RegionId = entityId;
 							break;
 					}

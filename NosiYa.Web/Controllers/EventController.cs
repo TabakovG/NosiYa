@@ -53,7 +53,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add(EventFormModel model, [FromForm] ICollection<IFormFile> elementImages) //TODO BUG: edit requires new picture 
+		public async Task<IActionResult> Add(EventFormModel model, [FromForm] ICollection<IFormFile> elementImages) 
 		{
 			try
 			{
@@ -154,7 +154,10 @@
 			{
 				EventFormModel formModel = await this.eventService
 					.GetForEditByIdAsync(id);
+
+				//Populate related Images
 				formModel.Images = await this.imageService.GetRelatedImagesAsync(id, EntityTypesConst.Event);
+
 				return View(formModel);
 			}
 			catch (Exception)

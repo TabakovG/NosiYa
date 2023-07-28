@@ -9,27 +9,26 @@
 
 <div class="container" style="display:inline">
 	<div class="row">
-		<div class="col-4">
-			<img class="card-img-top" style="width: 20rem;"
-				 src="@Model.Images.FirstOrDefault() alt="OutfitSet Image">
-		</div>
+
+		<partial name="_ImageGalleryPartial" model="@Model.Images"/>
+
 		<div class="card col-8 border-0">
-			<p style="font-size:25px;"><u>@Model.Name</u></p>
+			<p style="font-size: 25px;"><u>@Model.Name</u></p>
 			<p>Елемент тип: @Model.OutfitPartType</p>
 			<p>@Model.Description</p>
 			<p>Цвят: <b>@Model.Color</b></p>
 			<p>Подходяща за: <b>@Model.RenterType</b></p>
 			<p>Размер: <b>@Model.Size</b></p>
 			<p>Елемент от носия: <b>@Model.OutfitSet</b></p>
-			<p>Собственик: <b>@Model.OwnerEmail</b></p>            @*TODO samo Admina*@
+			<p>Собственик: <b>@Model.OwnerEmail</b></p> @*TODO samo Admina*@
 
 			<div class="form-inline">
 				@if (this.User.Identity?.IsAuthenticated ?? false)
 				{
 					<a class="btn btn-warning" asp-controller="OutfitPart" asp-action="Edit"
-				   asp-route-id="@Model.Id">Edit</a>
+					   asp-route-id="@Model.Id">Edit</a>
 					<a class="ml-2 btn btn-danger" asp-controller="OutfitPart" asp-action="Delete"
-				   asp-route-id="@Model.Id">Delete</a>
+					   asp-route-id="@Model.Id">Delete</a>
 
 				}
 			</div>

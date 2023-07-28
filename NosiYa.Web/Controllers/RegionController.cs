@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Web.Controllers
+﻿using NosiYa.Common;
+
+namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +10,14 @@
 	public class RegionController : Controller
 	{
 		private readonly IRegionService regionService;
+		private readonly IImageService imageService;
+		private readonly IWebHostEnvironment webHostEnvironment;
 
-		public RegionController(IRegionService regionService)
+		public RegionController(IRegionService regionService, IImageService imageService, IWebHostEnvironment webHostEnvironment)
 		{
 			this.regionService = regionService;
+			this.imageService = imageService;
+			this.webHostEnvironment = webHostEnvironment;
 		}
 
 		public async Task<IActionResult> All([FromQuery] AllRegionsPaginatedModel model)
@@ -40,7 +46,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add(RegionFormModel model)
+		public async Task<IActionResult> Add(RegionFormModel model, [FromForm] ICollection<IFormFile> elementImages)
 		{
 
 			//TODO To check if the user is admin
@@ -61,6 +67,20 @@
 			{
 				int regionId =
 					await this.regionService.CreateAndReturnIdAsync(model);
+
+				//Add images to the event
+				if (elementImages.Any())
+				{
+					// Call Add from ImageController without redirecting
+					var imageController = new ImageController(imageService, webHostEnvironment);
+					imageController.ControllerContext = ControllerContext;
+
+					string entityType = EntityTypesConst.Region;
+
+					// Invoke AddImagesOnEntityCreate Action 
+					await imageController.AddImagesOnEntityCreateAsync(regionId, entityType, elementImages);
+
+				}
 
 				return this.RedirectToAction("Details", "Region", new { Id = regionId });
 			}
@@ -114,6 +134,10 @@
 			{
 				RegionFormModel formModel = await this.regionService
 					.GetForEditByIdAsync(id);
+
+				//Populate related Images
+				formModel.Images = await this.imageService.GetRelatedImagesAsync(id, EntityTypesConst.Region);
+
 				return View(formModel);
 			}
 			catch (Exception)
@@ -123,7 +147,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Edit(int id, RegionFormModel model)
+		public async Task<IActionResult> Edit(int id, RegionFormModel model, [FromForm] ICollection<IFormFile> elementImages)
 		{
 			if (!this.ModelState.IsValid)
 			{
@@ -149,6 +173,21 @@
 			try
 			{
 				await this.regionService.EditByIdAsync(id, model);
+
+				//Add images to the event
+				if (elementImages.Count > 0)
+				{
+					// Call Add from ImageController without redirecting
+					var imageController = new ImageController(imageService, webHostEnvironment);
+					imageController.ControllerContext = ControllerContext;
+
+					string entityType = EntityTypesConst.Region;
+
+					// Invoke AddImagesOnEntityCreate Action 
+					await imageController.UploadImagesAsync(id, entityType, elementImages);
+
+				}
+
 				this.TempData["SuccessMessage"] = "Промените са запазени успешно!";
 				return this.RedirectToAction("Details", "Region", new { Id = id });
 			}

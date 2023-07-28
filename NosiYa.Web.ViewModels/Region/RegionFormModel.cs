@@ -9,7 +9,7 @@
 	{
 		public RegionFormModel()
 		{
-			this.Images = new HashSet<ImageFormModel>();
+			this.Images = new HashSet<ImageViewModel>();
 		}
 
 		[Required]
@@ -20,6 +20,6 @@
 		[StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
 		public string Description { get; set; } = null!;
 
-		public IEnumerable<ImageFormModel> Images { get; set; }
+		public ICollection<ImageViewModel> Images { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
-﻿using NosiYa.Services.Data.Models;
+﻿using NosiYa.Common;
+using NosiYa.Services.Data.Models;
 
 namespace NosiYa.Web.Controllers
 {
@@ -11,12 +12,16 @@ namespace NosiYa.Web.Controllers
 		private readonly IOutfitSetService outfitService;
 		private readonly IRegionService regionService;
 		private readonly IOutfitPartService partService;
+		private readonly IImageService imageService;
+		private readonly IWebHostEnvironment webHostEnvironment;
 
-		public OutfitSetController(IOutfitSetService outfitService, IRegionService regionService, IOutfitPartService partService)
+		public OutfitSetController(IOutfitSetService outfitService, IRegionService regionService, IOutfitPartService partService, IImageService imageService, IWebHostEnvironment webHostEnvironment)
 		{
 			this.outfitService = outfitService;
 			this.regionService = regionService;
 			this.partService = partService;
+			this.imageService = imageService;
+			this.webHostEnvironment = webHostEnvironment;
 		}
 		[HttpGet]
 		public async Task<IActionResult> All([FromQuery] AllOutfitsQueryModel queryModel)
@@ -50,7 +55,7 @@ namespace NosiYa.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(OutfitSetFormModel model)
+        public async Task<IActionResult> Create(OutfitSetFormModel model, [FromForm] ICollection<IFormFile> elementImages)
         {
 	        try
 	        {
@@ -75,12 +80,21 @@ namespace NosiYa.Web.Controllers
 			        int outfitSetId =
 				        await this.outfitService.CreateOutfitSetAndReturnIdAsync(model);
 
-/*			        CreateSetToAddPartServiceModel input = new CreateSetToAddPartServiceModel
+			        //Add images to the event
+			        if (elementImages.Any())
 			        {
-				        OutfitSetId = outfitSetId,
-			        };*/
+				        // Call Add from ImageController without redirecting
+				        var imageController = new ImageController(imageService, webHostEnvironment);
+				        imageController.ControllerContext = ControllerContext;
 
-			        return this.RedirectToAction("Add", "OutfitPart", new {Id = outfitSetId});
+				        string entityType = EntityTypesConst.OutfitSet;
+
+				        // Invoke AddImagesOnEntityCreate Action 
+				        await imageController.AddImagesOnEntityCreateAsync(outfitSetId, entityType, elementImages);
+
+			        }
+
+					return this.RedirectToAction("Add", "OutfitPart", new {Id = outfitSetId});
 		        }
 		        catch (Exception)
 		        {
@@ -136,12 +150,15 @@ namespace NosiYa.Web.Controllers
 
             try
             {
-                OutfitSetFormModel viewModel = await this.outfitService
+                OutfitSetFormModel formModel = await this.outfitService
                     .GetForEditByIdAsync(id);
 
-                viewModel.Regions = await this.regionService.GetAllRegionsAsync();
+                formModel.Regions = await this.regionService.GetAllRegionsAsync();
 
-				return View(viewModel);
+                //Populate related Images
+                formModel.Images = await this.imageService.GetRelatedImagesAsync(id, EntityTypesConst.OutfitSet);
+
+				return View(formModel);
             }
             catch (Exception)
             {
@@ -150,7 +167,7 @@ namespace NosiYa.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, OutfitSetFormModel model)
+        public async Task<IActionResult> Edit(int id, OutfitSetFormModel model, [FromForm] ICollection<IFormFile> elementImages)
         {
 	        if (!this.ModelState.IsValid)
 	        {
@@ -171,7 +188,22 @@ namespace NosiYa.Web.Controllers
 	        try
 	        {
 		        await this.outfitService.EditByIdAsync(id, model);
-		        this.TempData["SuccessMessage"] = "Промените са запазени успешно!";
+
+		        //Add images to the outfitSet
+		        if (elementImages.Count > 0)
+		        {
+			        // Call Add from ImageController without redirecting
+			        var imageController = new ImageController(imageService, webHostEnvironment);
+			        imageController.ControllerContext = ControllerContext;
+
+			        string entityType = EntityTypesConst.OutfitSet;
+
+			        // Invoke AddImagesOnEntityCreate Action 
+			        await imageController.UploadImagesAsync(id, entityType, elementImages);
+
+		        }
+
+				this.TempData["SuccessMessage"] = "Промените са запазени успешно!";
 		        return this.RedirectToAction("Details", "OutfitSet", new { id });
 			}
 	        catch (Exception)

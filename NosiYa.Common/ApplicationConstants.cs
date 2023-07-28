@@ -7,7 +7,7 @@
 
         //Pagination
         public const int DefaultFirstPage = 1;
-        public const int DefaultResultsPerPage = 6;
+        public const int DefaultResultsPerPage = 3;
 
         //Messages
         public const string DefaultOutfitImagePath = "";

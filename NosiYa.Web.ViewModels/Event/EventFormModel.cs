@@ -30,7 +30,7 @@
 		[Required]
 		public DateTime EventEndDate { get; set; }
 
-		public ICollection<ImageViewModel>? Images { get; set; }
+		public ICollection<ImageViewModel> Images { get; set; }
 
 	}
 }

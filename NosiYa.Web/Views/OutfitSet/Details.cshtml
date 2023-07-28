@@ -9,12 +9,11 @@
 
 <div class="container" style="display:inline">
 	<div class="row">
-		<div class="col-4">
-			<img class="card-img-top" style="width: 20rem;"
-				 src="@Model.Size" alt="OutfitSet Image">
-		</div>
+
+		<partial name="_ImageGalleryPartial" model="@Model.Images"/>
+
 		<div class="card col-8 border-0">
-			<p style="font-size:25px;"><u>@Model.Name</u></p>
+			<p style="font-size: 25px;"><u>@Model.Name</u></p>
 			<p>
 				Price Per Day:
 				<b>@($"{Model.PricePerDay:f2}") BGN</b>
@@ -27,16 +26,16 @@
 				@if (this.User.Identity?.IsAuthenticated ?? false)
 				{
 					<a class="btn btn-warning" asp-controller="OutfitSet" asp-action="Edit"
-				   asp-route-id="@Model.Id">Edit</a>
+					   asp-route-id="@Model.Id">Edit</a>
 					<a class="ml-2 btn btn-danger" asp-controller="OutfitSet" asp-action="Delete"
-				   asp-route-id="@Model.Id">Delete</a>
+					   asp-route-id="@Model.Id">Delete</a>
 
 				}
 			</div>
 
 			@foreach (OutfitPartViewModel part in Model.OutfitParts)
 			{
-				<partial name="_OutfitPartPartial" model="@part" />
+				<partial name="_OutfitPartPartial" model="@part"/>
 			}
 		</div>
 	</div>

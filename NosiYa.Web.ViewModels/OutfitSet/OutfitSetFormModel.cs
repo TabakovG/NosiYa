@@ -12,7 +12,7 @@
     {
         public OutfitSetFormModel()
         {
-            this.SetImages = new HashSet<ImageFormModel>();
+            this.Images = new HashSet<ImageViewModel>();
             this.OutfitParts = new HashSet<OutfitPartFormModel>();
             this.Regions = new HashSet<PossibleRegionsFormModel>();
             this.IsActive = true;
@@ -46,7 +46,7 @@
         [StringLength(SizeMaxLength, MinimumLength = SizeMinLength)]
         public string Size { get; set; } = null!;
 
-        public ICollection<ImageFormModel> SetImages { get; set; }
+        public ICollection<ImageViewModel> Images { get; set; }
         public ICollection<OutfitPartFormModel> OutfitParts { get; set; } //TODO not needed ?
 
     }
