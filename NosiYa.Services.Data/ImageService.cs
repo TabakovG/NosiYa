@@ -62,6 +62,29 @@
 				.ToList();
 		}
 
+		public async Task<bool> HasDefaultAsync(int relatedEntityId, string entity)
+		{
+			bool result = false;
+
+			switch (entity.ToLower())
+			{
+				case EntityTypesConst.Event:
+					result = await this.context.Images.Where(i => i.EventId == relatedEntityId).AnyAsync(i=>i.IsDefault);
+					break;
+				case EntityTypesConst.OutfitSet:
+					result = await this.context.Images.Where(i => i.OutfitSetId == relatedEntityId).AnyAsync(i => i.IsDefault);
+					break;
+				case EntityTypesConst.Region:
+					result = await this.context.Images.Where(i => i.RegionId == relatedEntityId).AnyAsync(i => i.IsDefault);
+					break;
+				case EntityTypesConst.OutfitPart:
+					result = await this.context.Images.Where(i => i.OutfitPartId == relatedEntityId).AnyAsync(i => i.IsDefault);
+					break;
+			}
+
+			return result;
+		}
+
 
 		public async Task<bool> ImageExistByIdAsync(int id)
 		{

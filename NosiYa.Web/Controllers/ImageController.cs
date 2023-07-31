@@ -63,6 +63,11 @@
 					//Create DB CIs and relations
 
 					await this.imageService.AddImageAndReturnIdAsync(imageModel, userId);
+					var hasDefault = await this.imageService.HasDefaultAsync(entityId, entityType);
+					if (!hasDefault)
+					{
+						await this.imageService.SetDefaultImageAsync(entityId, entityType);
+					}
 				}
 			}
 			catch (Exception)
