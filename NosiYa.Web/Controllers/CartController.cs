@@ -34,7 +34,22 @@
 				return this.RedirectToAction("Index", "Home"); //TODO to login page
 			}
 
-			ICollection<CartPreOrderViewModel> orderModel = await this.cartService.GetAllItemsFromUserCartAsync(this.User!.GetId()!);
+			ICollection<CartItemsViewModel> orderModel = await this.cartService.GetAllItemsFromUserCartAsync(this.User!.GetId()!);
+
+			return View(orderModel);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Mine()
+		{
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+			if (!isAuthenticated)
+			{
+				return this.RedirectToAction("Index", "Home"); //TODO to login page
+			}
+
+			ICollection<ReservedItemsViewModel> orderModel = await this.cartService.GetReservedItemsByUserIdAsync(this.User!.GetId()!);
 
 			return View(orderModel);
 		}
@@ -177,40 +192,6 @@
 			catch (Exception)
 			{
 				return this.GeneralError();
-			}
-		}
-
-
-		[HttpGet]
-		public async Task<string> PopulateCalendar(string start, string end)
-		{
-			try
-			{
-				DateTime startDate;
-				DateTime endDate;
-
-				if (!DateTime.TryParseExact(start, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate))
-				{
-					this.TempData[ErrorMessage] =
-						"Unexpected error occurred during calendar population request! ";
-					return "";
-				}
-				if (!DateTime.TryParseExact(end, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate))
-				{
-					this.TempData[ErrorMessage] =
-						"Unexpected error occurred during calendar population request! ";
-					return "";
-				}
-
-				var reservedDates = await this.calendarService.GetReservedDates(startDate, endDate);
-
-				return JsonConvert.SerializeObject(reservedDates);
-			}
-			catch (Exception)
-			{
-				this.TempData[ErrorMessage] =
-					"Unexpected error occurred during calendar population! ";
-				return "";
 			}
 		}
 

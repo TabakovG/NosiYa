@@ -9,7 +9,8 @@
 
 
 		//Read:
-		Task<ICollection<CartPreOrderViewModel>> GetAllItemsFromUserCartAsync(string userId);
+		Task<ICollection<CartItemsViewModel>> GetAllItemsFromUserCartAsync(string userId);
+		Task<ICollection<ReservedItemsViewModel>> GetReservedItemsByUserIdAsync(string userId);
 		Task<int> GetCartIdByUserIdAsync(string user);
 		Task<bool> CartItemExistsById(int id);
 

@@ -62,7 +62,9 @@
 				{
 					OutfitId = model.OutfitId,
 					RenterId = Guid.Parse(userId),
-					Date = currentDate.Date
+					Date = currentDate.Date,
+					DateRangeStart = start,
+					DateRangeEnd = end
 				});
 				currentDate = currentDate.AddDays(+1);
 			}
@@ -71,25 +73,53 @@
 			await this.context.SaveChangesAsync();
 		}
 
-		public async Task<ICollection<CartPreOrderViewModel>> GetAllItemsFromUserCartAsync(string userId)
+		public async Task<ICollection<CartItemsViewModel>> GetAllItemsFromUserCartAsync(string userId)
 		{
 			var result = await this.context
 				.OutfitsForCarts
 				.AsNoTracking()
 				.Where(o=>o.Cart.OwnerId.ToString() == userId)
 				.Where(x => x.IsActive)
-				.Select(o=>new CartPreOrderViewModel
+				.Select(o=>new CartItemsViewModel
 				{
 					Id = o.Id,
 					OutfitId = o.OutfitId,
 					Name = o.OutfitSet.Name,
-					setImage = o.OutfitSet.Images.Where(i=>i.IsDefault).Select(i=>i.Url).First(),
+					SetImage = o.OutfitSet.Images.Where(i=>i.IsDefault).Select(i=>i.Url).First(),
 					FromDate = o.FromDate,
 					ToDate = o.ToDate
 				})
 				.ToArrayAsync();
 
 			return result;
+		}
+
+		public async Task<ICollection<ReservedItemsViewModel>> GetReservedItemsByUserIdAsync(string userId)
+		{
+			var resultDistinct = await this.context
+				.OutfitRenterDates
+				.AsNoTracking()
+				.Include(o=>o.Outfit)
+				.Include(o=>o.Outfit.Images)
+				.Where(o=> o.IsActive)
+				.Where(o=>o.RenterId.ToString() == userId)
+				.GroupBy(o => new { o.OutfitId, o.DateRangeStart, o.DateRangeEnd })
+				.Select(o=>o.First())
+				.ToArrayAsync();
+
+				var modelsResult = resultDistinct
+				.Select(o => new ReservedItemsViewModel
+				{
+					OutfitId = o.OutfitId,
+					Name = o.Outfit.Name,
+					SetImage = o.Outfit.Images.Where(i => i.IsDefault).Select(i => i.Url).First(),
+					FromDate = o.DateRangeStart,
+					ToDate = o.DateRangeEnd,
+					IsApproved = o.IsApproved
+				})
+				.ToArray();
+
+			return modelsResult;
 		}
 
 		public async Task<int> GetCartIdByUserIdAsync(string userId)

@@ -6,7 +6,6 @@
 	using NosiYa.Data;
 	using Interfaces;
 	using Models;
-	using NosiYa.Data.Models.Outfit;
 
 	public class CalendarService : ICalendarService
 	{

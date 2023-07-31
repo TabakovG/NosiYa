@@ -1,5 +1,5 @@
 ﻿@using NosiYa.Web.Infrastructure.Extensions
-@model ICollection<CartPreOrderViewModel>
+@model ICollection<CartItemsViewModel>
 
 @{
 	ViewBag.Title = "Количка";
@@ -14,11 +14,11 @@
 }
 
 <div class="row">
-	@foreach (CartPreOrderViewModel order in Model)
+	@foreach (CartItemsViewModel order in Model)
 	{
 		<div class="col-md-4">
 			<div class="card mb-3">
-				<img class="card-img-top" src="@order.setImage" alt="Outfit Image">
+				<img class="card-img-top" src="@order.SetImage" alt="Outfit Image">
 				<div class="card-body text-center">
 					<form method="post" asp-controller="Cart" asp-action="Order" asp-route-id="@order.Id">
 						<input name="OutfitId" class="visually-hidden " readonly value="@order.OutfitId" />
@@ -38,7 +38,7 @@
 					@if (this.User.Identity?.IsAuthenticated ?? false)
 					{
 						<a asp-controller="Cart" asp-action="Edit" asp-route-id="@order.Id" class="btn btn-warning">Промени</a>
-						<form method="post" asp-action="Delete" asp-controller="Cart" asp-route-id="@order.Id" class="delete-comment-form">
+						<form method="post" asp-action="Delete" asp-controller="Cart" asp-route-id="@order.Id">
 							<input type="submit" value="Изтрии" class="btn btn-danger " />
 						</form>
 						<p></p>

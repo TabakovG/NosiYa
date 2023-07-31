@@ -15,9 +15,11 @@
         public OutfitSet OutfitSet { get; set; } = null!;
 
         [Required]
-        public DateTime FromDate { get; set; }
+        [Column(TypeName = "date")]
+		public DateTime FromDate { get; set; }
 
         [Required]
+        [Column(TypeName = "date")]
         public DateTime ToDate { get; set; }
 
         [Required]

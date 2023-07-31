@@ -18,7 +18,15 @@
         [Column(TypeName = "date")]
         public DateTime Date { get; set; }
 
-        public bool IsActive { get; set; } = true;
+        [Required]
+        [Column(TypeName = "date")]
+        public DateTime DateRangeStart { get; set; }
+
+        [Required]
+        [Column(TypeName = "date")]
+        public DateTime DateRangeEnd { get; set; }
+
+		public bool IsActive { get; set; } = true;
         public bool IsApproved { get; set; } = false;
 
 
