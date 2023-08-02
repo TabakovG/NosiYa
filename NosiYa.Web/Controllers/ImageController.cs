@@ -1,153 +1,184 @@
-﻿namespace NosiYa.Web.Controllers
+﻿
+namespace NosiYa.Web.Controllers
 {
-	using System.Collections.Generic;
-	using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
+    using Microsoft.AspNetCore.Mvc;
 
-	using Infrastructure.Extensions;
+    using Infrastructure.Extensions;
 
-	using NosiYa.Services.Data.Interfaces;
-	using static Common.EntityTypesConst;
-	using static Common.NotificationMessagesConstants;
+    using NosiYa.Services.Data.Interfaces;
+    using ViewModels.Image;
+    using static Common.EntityTypesConst;
+    using static Common.EntityValidationConstants.Image;
+    using static Common.NotificationMessagesConstants;
 
-	using ViewModels.Image;
+    using SixLabors.ImageSharp.Formats.Jpeg;
+    using SixLabors.ImageSharp.Processing;
 
-	public class ImageController : Controller
-	{
-		private readonly IImageService imageService;
-		private readonly IWebHostEnvironment hostingEnvironment;
+    public class ImageController : Controller
+    {
+        private readonly IImageService imageService;
+        private readonly IWebHostEnvironment hostingEnvironment;
 
-		public ImageController(IImageService imageService, IWebHostEnvironment hostingEnvironment)
-		{
-			this.imageService = imageService;
-			this.hostingEnvironment = hostingEnvironment;
-		}
+        public ImageController(IImageService imageService, IWebHostEnvironment hostingEnvironment)
+        {
+            this.imageService = imageService;
+            this.hostingEnvironment = hostingEnvironment;
+        }
 
-		public async Task AddImagesOnEntityCreateAsync(int entityId, string entityType, ICollection<IFormFile> elementImages)
-		{
+        public async Task AddImagesOnEntityCreateAsync(int entityId, string entityType, ICollection<IFormFile> elementImages)
+        {
 
-			await this.UploadImagesAsync(entityId, entityType, elementImages);
-			await this.imageService.SetDefaultImageAsync(entityId, entityType);
-		}
+            await this.UploadImagesAsync(entityId, entityType, elementImages);
+            await this.imageService.SetDefaultImageAsync(entityId, entityType);
+        }
 
-		public async Task UploadImagesAsync(int entityId, string entityType, ICollection<IFormFile> elementImages)
-		{
-			try
-			{
-				foreach (var imageFormFile in elementImages)
-				{
-					var imagePath = await UploadImage(imageFormFile, entityType);
+        public async Task UploadImagesAsync(int entityId, string entityType, ICollection<IFormFile> elementImages)
+        {
+            try
+            {
+                foreach (var imageFormFile in elementImages)
+                {
+                    var imagePath = await UploadImage(imageFormFile, entityType);
 
-					var imageModel = new ImageFormModel
-					{
-						Url = imagePath,
-					};
+                    var imageModel = new ImageFormModel
+                    {
+                        Url = imagePath,
+                    };
 
-					switch (entityType)
-					{
-						case OutfitSet:
-							imageModel.OutfitSetId = entityId;
-							break;
-						case OutfitPart:
-							imageModel.OutfitPartId = entityId;
-							break;
-						case Event:
-							imageModel.EventId = entityId;
-							break;
-						case Region:
-							imageModel.RegionId = entityId;
-							break;
-					}
+                    switch (entityType)
+                    {
+                        case OutfitSet:
+                            imageModel.OutfitSetId = entityId;
+                            break;
+                        case OutfitPart:
+                            imageModel.OutfitPartId = entityId;
+                            break;
+                        case Event:
+                            imageModel.EventId = entityId;
+                            break;
+                        case Region:
+                            imageModel.RegionId = entityId;
+                            break;
+                    }
 
-					var userId = Guid.Parse(this.User!.GetId()!);
-					
-					//Create DB CIs and relations
+                    var userId = Guid.Parse(this.User!.GetId()!);
 
-					await this.imageService.AddImageAndReturnIdAsync(imageModel, userId);
-					var hasDefault = await this.imageService.HasDefaultAsync(entityId, entityType);
-					if (!hasDefault)
-					{
-						await this.imageService.SetDefaultImageAsync(entityId, entityType);
-					}
-				}
-			}
-			catch (Exception)
-			{
-				this.TempData[ErrorMessage] =
-					"Unexpected error occurred during the images processing! Please try again later or contact administrator";
-			}
-		}
+                    //Create DB CIs and relations
+
+                    await this.imageService.AddImageAndReturnIdAsync(imageModel, userId);
+                    var hasDefault = await this.imageService.HasDefaultAsync(entityId, entityType);
+                    if (!hasDefault)
+                    {
+                        await this.imageService.SetDefaultImageAsync(entityId, entityType);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                this.TempData[ErrorMessage] =
+                    "Unexpected error occurred during the images processing! Please try again later or contact administrator";
+            }
+        }
 
 
-		[HttpPost]
-		public async Task<IActionResult> Delete(int id, [FromForm] string returnUrl)
-		{
-			var imageExists = await this.imageService.ImageExistByIdAsync(id);
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, [FromForm] string returnUrl)
+        {
+            var imageExists = await this.imageService.ImageExistByIdAsync(id);
 
-			if (!imageExists)
-			{
-				this.TempData[ErrorMessage] = "Снимка с този идентификатор не съществува!";
+            if (!imageExists)
+            {
+                this.TempData[ErrorMessage] = "Снимка с този идентификатор не съществува!";
 
-				return this.Redirect(returnUrl);
-			}
+                return this.Redirect(returnUrl);
+            }
 
-			try
-			{
-				await this.imageService.DeleteImageByIdAsync(id, this.hostingEnvironment.WebRootPath);
+            try
+            {
+                await this.imageService.DeleteImageByIdAsync(id, this.hostingEnvironment.WebRootPath);
 
-				this.TempData[WarningMessage] = "Снимката беше изтрита успешно!";
-				return this.Redirect(returnUrl);
-			}
-			catch (Exception)
-			{
-				return this.GeneralError();
-			}
-		}
+                this.TempData[WarningMessage] = "Снимката беше изтрита успешно!";
+                return this.Redirect(returnUrl);
+            }
+            catch (Exception)
+            {
+                return this.GeneralError();
+            }
+        }
 
-		private async Task<string> UploadImage(IFormFile image, string entityType)
-		{
-			try
-			{
-				var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-				var imagePath = Path.Combine(this.hostingEnvironment.WebRootPath, $"images/{entityType}", fileName);
+        private async Task<string> UploadImage(IFormFile file, string entityType)
+        {
+            try
+            {
+                if (file.Length == 0)
+                {
+                    throw new FileNotFoundException("File with 0 length can't be processed!");
+                }
 
-				await using (var fileStream = new FileStream(imagePath, FileMode.Create))
-				{
-					await image.CopyToAsync(fileStream);
-				}
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                var imagePath = Path.Combine(this.hostingEnvironment.WebRootPath, $"images/{entityType}", fileName);
 
-				return $"/images/{entityType}/" + fileName; // Return the relative path to the image
-			}
-			catch (Exception)
-			{
-				throw new FileNotFoundException("Error during image uploading to the file store.");
-			}
-		}
+                using (var image = await SixLabors.ImageSharp.Image.LoadAsync(file.OpenReadStream()))
+                {
+                    // Resize the image to your desired dimensions.
+                    int targetWidth = ImageResizeMaxWidth;
+                    int targetHeight = ImageResizeMaxHeight;
 
-		public async Task<IActionResult> MakeDefaultById( int entityId, string entityType, int id)
-		{
-			var imageExists = await this.imageService.ImageExistByIdAsync(id);
 
-			if (!imageExists)
-			{
-				this.TempData[ErrorMessage] = "Снимка с този идентификатор не съществува!";
+                    // Calculate new dimensions while maintaining the aspect ratio.
+                    if (image.Width > image.Height)
+                    {
+                        targetHeight = (int)((float)image.Height / image.Width * targetWidth);
+                    }
+                    else
+                    {
+                        targetWidth = (int)((float)image.Width / image.Height * targetHeight);
+                    }
 
-				return this.RedirectToAction("Edit", entityType, new {id=entityId});
-			}
+                    image.Mutate(x => x.Resize(targetWidth, targetHeight));
 
-			await this.imageService.SetDefaultImageAsync(entityId, entityType, id);
+                    // Save the resized image to the server.
+                    await using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        await image.SaveAsync(fileStream, new JpegEncoder());
+                    }
+                }
 
-			this.TempData[SuccessMessage] = "Снимката за корица беше сменена успешно!";
+                return $"/images/{entityType}/" + fileName; // Return the relative path to the image
 
-			return this.RedirectToAction("Edit", entityType, new { id = entityId });
+            }
+            catch (Exception)
+            {
+                throw new FileNotFoundException("Error during image uploading to the file store.");
+            }
+        }
 
-		}
+        public async Task<IActionResult> MakeDefaultById(int entityId, string entityType, int id)
+        {
+            var imageExists = await this.imageService.ImageExistByIdAsync(id);
 
-		private IActionResult GeneralError()
-		{
-			this.TempData[ErrorMessage] =
-				"Unexpected error occurred! Please try again later or contact administrator";
+            if (!imageExists)
+            {
+                this.TempData[ErrorMessage] = "Снимка с този идентификатор не съществува!";
 
-			return this.RedirectToAction("Index", "Home");
-		}
-	}
+                return this.RedirectToAction("Edit", entityType, new { id = entityId });
+            }
+
+            await this.imageService.SetDefaultImageAsync(entityId, entityType, id);
+
+            this.TempData[SuccessMessage] = "Снимката за корица беше сменена успешно!";
+
+            return this.RedirectToAction("Edit", entityType, new { id = entityId });
+
+        }
+
+        private IActionResult GeneralError()
+        {
+            this.TempData[ErrorMessage] =
+                "Unexpected error occurred! Please try again later or contact administrator";
+
+            return this.RedirectToAction("Index", "Home");
+        }
+    }
 }

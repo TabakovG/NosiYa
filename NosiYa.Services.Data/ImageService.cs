@@ -1,5 +1,10 @@
-﻿namespace NosiYa.Services.Data
+﻿using SixLabors.ImageSharp.Formats;
+using SixLabors.ImageSharp.Formats.Jpeg;
+
+namespace NosiYa.Services.Data
 {
+    using System.IO;
+
 	using Microsoft.EntityFrameworkCore;
 
 	using Interfaces;
@@ -7,8 +12,14 @@
 	using Common;
 	using NosiYa.Data;
 	using NosiYa.Data.Models;
+	using static Common.EntityValidationConstants.Image;
 
-	public class ImageService : IImageService
+    //using SixLabors.ImageSharp;
+    using SixLabors.ImageSharp.Processing;
+    using SixLabors.ImageSharp.Formats.Jpeg;
+    using System;
+
+    public class ImageService : IImageService
 	{
 		private readonly NosiYaDbContext context;
 
@@ -35,7 +46,7 @@
 			return image.Id;
 		}
 
-		public async Task<ICollection<ImageViewModel>> GetRelatedImagesAsync(int relatedEntityId, string entity)
+        public async Task<ICollection<ImageViewModel>> GetRelatedImagesAsync(int relatedEntityId, string entity)
 		{
 			ICollection<Image> images = new HashSet<Image>();
 			switch (entity)

@@ -61,6 +61,9 @@
         {
             public const int ImageUrlMinLength = 3;
             public const int ImageUrlMaxLength = 1500;
+
+            public const int ImageResizeMaxHeight = 1200;
+            public const int ImageResizeMaxWidth = 120;
         }
 
     }
