@@ -11,6 +11,8 @@
         public const string SendGridValidSenderAddress = "TabakovG@students.softuni.bg";
         public const string SendGridValidSenderName = "NosiYa Support";
 
+        public const string SendGridTestUserEmailAddress = "TabakovG@students.softuni.bg";
+
 
     }
 }

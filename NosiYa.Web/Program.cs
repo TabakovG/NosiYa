@@ -1,8 +1,4 @@
-
-using NosiYa.Web.Infrastructure.ModelBinders;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using NosiYa.Data;
+using NosiYa.Services.Messaging;
 
 namespace NosiYa.Web
 {
@@ -10,6 +6,7 @@ namespace NosiYa.Web
 
     using Data;
     using Data.Models;
+    using Infrastructure.ModelBinders;
     using NosiYa.Services.Data.Interfaces;
     using Infrastructure.Extensions;
 
@@ -42,7 +39,19 @@ namespace NosiYa.Web
                 )
                 .AddEntityFrameworkStores<NosiYaDbContext>();
 
+
+            //Facebook login / for future use / 
+            /*builder.Services.AddAuthentication()
+                .AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"]; //In app secrets
+                facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"]; //In app secrets
+            });*/
+
             builder.Services.AddApplicationServices(typeof(IOutfitSetService));
+
+            builder.Services.AddTransient<IEmailSender>(
+                serviceProvider => new SendGridEmailSender(builder.Configuration["SendGridApiKey"]));
 
             builder.Services.AddControllersWithViews()
                 .AddMvcOptions(options =>
