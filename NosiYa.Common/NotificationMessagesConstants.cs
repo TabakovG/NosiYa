@@ -8,5 +8,9 @@
 		public const string InformationMessage = "InfoMessage";
 		public const string SuccessMessage = "SuccessMessage";
 
-	}
+        public const string SendGridValidSenderAddress = "TabakovG@students.softuni.bg";
+        public const string SendGridValidSenderName = "NosiYa Support";
+
+
+    }
 }

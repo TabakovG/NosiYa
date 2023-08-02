@@ -17,12 +17,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.15" />
+    <PackageReference Include="SendGrid" Version="9.28.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NosiYa.Common\NosiYa.Common.csproj" />
     <ProjectReference Include="..\NosiYa.Data\NosiYa.Data.csproj" />
     <ProjectReference Include="..\NosiYa.Services.Data\NosiYa.Services.Data.csproj" />
+    <ProjectReference Include="..\NosiYa.Services.Messaging\NosiYa.Services.Messaging.csproj" />
     <ProjectReference Include="..\NosiYa.Web.Infrastructure\NosiYa.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\NosiYa.Web.ViewModels\NosiYa.Web.ViewModels.csproj" />
   </ItemGroup>
