@@ -1,5 +1,8 @@
 
 using NosiYa.Web.Infrastructure.ModelBinders;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using NosiYa.Data;
 
 namespace NosiYa.Web
 {
