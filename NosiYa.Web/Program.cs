@@ -1,14 +1,16 @@
-using NosiYa.Services.Messaging;
 
 namespace NosiYa.Web
 {
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Identity;
 
     using Data;
     using Data.Models;
+    using Infrastructure.Extensions;
     using Infrastructure.ModelBinders;
     using NosiYa.Services.Data.Interfaces;
-    using Infrastructure.Extensions;
+    using Services.Messaging;
+    using static Common.SeedingConstants;
 
 
     public class Program
@@ -37,6 +39,7 @@ namespace NosiYa.Web
                         options.Password.RequiredUniqueChars = builder.Configuration.GetValue<int>("Identity:Password:RequiredUniqueChars");
                     }
                 )
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<NosiYaDbContext>();
 
 
@@ -85,6 +88,7 @@ namespace NosiYa.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.SeedAdmin(DevAdminEmail);
 
             app.MapControllerRoute(
                 name: "default",

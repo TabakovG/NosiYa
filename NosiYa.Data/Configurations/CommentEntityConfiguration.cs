@@ -31,7 +31,7 @@
                 {
                     Id = 1,
                     Content = "Страхотна локация! :) ",
-                    OwnerId = Guid.Parse(FirstUserId),
+                    OwnerId = Guid.Parse(AdminId),
                     EventId = 1,
                     IsApproved = true
                 },
@@ -39,7 +39,7 @@
                 {
                     Id = 2,
                     Content = "бля бля бля",
-                    OwnerId = Guid.Parse(SecondUserId),
+                    OwnerId = Guid.Parse(UserId),
                     EventId = 1,
                     IsApproved = false
                 },
@@ -47,7 +47,7 @@
                 {
                     Id = 3,
                     Content = "Този фестивал вече е добавен.",
-                    OwnerId = Guid.Parse(FirstUserId),
+                    OwnerId = Guid.Parse(AdminId),
                     EventId = 2,
                     IsApproved = true
                 }

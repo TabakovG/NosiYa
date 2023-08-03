@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NosiYa.Common\NosiYa.Common.csproj" />
     <ProjectReference Include="..\NosiYa.Services.Data\NosiYa.Services.Data.csproj" />
   </ItemGroup>
 

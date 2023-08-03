@@ -33,7 +33,7 @@
                 OutfitPartType = (OutfitPartType)4,
                 Size = "-XS-",
                 OutfitSetId = 1,
-                OwnerId = Guid.Parse(FirstUserId)
+                OwnerId = Guid.Parse(AdminId)
             };
 
             outfitParts.Add(outfitPart);
@@ -51,7 +51,7 @@
                 OutfitPartType = (OutfitPartType)4,
                 Size = "-XS-",
                 OutfitSetId = 1,
-                OwnerId = Guid.Parse(SecondUserId)
+                OwnerId = Guid.Parse(UserId)
             };
 
             outfitParts.Add(outfitPart);

@@ -1,5 +1,4 @@
-﻿
-namespace NosiYa.Web.Controllers
+﻿namespace NosiYa.Web.Controllers
 {
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
