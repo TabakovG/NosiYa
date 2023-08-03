@@ -1,4 +1,3 @@
-
 namespace NosiYa.Web
 {
     using Microsoft.EntityFrameworkCore;
@@ -54,7 +53,7 @@ namespace NosiYa.Web
 
             builder.Services.AddApplicationServices(typeof(IOutfitSetService));
 
-            builder.Services.AddTransient<IEmailSender>(
+            builder.Services.AddTransient<IEmailSender, SendGridEmailSender>(
                 serviceProvider => new SendGridEmailSender(builder.Configuration["SendGridApiKey"]));
 
             builder.Services.AddControllersWithViews()
