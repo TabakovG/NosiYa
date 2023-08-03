@@ -1,10 +1,13 @@
-﻿namespace NosiYa.Web.Controllers
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace NosiYa.Web.Controllers
 {
-	using Microsoft.AspNetCore.Mvc;
-	using Newtonsoft.Json;
+    using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
 	using NosiYa.Services.Data.Interfaces;
-	using System.Globalization;
+    using System.Globalization;
 	using static Common.NotificationMessagesConstants;
+	using static Common.SeedingConstants;
 
 	public class CalendarController : Controller
 	{
@@ -17,7 +20,8 @@
 		}
 
 		[HttpGet]
-		public async Task<string> PopulateCalendar(string start, string end)
+        [Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
+        public async Task<string> PopulateCalendar(string start, string end)
 		{
 			try
 			{

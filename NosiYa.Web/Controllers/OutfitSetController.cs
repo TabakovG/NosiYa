@@ -1,14 +1,17 @@
 ﻿namespace NosiYa.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.OutfitSet;
 	using Microsoft.AspNetCore.Mvc;
 	using Common;
 	using NosiYa.Services.Data.Models;
 	using static Common.NotificationMessagesConstants;
-    using Microsoft.AspNetCore.Authorization;
+	using static Common.SeedingConstants;
 
-	public class OutfitSetController : BaseController
+    [Authorize(Roles = AdminRoleName)]
+    public class OutfitSetController : BaseController
     {
 		private readonly IOutfitSetService outfitService;
 		private readonly IRegionService regionService;

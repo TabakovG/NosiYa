@@ -1,6 +1,7 @@
 ﻿namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
 
 	using NosiYa.Services.Data.Interfaces;
 
@@ -9,10 +10,10 @@
 	using Microsoft.AspNetCore.Hosting;
 	using Common;
 	using static Common.NotificationMessagesConstants;
-    using Microsoft.AspNetCore.Authorization;
+	using static Common.SeedingConstants;
 
-
-	public class OutfitPartController : BaseController
+    [Authorize(Roles = AdminRoleName)]
+    public class OutfitPartController : BaseController
     {
 		private readonly IOutfitPartService outfitPartService;
 		private readonly IOutfitSetService outfitSetService;

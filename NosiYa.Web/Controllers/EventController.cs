@@ -3,16 +3,17 @@
 	using System.Collections.Generic;
 
 	using Microsoft.AspNetCore.Mvc;
-	using Common;	
+    using Microsoft.AspNetCore.Authorization;
 
 	using Infrastructure.Extensions;
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.Comment;
 	using ViewModels.Event;
-    using Microsoft.AspNetCore.Authorization;
+	using Common;	
+	using static Common.SeedingConstants;
 
-
-	public class EventController : BaseController
+    [Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
+    public class EventController : BaseController
     {
 		private readonly IEventService eventService;
 		private readonly ICommentService commentService;
@@ -42,7 +43,7 @@
 
 
 		[HttpGet]
-		public IActionResult Add()
+        public IActionResult Add()
 		{
 			try
 			{
@@ -56,7 +57,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add(EventFormModel model, [FromForm] ICollection<IFormFile> elementImages) 
+        public async Task<IActionResult> Add(EventFormModel model, [FromForm] ICollection<IFormFile> elementImages) 
 		{
 			try
 			{
@@ -96,7 +97,7 @@
 
 					}
 
-					return this.RedirectToAction("Details", "Event", new { Id = eventId });
+					return this.RedirectToAction("All", "Event"); //Can't redirect to details as the event must be approved first
 				}
 				catch (Exception)
 				{

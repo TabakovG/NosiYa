@@ -1,14 +1,16 @@
 ﻿namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
 
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.Region;
 	using Common;
 	using static Common.NotificationMessagesConstants;
-    using Microsoft.AspNetCore.Authorization;
+	using static Common.SeedingConstants;
 
-	public class RegionController : BaseController
+    [Authorize(Roles = AdminRoleName)]
+    public class RegionController : BaseController
     {
 		private readonly IRegionService regionService;
 		private readonly IImageService imageService;

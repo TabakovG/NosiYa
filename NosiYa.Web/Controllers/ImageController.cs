@@ -13,7 +13,10 @@
 
     using SixLabors.ImageSharp.Formats.Jpeg;
     using SixLabors.ImageSharp.Processing;
+    using Microsoft.AspNetCore.Authorization;
+    using static Common.SeedingConstants;
 
+    [Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
     public class ImageController : BaseController
     {
         private readonly IImageService imageService;

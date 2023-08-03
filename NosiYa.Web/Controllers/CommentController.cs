@@ -1,22 +1,24 @@
 ﻿namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
 
     using NosiYa.Services.Data.Interfaces;
     using Infrastructure.Extensions;
     using ViewModels.Comment;
 	using static Common.NotificationMessagesConstants;
+	using static Common.SeedingConstants;
 
-
-	public class CommentController : BaseController
+    [Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
+    public class CommentController : BaseController
     {
 		private readonly ICommentService commentService;
 		public CommentController(ICommentService commentService)
-		{
+        {
 			this.commentService = commentService;
 		}
 		[HttpPost]
-		public async Task<IActionResult> Add(CommentFormModel model)
+        public async Task<IActionResult> Add(CommentFormModel model)
 		{
 			try
 			{
@@ -55,7 +57,7 @@
         }
 
 		[HttpGet]
-		public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id)
 		{
 			var commentExists = await this.commentService
 				.ExistsByIdAsync(id);
@@ -81,6 +83,7 @@
 		}
 
 		[HttpPost]
+
         public async Task<IActionResult> Edit(CommentForEditFormModel model)
         {
             if (!this.ModelState.IsValid)

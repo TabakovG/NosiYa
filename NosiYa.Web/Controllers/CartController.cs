@@ -1,17 +1,16 @@
 ﻿namespace NosiYa.Web.Controllers
 {
-	using System.Globalization;
-
 	using Microsoft.AspNetCore.Mvc;
-	using Newtonsoft.Json;
 
 	using NosiYa.Services.Data.Interfaces;
 	using Infrastructure.Extensions;
 	using ViewModels.Cart;
 	using static Common.NotificationMessagesConstants;
+    using Microsoft.AspNetCore.Authorization;
+	using static Common.SeedingConstants;
 
-
-	public class CartController : BaseController
+    [Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
+    public class CartController : BaseController
     {
 		private readonly ICartService cartService;
 		private readonly IOutfitSetService outfitSetService;
@@ -25,7 +24,7 @@
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Items()
+        public async Task<IActionResult> Items()
 		{
 			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
@@ -40,7 +39,7 @@
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Mine()
+        public async Task<IActionResult> Mine()
 		{
 			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
@@ -55,8 +54,7 @@
 		}
 
 		[HttpPost]
-
-		public async Task<IActionResult> Order(int id,[FromForm] CartCompleteOrderFormModel model)
+        public async Task<IActionResult> Order(int id,[FromForm] CartCompleteOrderFormModel model)
 		{
 			if (!this.ModelState.IsValid)
 			{
@@ -102,7 +100,7 @@
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Add(int id)
+        public async Task<IActionResult> Add(int id)
 		{
 			try
 			{
@@ -123,7 +121,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add(CartPreOrderFormModel model)
+        public async Task<IActionResult> Add(CartPreOrderFormModel model)
 		{
 			try
 			{
@@ -162,7 +160,7 @@
 
 
 		[HttpPost]
-		public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
 		{
 			var cartItem = await this.cartService
 				.CartItemExistsById(id);
