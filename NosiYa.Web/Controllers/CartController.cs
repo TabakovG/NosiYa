@@ -8,6 +8,10 @@
 	using static Common.NotificationMessagesConstants;
     using Microsoft.AspNetCore.Authorization;
 	using static Common.SeedingConstants;
+    using Microsoft.AspNetCore.Hosting;
+    using NosiYa.Common;
+    using NosiYa.Services.Data;
+    using NosiYa.Web.ViewModels.Region;
 
     [Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
     public class CartController : BaseController
@@ -159,7 +163,75 @@
 		}
 
 
-		[HttpPost]
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var itemExistsById = await this.cartService
+                .CartItemExistsById(id);
+
+            if (!itemExistsById)
+            {
+                this.TempData[ErrorMessage] = "Продукт с този идентификатор не съществува!";
+
+                return this.RedirectToAction("Items", "Cart");
+            }
+
+            try
+            {
+                CartPreOrderFormModel formModel = await this.cartService
+                    .GetForEditByIdAsync(id);
+
+                return View(formModel);
+            }
+            catch (Exception)
+            {
+                return this.GeneralError();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, CartPreOrderFormModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            var itemExistsById = await this.cartService
+                .CartItemExistsById(id);
+
+            if (!itemExistsById)
+            {
+                this.TempData[ErrorMessage] = "Продукт с този идентификатор не съществува!";
+
+                return this.RedirectToAction("Items", "Cart");
+            }
+
+            var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+            if (!isAuthenticated)
+            {
+                return this.View(model);
+            }
+
+            try
+            {
+                await this.cartService.EditByIdAsync(id, model);
+
+                this.TempData[SuccessMessage] = "Промените са запазени успешно!";
+
+                return this.RedirectToAction("Items", "Cart");
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty,
+                    "Възникна грешка при обработване на заявката. Моля опитайте отново или се свържете с администратор!");
+
+                return this.View(model);
+            }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
 		{
 			var cartItem = await this.cartService

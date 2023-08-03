@@ -14,11 +14,14 @@
 		Task<int> GetCartIdByUserIdAsync(string user);
 		Task<bool> CartItemExistsById(int id);
 
-		//Update:
+
+        //Update:
+        Task<CartPreOrderFormModel> GetForEditByIdAsync(int id);
+        Task EditByIdAsync(int id, CartPreOrderFormModel model);
 
 
-		//Delete:
-		Task DeleteItemFromUserCartAsync(int id);
+        //Delete:
+        Task DeleteItemFromUserCartAsync(int id);
 		Task DeleteCompletedOrderAsync(int id, DateTime date);
 
 	}

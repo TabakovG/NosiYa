@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Services.Data
+﻿using NosiYa.Web.ViewModels.OutfitSet;
+
+namespace NosiYa.Services.Data
 {
 	using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +12,12 @@
 	public class CartService : ICartService
 	{
 		private readonly NosiYaDbContext context;
+		private readonly IOutfitSetService outfitSetService;
 
-		public CartService(NosiYaDbContext _context)
+		public CartService(NosiYaDbContext _context, IOutfitSetService outfitSetService)
 		{
 			this.context = _context;
+			this.outfitSetService = outfitSetService;
 		}
 
 		public async Task<bool> CartItemExistsById(int id)
@@ -24,7 +28,38 @@
 				.AnyAsync(o => o.Id == id);
 		}
 
-		public async Task DeleteItemFromUserCartAsync(int id)
+        public async Task<CartPreOrderFormModel> GetForEditByIdAsync(int id)
+        {
+            var item = await this.context
+                .OutfitsForCarts
+                .Where(x => x.IsActive)
+                .FirstAsync(x => x.Id == id);
+
+            var formModel = new CartPreOrderFormModel
+            {
+                CartId = item.CartId,
+                FromDate = item.FromDate,
+                ToDate = item.ToDate,
+                OutfitModel = await this.outfitSetService.GetForRentByIdAsync(item.OutfitId)
+        };
+
+			return formModel;
+        }
+
+        public async Task EditByIdAsync(int id, CartPreOrderFormModel model)
+        {
+            var item = await this.context
+                .OutfitsForCarts
+                .Where(x => x.IsActive)
+                .FirstAsync(x => x.Id == id);
+
+            item.FromDate = model.FromDate;
+			item.ToDate = model.ToDate;
+
+            await this.context.SaveChangesAsync();
+        }
+
+        public async Task DeleteItemFromUserCartAsync(int id)
 		{
 			var item = await this.context
 				.OutfitsForCarts

@@ -141,7 +141,6 @@
 
 			region.Name = model.Name;
 			region.Description = model.Description;
-			//TODO images
 
 			await this.context.SaveChangesAsync();
 		}
