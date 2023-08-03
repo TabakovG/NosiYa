@@ -6,9 +6,10 @@
 	using Common;
 	using NosiYa.Services.Data.Models;
 	using static Common.NotificationMessagesConstants;
+    using Microsoft.AspNetCore.Authorization;
 
-	public class OutfitSetController : Controller
-	{
+	public class OutfitSetController : BaseController
+    {
 		private readonly IOutfitSetService outfitService;
 		private readonly IRegionService regionService;
 		private readonly IOutfitPartService partService;
@@ -24,7 +25,8 @@
 			this.webHostEnvironment = webHostEnvironment;
 		}
 		[HttpGet]
-		public async Task<IActionResult> All([FromQuery] AllOutfitsQueryModel queryModel)
+        [AllowAnonymous]
+        public async Task<IActionResult> All([FromQuery] AllOutfitsQueryModel queryModel)
 		{
 			AllOutfitsFilteredAndPagedServiceModel queryAndSorting = await this.outfitService.AllAvailableOutfitSetsAsync(queryModel);
 
@@ -115,6 +117,7 @@
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
 	        var outfitSetExists = await this.outfitService.ExistByIdAsync(id);

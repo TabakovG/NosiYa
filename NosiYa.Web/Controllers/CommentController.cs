@@ -8,8 +8,8 @@
 	using static Common.NotificationMessagesConstants;
 
 
-	public class CommentController : Controller
-	{
+	public class CommentController : BaseController
+    {
 		private readonly ICommentService commentService;
 		public CommentController(ICommentService commentService)
 		{

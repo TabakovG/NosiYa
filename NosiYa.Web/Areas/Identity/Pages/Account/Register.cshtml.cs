@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-
 namespace NosiYa.Web.Areas.Identity.Pages.Account
 {
     using System.ComponentModel.DataAnnotations;
@@ -14,6 +13,7 @@ namespace NosiYa.Web.Areas.Identity.Pages.Account
 
     using Data.Models;
     using Services.Messaging;
+    using static Common.SeedingConstants;
 
     public class RegisterModel : PageModel
     {
@@ -114,6 +114,7 @@ namespace NosiYa.Web.Areas.Identity.Pages.Account
                 await _userManager.SetPhoneNumberAsync(user, user.PhoneNumber);
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                await _userManager.AddToRoleAsync(user, UserRoleName);
 
                 if (result.Succeeded)
                 {

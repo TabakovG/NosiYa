@@ -14,7 +14,7 @@
     using SixLabors.ImageSharp.Formats.Jpeg;
     using SixLabors.ImageSharp.Processing;
 
-    public class ImageController : Controller
+    public class ImageController : BaseController
     {
         private readonly IImageService imageService;
         private readonly IWebHostEnvironment hostingEnvironment;

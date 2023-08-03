@@ -1,4 +1,5 @@
-﻿using NosiYa.Common;
+﻿using Microsoft.AspNetCore.Authorization;
+using NosiYa.Common;
 using NosiYa.Services.Messaging;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
@@ -9,7 +10,8 @@ namespace NosiYa.Web.Controllers
 
     using ViewModels.Home;
 
-    public class HomeController : Controller
+    [AllowAnonymous]
+    public class HomeController : BaseController
     {
         /*private readonly ILogger<HomeController> _logger;
 

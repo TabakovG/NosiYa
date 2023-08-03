@@ -11,8 +11,8 @@
 	using static Common.NotificationMessagesConstants;
 
 
-	public class CartController : Controller
-	{
+	public class CartController : BaseController
+    {
 		private readonly ICartService cartService;
 		private readonly IOutfitSetService outfitSetService;
 		private readonly ICalendarService calendarService;

@@ -6,9 +6,10 @@
 	using ViewModels.Region;
 	using Common;
 	using static Common.NotificationMessagesConstants;
+    using Microsoft.AspNetCore.Authorization;
 
-	public class RegionController : Controller
-	{
+	public class RegionController : BaseController
+    {
 		private readonly IRegionService regionService;
 		private readonly IImageService imageService;
 		private readonly IWebHostEnvironment webHostEnvironment;
@@ -20,7 +21,8 @@
 			this.webHostEnvironment = webHostEnvironment;
 		}
 
-		public async Task<IActionResult> All([FromQuery] AllRegionsPaginatedModel model)
+        [AllowAnonymous]
+        public async Task<IActionResult> All([FromQuery] AllRegionsPaginatedModel model)
 		{
 			var serviceModel = await this.regionService.AllAvailableRegionsAsync(model);
 
@@ -92,7 +94,8 @@
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Details(int id)
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
 		{
 			var regionExists = await this.regionService.ExistsByIdAsync(id);
 

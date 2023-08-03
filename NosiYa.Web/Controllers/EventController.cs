@@ -9,10 +9,11 @@
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.Comment;
 	using ViewModels.Event;
+    using Microsoft.AspNetCore.Authorization;
 
 
-	public class EventController : Controller
-	{
+	public class EventController : BaseController
+    {
 		private readonly IEventService eventService;
 		private readonly ICommentService commentService;
 		private readonly IImageService imageService;
@@ -26,7 +27,9 @@
 			this.webHostEnvironment = webHostEnvironment;
 		}
 
-		public async Task<IActionResult> All([FromQuery] AllEventsPaginatedModel model)
+		[HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> All([FromQuery] AllEventsPaginatedModel model)
 		{
 			var serviceModel = await this.eventService.AllAvailableEventsAsync(model);
 
@@ -108,7 +111,8 @@
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Details(int id)
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
 		{
 			var eventExists = await this.eventService.ExistsByIdAsync(id);
 

@@ -9,10 +9,11 @@
 	using Microsoft.AspNetCore.Hosting;
 	using Common;
 	using static Common.NotificationMessagesConstants;
+    using Microsoft.AspNetCore.Authorization;
 
 
-	public class OutfitPartController : Controller
-	{
+	public class OutfitPartController : BaseController
+    {
 		private readonly IOutfitPartService outfitPartService;
 		private readonly IOutfitSetService outfitSetService;
 		private readonly IUserService userService;
@@ -113,7 +114,8 @@
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Details(int id)
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
 		{
 			var outfitPartExists = await this.outfitPartService.ExistByIdAsync(id);
 
