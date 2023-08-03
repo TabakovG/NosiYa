@@ -26,7 +26,7 @@ namespace NosiYa.Web
             builder.Services.AddDbContext<NosiYaDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            //builder.Services.AddDatabaseDeveloperPageExceptionFilter(); da se mahne TODO 
+            //builder.Services.AddDatabaseDeveloperPageExceptionFilter();  TODO da se mahne
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
                     {
@@ -37,6 +37,7 @@ namespace NosiYa.Web
                         options.Password.RequireUppercase = builder.Configuration.GetValue<bool>("Identity:Password:RequireUppercase");
                         options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
                         options.Password.RequiredUniqueChars = builder.Configuration.GetValue<int>("Identity:Password:RequiredUniqueChars");
+                        options.User.RequireUniqueEmail = true;
                     }
                 )
                 .AddRoles<IdentityRole<Guid>>()
@@ -60,7 +61,7 @@ namespace NosiYa.Web
                 .AddMvcOptions(options =>
                 {
                     //Should be inserted at the beginning, otherwise the default provider will handle the binding.
-                    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider()); 
+                    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
                 }); ;
 
             var app = builder.Build();
@@ -88,16 +89,21 @@ namespace NosiYa.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.SeedAdmin(DevAdminEmail);
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.SeedAdmin(DevAdminEmail);
+                app.SeedUser(DevUserEmail);
+            }
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute(
-	            name: "areas",
-	            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
             );
-			app.MapRazorPages();
+            app.MapRazorPages();
 
             app.Run();
         }
