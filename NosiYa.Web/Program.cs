@@ -95,14 +95,21 @@ namespace NosiYa.Web
                 app.SeedUser(DevUserEmail);
             }
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-            app.MapControllerRoute(
-                name: "areas",
-                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-            );
-            app.MapRazorPages();
+            app.UseEndpoints(conf =>
+            {
+	            conf.MapControllerRoute(
+		            name: "areas",
+		            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+	            );
+
+	            conf.MapControllerRoute(
+		            name: "default",
+		            pattern: "{controller=Home}/{action=Index}/{id?}");
+
+	            conf.MapDefaultControllerRoute();
+
+	            conf.MapRazorPages();
+            });
 
             app.Run();
         }

@@ -15,12 +15,15 @@
         //Reservations
         public const string Reserved = "Резервирана";
         public const string WaitingForReview = "Изчаква потвърждение";
-        
 
-    }
+        //Area
+        public const string AdminAreaName = "Admin";
 
-    //Should match the related calling controller name !
-    public static class EntityTypesConst 
+
+	}
+
+	//Should match the related calling controller name !
+	public static class EntityTypesConst 
     {
 	    public const string OutfitSet = "outfitset";
 	    public const string OutfitPart = "outfitpart";

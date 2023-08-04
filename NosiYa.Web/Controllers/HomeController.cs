@@ -9,27 +9,20 @@ namespace NosiYa.Web.Controllers
     using Microsoft.AspNetCore.Mvc;
 
     using ViewModels.Home;
+    using static Common.SeedingConstants;
+    using static Common.ApplicationConstants;
 
     [AllowAnonymous]
     public class HomeController : BaseController
     {
-        /*private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        } TODO use or delete*/
-
-        /*private readonly SendGridEmailSender emailSender;
-
-        public HomeController(IConfiguration configuration)
-        {
-            emailSender = new SendGridEmailSender(configuration["SendGridApiKey"]);
-        }*/
-
+	    
         public IActionResult Index()
         {
-            // this.emailSender.SendEmailAsync("gnt@abv.bg", "Hello world!", "<p>Wellcome to NosiYa!</p>"); //await ??
+	        if (this.User.IsInRole(AdminRoleName))
+	        {
+		        return RedirectToAction("Index", "Home", new { Area = AdminAreaName });
+	        }
+
             return View();
         }
 
