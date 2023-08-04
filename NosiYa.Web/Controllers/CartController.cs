@@ -6,16 +6,13 @@
 	using Infrastructure.Extensions;
 	using ViewModels.Cart;
 	using static Common.NotificationMessagesConstants;
-    using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Authorization;
 	using static Common.SeedingConstants;
-    using Microsoft.AspNetCore.Hosting;
-    using NosiYa.Common;
-    using NosiYa.Services.Data;
-    using NosiYa.Web.ViewModels.Region;
 
-    [Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
-    public class CartController : BaseController
-    {
+
+	[Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
+	public class CartController : BaseController
+	{
 		private readonly ICartService cartService;
 		private readonly IOutfitSetService outfitSetService;
 		private readonly ICalendarService calendarService;
@@ -28,7 +25,7 @@
 		}
 
 		[HttpGet]
-        public async Task<IActionResult> Items()
+		public async Task<IActionResult> Items()
 		{
 			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
@@ -43,7 +40,7 @@
 		}
 
 		[HttpGet]
-        public async Task<IActionResult> Mine()
+		public async Task<IActionResult> Mine()
 		{
 			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
@@ -58,7 +55,7 @@
 		}
 
 		[HttpPost]
-        public async Task<IActionResult> Order(int id,[FromForm] CartCompleteOrderFormModel model)
+		public async Task<IActionResult> Order(int id, [FromForm] CartCompleteOrderFormModel model)
 		{
 			if (!this.ModelState.IsValid)
 			{
@@ -79,7 +76,7 @@
 			}
 
 			//TODO validate dates
-			
+
 			try
 			{
 				var stillFree = await this.calendarService.ValidateDatesAsync(model.FromDate, model.ToDate, model.OutfitId);
@@ -104,17 +101,19 @@
 		}
 
 		[HttpGet]
-        public async Task<IActionResult> Add(int id)
+		public async Task<IActionResult> Add(int id)
 		{
 			try
 			{
-				var outfit = await this.outfitSetService.GetForRentByIdAsync(id);
 
 				var rentModel = new CartPreOrderFormModel
 				{
-					OutfitModel = outfit
+					OutfitModel = await this.outfitSetService.GetForRentByIdAsync(id),
+					CardItemFormModel = new CartItemFormModel
+					{
+						OutfitSetId = id
+					}
 				};
-
 
 				return this.View(rentModel);
 			}
@@ -125,35 +124,30 @@
 		}
 
 		[HttpPost]
-        public async Task<IActionResult> Add(CartPreOrderFormModel model)
+		public async Task<IActionResult> Add(CartItemFormModel model)
 		{
 			try
 			{
-
-				if (!this.ModelState.IsValid)
-				{
-					return this.View(model);
-				}
-
 				var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
-				if (!isAuthenticated)
+				if (this.ModelState.IsValid && isAuthenticated)
 				{
-					return this.View(model);
-				}
 
-				model.CartId = await this.cartService.GetCartIdByUserIdAsync(this.User!.GetId()!);
+					model.CartId = await this.cartService.GetCartIdByUserIdAsync(this.User!.GetId()!);
 
-				try
-				{
 					await this.cartService.CreateCartItemAsync(model);
 
 					return this.RedirectToAction("All", "OutfitSet");
+
 				}
-				catch (Exception)
+
+				var rentModel = new CartPreOrderFormModel
 				{
-					return this.View(model);
-				}
+					OutfitModel = await this.outfitSetService.GetForRentByIdAsync(model.OutfitSetId),
+					CardItemFormModel = model
+				};
+
+				return this.View(rentModel);
 			}
 			catch (Exception)
 			{
@@ -163,76 +157,100 @@
 		}
 
 
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var itemExistsById = await this.cartService
-                .CartItemExistsById(id);
 
-            if (!itemExistsById)
-            {
-                this.TempData[ErrorMessage] = "Продукт с този идентификатор не съществува!";
+		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
+		{
+			var itemExistsById = await this.cartService
+				.CartItemExistsById(id);
 
-                return this.RedirectToAction("Items", "Cart");
-            }
+			if (!itemExistsById)
+			{
+				this.TempData[ErrorMessage] = "Продукт с този идентификатор не съществува!";
 
-            try
-            {
-                CartPreOrderFormModel formModel = await this.cartService
-                    .GetForEditByIdAsync(id);
+				return this.RedirectToAction("Items", "Cart");
+			}
 
-                return View(formModel);
-            }
-            catch (Exception)
-            {
-                return this.GeneralError();
-            }
-        }
+			try
+			{
+				var formModel = new CartPreOrderFormModel
+				{
+					CardItemFormModel = await this.cartService
+						.GetForEditByIdAsync(id)
+				};
+				formModel.OutfitModel = await this.outfitSetService
+					.GetForRentByIdAsync(formModel.CardItemFormModel.OutfitSetId);
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id, CartPreOrderFormModel model)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(model);
-            }
 
-            var itemExistsById = await this.cartService
-                .CartItemExistsById(id);
+				return View(formModel);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
 
-            if (!itemExistsById)
-            {
-                this.TempData[ErrorMessage] = "Продукт с този идентификатор не съществува!";
+		[HttpPost]
+		public async Task<IActionResult> Edit(int id, CartItemFormModel model)
+		{
+			try
+			{
+				if (!this.ModelState.IsValid)
+				{
+					var formModel = new CartPreOrderFormModel
+					{
+						CardItemFormModel = model,
+						OutfitModel = await this.outfitSetService
+							.GetForRentByIdAsync(model.OutfitSetId)
+					};
+					return this.View(formModel);
+				}
+				var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
-                return this.RedirectToAction("Items", "Cart");
-            }
+				if (!isAuthenticated || !this.ModelState.IsValid)
+				{
+					var formModel = new CartPreOrderFormModel
+					{
+						CardItemFormModel = model,
+						OutfitModel = await this.outfitSetService
+							.GetForRentByIdAsync(model.OutfitSetId)
+					};
+					return this.View(formModel);
+				}
 
-            var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+				var itemExistsById = await this.cartService
+					.CartItemExistsById(id);
 
-            if (!isAuthenticated)
-            {
-                return this.View(model);
-            }
+				if (!itemExistsById)
+				{
+					this.TempData[ErrorMessage] = "Продукт с този идентификатор не съществува!";
 
-            try
-            {
-                await this.cartService.EditByIdAsync(id, model);
+					return this.RedirectToAction("Items", "Cart");
+				}
 
-                this.TempData[SuccessMessage] = "Промените са запазени успешно!";
+				await this.cartService.EditByIdAsync(id, model);
 
-                return this.RedirectToAction("Items", "Cart");
-            }
-            catch (Exception)
-            {
-                this.ModelState.AddModelError(string.Empty,
-                    "Възникна грешка при обработване на заявката. Моля опитайте отново или се свържете с администратор!");
+				this.TempData[SuccessMessage] = "Промените са запазени успешно!";
 
-                return this.View(model);
-            }
-        }
+				return this.RedirectToAction("Items", "Cart");
+			}
+			catch (Exception)
+			{
+				this.ModelState.AddModelError(string.Empty,
+					"Възникна грешка при обработване на заявката. Моля опитайте отново или се свържете с администратор!");
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+				var formModel = new CartPreOrderFormModel
+				{
+					CardItemFormModel = model,
+					OutfitModel = await this.outfitSetService
+						.GetForRentByIdAsync(model.OutfitSetId)
+				};
+				return this.View(formModel);
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Delete(int id)
 		{
 			var cartItem = await this.cartService
 				.CartItemExistsById(id);
@@ -248,7 +266,7 @@
 
 			if (!isAuthenticated)
 			{
-				return RedirectToAction("All", "OutfitSet"); //TODO better to login page
+				return RedirectToAction("All", "OutfitSet");
 			}
 
 			try

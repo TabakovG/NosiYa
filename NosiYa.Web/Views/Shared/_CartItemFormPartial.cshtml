@@ -1,0 +1,15 @@
+﻿@model CartItemFormModel
+
+<input asp-for="@Model.OutfitSetId" class="visually-hidden " readonly />
+<div class="form-group">
+	<input asp-for="@Model.FromDate" id="fromDate" rows="4" class="form-control  visually-hidden" readonly placeholder="Description..." />
+	<span asp-validation-for="@Model.FromDate" class="small text-danger"></span>
+</div>
+<div class="form-group">
+	<input asp-for="@Model.ToDate" id="toDate" rows="4" class="form-control visually-hidden" readonly placeholder="Description..." />
+	<span asp-validation-for="@Model.ToDate" class="small text-danger "></span>
+</div>
+
+<div class="text-center">
+	<input class="btn btn-primary mt-3" type="submit" value="@ViewData["Button"]" />
+</div>

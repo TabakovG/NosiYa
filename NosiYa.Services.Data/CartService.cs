@@ -28,43 +28,44 @@ namespace NosiYa.Services.Data
 				.AnyAsync(o => o.Id == id);
 		}
 
-        public async Task<CartPreOrderFormModel> GetForEditByIdAsync(int id)
-        {
-            var item = await this.context
-                .OutfitsForCarts
-                .Where(x => x.IsActive)
-                .FirstAsync(x => x.Id == id);
-
-            var formModel = new CartPreOrderFormModel
-            {
-                CartId = item.CartId,
-                FromDate = item.FromDate,
-                ToDate = item.ToDate,
-                OutfitModel = await this.outfitSetService.GetForRentByIdAsync(item.OutfitId)
-        };
-
-			return formModel;
-        }
-
-        public async Task EditByIdAsync(int id, CartPreOrderFormModel model)
-        {
-            var item = await this.context
-                .OutfitsForCarts
-                .Where(x => x.IsActive)
-                .FirstAsync(x => x.Id == id);
-
-            item.FromDate = model.FromDate;
-			item.ToDate = model.ToDate;
-
-            await this.context.SaveChangesAsync();
-        }
-
-        public async Task DeleteItemFromUserCartAsync(int id)
+		public async Task<CartItemFormModel> GetForEditByIdAsync(int id)
 		{
 			var item = await this.context
 				.OutfitsForCarts
-				.Where(x=>x.IsActive)
-				.FirstAsync(x=>x.Id == id);
+				.Where(x => x.IsActive)
+				.FirstAsync(x => x.Id == id);
+
+			var formModel = new CartItemFormModel
+			{
+				CartId = item.CartId,
+				OutfitSetId = item.OutfitId,
+				FromDate = item.FromDate,
+				ToDate = item.ToDate,
+
+			};
+
+			return formModel;
+		}
+
+		public async Task EditByIdAsync(int id, CartItemFormModel model)
+		{
+			var item = await this.context
+				.OutfitsForCarts
+				.Where(x => x.IsActive)
+				.FirstAsync(x => x.Id == id);
+
+			item.FromDate = model.FromDate;
+			item.ToDate = model.ToDate;
+
+			await this.context.SaveChangesAsync();
+		}
+
+		public async Task DeleteItemFromUserCartAsync(int id)
+		{
+			var item = await this.context
+				.OutfitsForCarts
+				.Where(x => x.IsActive)
+				.FirstAsync(x => x.Id == id);
 
 			item.IsActive = false;
 
@@ -113,14 +114,14 @@ namespace NosiYa.Services.Data
 			var result = await this.context
 				.OutfitsForCarts
 				.AsNoTracking()
-				.Where(o=>o.Cart.OwnerId.ToString() == userId)
+				.Where(o => o.Cart.OwnerId.ToString() == userId)
 				.Where(x => x.IsActive)
-				.Select(o=>new CartItemsViewModel
+				.Select(o => new CartItemsViewModel
 				{
 					Id = o.Id,
 					OutfitId = o.OutfitId,
 					Name = o.OutfitSet.Name,
-					SetImage = o.OutfitSet.Images.Where(i=>i.IsDefault).Select(i=>i.Url).First(),
+					SetImage = o.OutfitSet.Images.Where(i => i.IsDefault).Select(i => i.Url).First(),
 					FromDate = o.FromDate,
 					ToDate = o.ToDate
 				})
@@ -134,25 +135,25 @@ namespace NosiYa.Services.Data
 			var resultDistinct = await this.context
 				.OutfitRenterDates
 				.AsNoTracking()
-				.Include(o=>o.Outfit)
-				.Include(o=>o.Outfit.Images)
-				.Where(o=> o.IsActive)
-				.Where(o=>o.RenterId.ToString() == userId)
+				.Include(o => o.Outfit)
+				.Include(o => o.Outfit.Images)
+				.Where(o => o.IsActive)
+				.Where(o => o.RenterId.ToString() == userId)
 				.GroupBy(o => new { o.OutfitId, o.DateRangeStart, o.DateRangeEnd })
-				.Select(o=>o.First())
+				.Select(o => o.First())
 				.ToArrayAsync();
 
-				var modelsResult = resultDistinct
-				.Select(o => new ReservedItemsViewModel
-				{
-					OutfitId = o.OutfitId,
-					Name = o.Outfit.Name,
-					SetImage = o.Outfit.Images.Where(i => i.IsDefault).Select(i => i.Url).First(),
-					FromDate = o.DateRangeStart,
-					ToDate = o.DateRangeEnd,
-					IsApproved = o.IsApproved
-				})
-				.ToArray();
+			var modelsResult = resultDistinct
+			.Select(o => new ReservedItemsViewModel
+			{
+				OutfitId = o.OutfitId,
+				Name = o.Outfit.Name,
+				SetImage = o.Outfit.Images.Where(i => i.IsDefault).Select(i => i.Url).First(),
+				FromDate = o.DateRangeStart,
+				ToDate = o.DateRangeEnd,
+				IsApproved = o.IsApproved
+			})
+			.ToArray();
 
 			return modelsResult;
 		}
@@ -166,11 +167,11 @@ namespace NosiYa.Services.Data
 				.FirstAsync();
 		}
 
-		public async Task CreateCartItemAsync(CartPreOrderFormModel model)
+		public async Task CreateCartItemAsync(CartItemFormModel model)
 		{
 			var rentRequest = new OutfitForCart
 			{
-				OutfitId = model.OutfitModel.Id,
+				OutfitId = model.OutfitSetId,
 				FromDate = model.FromDate,
 				ToDate = model.ToDate,
 				CartId = model.CartId

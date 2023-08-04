@@ -4,7 +4,7 @@
 	public interface ICartService
 	{
 		//Create:
-		Task CreateCartItemAsync(CartPreOrderFormModel model);
+		Task CreateCartItemAsync(CartItemFormModel model);
 		Task CartOrderCompleteAsync(CartCompleteOrderFormModel model, string userId);
 
 
@@ -16,8 +16,8 @@
 
 
         //Update:
-        Task<CartPreOrderFormModel> GetForEditByIdAsync(int id);
-        Task EditByIdAsync(int id, CartPreOrderFormModel model);
+        Task<CartItemFormModel> GetForEditByIdAsync(int id);
+        Task EditByIdAsync(int id, CartItemFormModel model);
 
 
         //Delete:

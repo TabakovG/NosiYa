@@ -129,11 +129,6 @@
 
         }
 
-        public Task<IEnumerable<OutfitSetAllViewModel>> AllOutfitSetsByUserIdAsync(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<OutfitSetForOptionsViewModel>> GetAllOutfitSetsForOptionsAsync()
         {
 			return await this.context
@@ -166,16 +161,17 @@
 
         public async Task<OutfitSetForRentViewModel> GetForRentByIdAsync(int id)
         {
-			var outfitSet = await this.context
+
+	        var outfitSet = await this.context
 				.OutfitSets
 				.AsNoTracking()
 				.Include(r => r.Region)
 				.Include(i => i.Images)
 				.FirstAsync(o => o.Id == id);
 
+
 			return new OutfitSetForRentViewModel
 			{
-				Id = outfitSet.Id,
 				Name = outfitSet.Name,
 				Description = outfitSet.Description ?? string.Empty,
 				Size = outfitSet.Size,

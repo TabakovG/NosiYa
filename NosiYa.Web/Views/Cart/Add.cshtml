@@ -8,7 +8,9 @@
 <h2 class="text-center">@ViewData["Title"]</h2>
 <hr />
 
-<partial name="_CartPreOrderFormPartial" />
+<form method="post" asp-action="Add" asp-controller="Cart">
+	<partial name="_CartPreOrderFormPartial" />
+</form>
 
 @section Scripts
 {
