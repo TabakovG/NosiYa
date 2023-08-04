@@ -21,7 +21,7 @@ namespace NosiYa.Web.Controllers
 
 		[HttpGet]
         [Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
-        public async Task<string> PopulateCalendar(string start, string end)
+        public async Task<string> PopulateCalendar(string start, string end, int id)
 		{
 			try
 			{
@@ -41,7 +41,7 @@ namespace NosiYa.Web.Controllers
 					return "";
 				}
 
-				var reservedDates = await this.calendarService.GetReservedDates(startDate, endDate);
+				var reservedDates = await this.calendarService.GetReservedDatesForItemAsync(startDate, endDate, id);
 
 				return JsonConvert.SerializeObject(reservedDates);
 			}

@@ -1,6 +1,7 @@
 ﻿
 document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
+    var setId = document.getElementsByName('outfitSetId')[0].value;
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialDate: '2023-07-26',
         initialView: 'dayGridMonth',
@@ -30,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('fromDate').value = selectedStartDate.toISOString().slice(0, 16);
             document.getElementById('toDate').value = selectedEndDate.toISOString().slice(0, 16);
         },
-        events: '/calendar/PopulateCalendar'
+        events: '/calendar/PopulateCalendar/'+ setId
     });
     calendar.render();
 });

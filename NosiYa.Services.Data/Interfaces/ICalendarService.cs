@@ -4,7 +4,7 @@
 
 	public  interface ICalendarService
 	{
-		Task<ICollection<ReservationsServiceModel>> GetReservedDates(DateTime start, DateTime end);
+		Task<ICollection<ReservationsServiceModel>> GetReservedDatesForItemAsync(DateTime start, DateTime end, int outfitSetId);
 
 		Task<bool> ValidateDatesAsync(DateTime start, DateTime end, int setId);
 

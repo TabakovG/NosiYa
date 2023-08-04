@@ -16,12 +16,14 @@
 			this.context = _context;
 		}
 
-		public async Task<ICollection<ReservationsServiceModel>> GetReservedDates(DateTime start, DateTime end) //TODO can be moved in separate controller ??
+		public async Task<ICollection<ReservationsServiceModel>> GetReservedDatesForItemAsync(DateTime start, DateTime end, int setId) 
 		{
 			var reservations = await this.context
 				.OutfitRenterDates
+				.AsNoTracking()
 				.Where(x => x.Date >= start.Date && x.Date <= end.Date)
 				.Where(x => x.IsActive)
+				.Where(x=>x.OutfitId == setId)
 				.Select(r => new ReservationsServiceModel
 				{
 					title = r.IsApproved ? Reserved : WaitingForReview,

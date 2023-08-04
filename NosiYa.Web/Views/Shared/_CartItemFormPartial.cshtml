@@ -1,6 +1,6 @@
 ﻿@model CartItemFormModel
 
-<input asp-for="@Model.OutfitSetId" class="visually-hidden " readonly />
+<input asp-for="@Model.OutfitSetId" name="outfitSetId" class="visually-hidden " readonly />
 <div class="form-group">
 	<input asp-for="@Model.FromDate" id="fromDate" rows="4" class="form-control  visually-hidden" readonly placeholder="Description..." />
 	<span asp-validation-for="@Model.FromDate" class="small text-danger"></span>
