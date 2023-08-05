@@ -53,10 +53,15 @@ namespace NosiYa.Web
 
             builder.Services.AddApplicationServices(typeof(IOutfitSetService));
 
+            //Email sender
             builder.Services.AddTransient<IEmailSender, SendGridEmailSender>(
                 serviceProvider => new SendGridEmailSender(builder.Configuration["SendGridApiKey"]));
 
-            builder.Services.AddControllersWithViews()
+			//Caching
+			builder.Services.AddMemoryCache();
+			builder.Services.AddResponseCaching();
+
+			builder.Services.AddControllersWithViews()
                 .AddMvcOptions(options =>
                 {
                     //Should be inserted at the beginning, otherwise the default provider will handle the binding.

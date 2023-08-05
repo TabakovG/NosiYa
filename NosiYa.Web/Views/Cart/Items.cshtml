@@ -20,7 +20,7 @@
 			<div class="card mb-3">
 				<img class="card-img-top" src="@order.SetImage" alt="Outfit Image">
 				<div class="card-body text-center">
-					<form method="post" asp-controller="Cart" asp-action="Order" asp-route-id="@order.Id">
+					<form method="post" asp-controller="Order" asp-action="Add" asp-route-id="@order.Id">
 						<input name="OutfitId" class="visually-hidden " readonly value="@order.OutfitId" />
 						<input name="RenterId" class="visually-hidden " readonly value="@this.User.GetId()" />
 						<input name="FromDate" class="visually-hidden " readonly value="@order.FromDate" />

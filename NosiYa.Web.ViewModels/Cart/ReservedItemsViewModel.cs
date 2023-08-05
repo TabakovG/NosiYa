@@ -2,6 +2,8 @@
 {
 	public class ReservedItemsViewModel
 	{
+		public string OrderId { get; set; } = null!;
+
 		public int OutfitId { get; set; }
 
 		public string Name { get; set; } = null!;

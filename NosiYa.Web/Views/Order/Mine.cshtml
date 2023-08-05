@@ -34,10 +34,11 @@
 
 					}
 
-					@if (this.User.Identity?.IsAuthenticated ?? false)
+					@if (DateTime.UtcNow.Date.AddDays(5) <= order.FromDate)
 					{
-						<a asp-controller="Cart" asp-action="Cancell" asp-route-id="@order" class="btn btn-warning">Откажи</a> //TODO implement
+					<a asp-controller="Order" asp-action="Delete" asp-route-orderId="@order.OrderId" class="btn btn-warning">Откажи</a>
 					}
+
 				</div>
 			</div>
 		</div>

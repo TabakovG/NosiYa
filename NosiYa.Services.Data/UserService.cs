@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NosiYa.Data;
 using NosiYa.Services.Data.Interfaces;
+using NosiYa.Web.ViewModels.User;
 
 namespace NosiYa.Services.Data
 {
@@ -16,7 +17,7 @@ namespace NosiYa.Services.Data
 		{
 			return await this.context
 				.Users
-				.AnyAsync(u => u.Email == email); //TODO user is active ?
+				.AnyAsync(u => u.Email == email);
 		}
 
 		public async Task<Guid> GetUserIdFromEmailAsync(string email)
@@ -28,5 +29,38 @@ namespace NosiYa.Services.Data
 				.FirstAsync();
 
 		}
-	}
+
+
+		public async Task<IEnumerable<UserViewModel>> AllAsync()
+		{
+			var users = await this.context
+				.Users
+				.AsNoTracking()
+				.Where(u=>u.Email != null)
+				.Select(u => new UserViewModel
+				{
+					Id = u.Id.ToString(),
+					Email = u.Email,
+					UserName = u.UserName,
+					PhoneNumber = u.PhoneNumber,
+					PhoneConfirmed = u.PhoneNumberConfirmed
+				})
+				.ToListAsync();
+
+			return users;
+		}
+
+        public async Task ConfirmPhoneAsync(string id)
+        {
+            var user = await this.context
+                .Users
+                .FindAsync(Guid.Parse(id));
+
+			user!.PhoneNumberConfirmed = true;
+
+            await this.context.SaveChangesAsync();
+        }
+
+
+    }
 }

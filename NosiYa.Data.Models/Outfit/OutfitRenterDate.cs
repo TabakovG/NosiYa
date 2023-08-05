@@ -6,7 +6,9 @@
 
     public class OutfitRenterDate
     {
-        [ForeignKey(nameof(Outfit))]
+	    public Guid OrderId { get; set; }
+
+		[ForeignKey(nameof(Outfit))]
         public int OutfitId { get; set; }
         public OutfitSet Outfit { get; set; } = null!;
 

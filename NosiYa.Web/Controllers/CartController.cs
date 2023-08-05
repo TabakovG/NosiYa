@@ -1,12 +1,12 @@
 ﻿namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Authorization;
 
 	using NosiYa.Services.Data.Interfaces;
 	using Infrastructure.Extensions;
 	using ViewModels.Cart;
 	using static Common.NotificationMessagesConstants;
-	using Microsoft.AspNetCore.Authorization;
 	using static Common.SeedingConstants;
 
 
@@ -15,13 +15,12 @@
 	{
 		private readonly ICartService cartService;
 		private readonly IOutfitSetService outfitSetService;
-		private readonly ICalendarService calendarService;
 
-		public CartController(ICartService cartService, IOutfitSetService outfitSetService, ICalendarService calendarService)
+		public CartController(ICartService cartService, IOutfitSetService outfitSetService)
 		{
 			this.outfitSetService = outfitSetService;
 			this.cartService = cartService;
-			this.calendarService = calendarService;
+
 		}
 
 		[HttpGet]
@@ -37,67 +36,6 @@
 			ICollection<CartItemsViewModel> orderModel = await this.cartService.GetAllItemsFromUserCartAsync(this.User!.GetId()!);
 
 			return View(orderModel);
-		}
-
-		[HttpGet]
-		public async Task<IActionResult> Mine()
-		{
-			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
-
-			if (!isAuthenticated)
-			{
-				return this.RedirectToAction("Index", "Home"); //TODO to login page
-			}
-
-			ICollection<ReservedItemsViewModel> orderModel = await this.cartService.GetReservedItemsByUserIdAsync(this.User!.GetId()!);
-
-			return View(orderModel);
-		}
-
-		[HttpPost]
-		public async Task<IActionResult> Order(int id, [FromForm] CartCompleteOrderFormModel model)
-		{
-			if (!this.ModelState.IsValid)
-			{
-				return this.RedirectToAction("Items", "Cart");
-			}
-			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
-
-			if (!isAuthenticated)
-			{
-				return this.RedirectToAction("Index", "Home");
-			}
-
-			var orderExists = await this.cartService.CartItemExistsById(id);
-			if (!orderExists)
-			{
-				this.TempData[ErrorMessage] = "Поръчка с посочения идентификатор не съществува!";
-				return this.RedirectToAction("Index", "Home");
-			}
-
-			//TODO validate dates
-
-			try
-			{
-				var stillFree = await this.calendarService.ValidateDatesAsync(model.FromDate, model.ToDate, model.OutfitId);
-
-				if (stillFree)
-				{
-					await this.cartService.CartOrderCompleteAsync(model, this.User!.GetId()!);
-					await this.cartService.DeleteItemFromUserCartAsync(id);
-					return this.RedirectToAction("Items", "Cart");
-				}
-				this.TempData[ErrorMessage] = "Носията вече е заета за посочените дати!";
-
-				return this.RedirectToAction("Items", "Cart");
-
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-				throw;
-			}
-
 		}
 
 		[HttpGet]
@@ -252,6 +190,13 @@
 		[HttpPost]
 		public async Task<IActionResult> Delete(int id)
 		{
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+			if (!isAuthenticated)
+			{
+				return RedirectToAction("All", "OutfitSet");
+			}
+
 			var cartItem = await this.cartService
 				.CartItemExistsById(id);
 
@@ -262,12 +207,6 @@
 				return this.RedirectToAction("Items", "Cart");
 			}
 
-			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
-
-			if (!isAuthenticated)
-			{
-				return RedirectToAction("All", "OutfitSet");
-			}
 
 			try
 			{
