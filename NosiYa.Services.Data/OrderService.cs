@@ -18,28 +18,18 @@ namespace NosiYa.Services.Data
 
 		public async Task CreateOrderAsync(CartCompleteOrderFormModel model, string userId)
 		{
-			var start = model.FromDate.Date;
-			var end = model.ToDate.Date;
 
-			var result = new HashSet<OutfitRenterDate>();
-
-			var currentDate = start;
-			var orderId = Guid.NewGuid();
-			while (currentDate <= end)
+			var result = new OutfitRenterDate
 			{
-				result.Add(new OutfitRenterDate
-				{
-					OrderId = orderId,
-					OutfitId = model.OutfitId,
-					RenterId = Guid.Parse(userId),
-					Date = currentDate.Date,
-					DateRangeStart = start,
-					DateRangeEnd = end
-				});
-				currentDate = currentDate.AddDays(+1);
-			}
+				OrderId = Guid.NewGuid(),
+				OutfitId = model.OutfitId,
+				RenterId = Guid.Parse(userId),
+				DateRangeStart = model.FromDate,
+				DateRangeEnd = model.ToDate
+			};
 
-			await this.context.AddRangeAsync(result);
+
+			await this.context.AddAsync(result);
 			await this.context.SaveChangesAsync();
 		}
 

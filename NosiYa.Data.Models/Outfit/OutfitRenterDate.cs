@@ -6,6 +6,7 @@
 
     public class OutfitRenterDate
     {
+        [Key]
 	    public Guid OrderId { get; set; }
 
 		[ForeignKey(nameof(Outfit))]
@@ -15,10 +16,6 @@
         [ForeignKey(nameof(Renter))]
         public Guid RenterId { get; set; }
         public ApplicationUser Renter { get; set; } = null!;
-
-        [Required]
-        [Column(TypeName = "date")]
-        public DateTime Date { get; set; }
 
         [Required]
         [Column(TypeName = "date")]

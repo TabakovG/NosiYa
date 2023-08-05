@@ -9,10 +9,8 @@
     {
         public void Configure(EntityTypeBuilder<OutfitRenterDate> builder)
         {
-            builder
-                .HasKey(x => new { x.OutfitId, x.Date });
 
-            builder
+	        builder
                 .HasOne(x => x.Outfit)
                 .WithMany(u => u.OutfitRenterDates)
                 .OnDelete(DeleteBehavior.NoAction);

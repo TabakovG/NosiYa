@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NosiYa.Web.ViewModels.User.UserViewModel>
+﻿@using Microsoft.CodeAnalysis.Scripting
+@model IEnumerable<NosiYa.Web.ViewModels.User.UserViewModel>
 
 @{
 	ViewBag.Title = "All Users";
@@ -9,40 +10,42 @@
 
 <table class="table table-striped">
 	<thead>
-		<tr>
-			<th><label>Email</label></th>
-			<th><label>Full Name</label></th>
-			<th><label>Phone Number</label></th>
-			<th><label>Phone Confirmed</label></th>
-			<th><label>User Actions</label></th>
-		</tr>
+	<tr>
+		<th><label>Email</label></th>
+		<th><label>Full Name</label></th>
+		<th><label>Phone Number</label></th>
+		<th><label>Phone Confirmed</label></th>
+		<th><label>User Actions</label></th>
+	</tr>
 	</thead>
 	<tbody>
-		@foreach (var user in Model)
-		{
-			<tr>
-				<td><label>@user.Email</label></td>
-				<td><label>@user.UserName</label></td>
-				<td><label>@user.PhoneNumber</label></td>
-				<td>
-					@if (user.PhoneConfirmed)
-					{
-						<label class="text-success">✔</label>
-					}
-				</td>
-				<td>
-					<div class="row">
-						<form method="post" asp-action="ConfirmPhone" asp-area="Admin" asp-controller="User" class="col-6">
-							<input type="hidden" name="userId" value="@user.Id" />
-							<input type="submit" value="Confirm Phone" />
-						</form>
-						<form method="post" asp-action="DeleteUser" asp-area="Admin" asp-controller="User" class="col-6 ml-2">
-							<input type="hidden" name="userId" value="@user.Id" />
-							<input type="submit" value="❌ Delete" />
-						</form>
-					</div>
-				</td>
-			</tr>
-		}
+	@foreach (var user in Model)
+	{
+		<tr>
+			<td><label>@user.Email</label></td>
+			<td><label>@user.UserName</label></td>
+			<td><label>@user.PhoneNumber</label></td>
+			<td>
+				@if (user.PhoneConfirmed)
+				{
+					<label class="text-success">✔</label>
+				}
+			</td>
+			<td>
+				<div class="row">
+					<form method="post" asp-action="ConfirmPhone" asp-area="Admin" asp-controller="User" class="col-6">
+						<input type="hidden" name="userId" value="@user.Id" />
+						<input type="submit" value="Confirm Phone" />
+					</form>
+					<form method="post" asp-action="DeleteUser" asp-area="Admin" asp-controller="User" class="col-6 ml-2 delete-button">
+						<input type="hidden" name="userId" value="@user.Id" />
+						<input type="submit" value="❌ Delete" />
+					</form>
+				</div>
+			</td>
+		</tr>
+	}
 	</tbody>
 </table>
+
+<script src="~/js/confirmDelete.js"></script>

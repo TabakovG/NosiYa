@@ -4,7 +4,8 @@
 	{
 		public string title { get; set; } = null!;
 
-		public string date { get; set; } = null!;
+		public string start { get; set; } = null!;
+		public string end { get; set; } = null!;
 
 		public string backgroundColor { get; set; } = null!;
 		public bool background { get; set; } = true;

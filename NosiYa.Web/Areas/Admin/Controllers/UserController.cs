@@ -15,20 +15,20 @@ namespace NosiYa.Web.Areas.Admin.Controllers
     {
         private readonly IUserService userService;
         private readonly IMemoryCache memoryCache;
+        private readonly ICartService cartService;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
 
         public UserController(
             IUserService userService,
             IMemoryCache memoryCache,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager
+            ICartService cartService
             )
         {
             this.userService = userService;
             this.memoryCache = memoryCache;
             this.userManager = userManager;
-            this.signInManager = signInManager;
+            this.cartService = cartService;
         }
 
         [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client)]
@@ -54,10 +54,11 @@ namespace NosiYa.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string userId)
         {
-            var user = await userManager.FindByIdAsync(userId);
+            var user = await this.userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                IdentityResult result = await userManager.DeleteAsync(user);
+
+                IdentityResult result = await this.userManager.DeleteAsync(user);
 
                 if (result.Succeeded)
                 {

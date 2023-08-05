@@ -64,9 +64,9 @@
 
 			try
 			{
-				var stillFree = await this.calendarService.ValidateDatesAsync(model.FromDate, model.ToDate, model.OutfitId);
+				var isReserved = await this.calendarService.ValidateDatesAsync(model.FromDate, model.ToDate, model.OutfitId);
 
-				if (stillFree)
+				if (!isReserved)
 				{
 					await this.orderService.CreateOrderAsync(model, this.User!.GetId()!);
 					await this.cartService.DeleteItemFromUserCartAsync(id);
