@@ -11,5 +11,6 @@
 
         Task ConfirmPhoneAsync(string id);
 
-    }
+        Task DeleteByIdAsync(string id);
+	}
 }

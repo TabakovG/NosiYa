@@ -61,6 +61,19 @@ namespace NosiYa.Services.Data
             await this.context.SaveChangesAsync();
         }
 
+        public async Task DeleteByIdAsync(string id)
+        {
+	        var user = await this.context
+		        .Users
+		        .FindAsync(Guid.Parse(id));
 
-    }
+	        user.UserName = null;
+			user.Email = null;
+			user.PhoneNumber = null;
+			user.NormalizedEmail = null;
+			user.NormalizedUserName = null;
+
+			await this.context.SaveChangesAsync();
+        }
+	}
 }
