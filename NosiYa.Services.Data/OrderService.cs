@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NosiYa.Data;
-using NosiYa.Data.Models.Outfit;
-using NosiYa.Services.Data.Interfaces;
-using NosiYa.Web.ViewModels.Cart;
-using NosiYa.Web.ViewModels.Order;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
+	using Microsoft.EntityFrameworkCore;
+
+	using NosiYa.Data;
+	using NosiYa.Data.Models.Outfit;
+	using Interfaces;
+	using Web.ViewModels.Cart;
+	using Web.ViewModels.Order;
+	using static Common.ApplicationConstants;
+
     public class OrderService : IOrderService
 	{
 
@@ -101,20 +103,31 @@ namespace NosiYa.Services.Data
 
 		public async Task DeleteOrderAsync(string orderId)
 		{
-			var reservation = await this.context
+			OutfitRenterDate order = await this.context
 				.OutfitRenterDates
 				.Where(o => o.OrderId == Guid.Parse(orderId))
 				.Where(o => o.IsActive)
-				.ToListAsync();
+				.FirstAsync();
 
-			foreach (var order in reservation)
-			{
 				order.IsActive = false;
-			}
-
+			
 			await this.context.SaveChangesAsync();
 		}
 
+		public async Task<bool> IsOwnedByTheUserAsync(string orderId, string userId)
+		{
+			return await this.context
+				.OutfitRenterDates
+				.Where(x => x.IsActive)
+				.AnyAsync(o => o.OrderId.ToString() == orderId && o.RenterId.ToString() == userId);
+		}
 
+		public async Task<bool> IsOnTimeAsync(string orderId)
+		{
+			return await this.context
+				.OutfitRenterDates
+				.Where(o => o.IsActive)
+				.AnyAsync(o => DateTime.UtcNow.AddDays(AllowedDaysBeforeRentStartOnUserDelete) <= o.DateRangeStart);
+		}
 	}
 }

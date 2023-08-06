@@ -33,9 +33,11 @@
 						<p class="text-warning">Резервацията изчаква одобрение!</p>
 					}
 
-					@if (DateTime.UtcNow.Date.AddDays(5) <= order.FromDate)
+					@if (DateTime.UtcNow.Date.AddDays(AllowedDaysBeforeRentStartOnUserDelete) <= order.FromDate)
 					{
-					<a asp-controller="Order" asp-action="Delete" asp-route-orderId="@order.OrderId" class="btn btn-warning">Откажи</a>
+						<form method="post" asp-area="" asp-controller="Order" asp-action="Delete" asp-route-orderId="@order.OrderId" class="delete-item-form">
+							<input type="submit" value="Откажи" class="btn btn-danger " />
+						</form>
 					}
 
 				</div>

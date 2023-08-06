@@ -21,23 +21,24 @@
 				<p class="">Наемател: @Model.Username</p>
 				<p class="">Email: @Model.Email</p>
 				<p class="">Телефон: @Model.Phone</p>
-
-				@if (Model.IsApproved)
-				{
-					<p class="text-success">Резервацията е одобрена</p>
-				}
-				else
-				{
-					<p class="text-warning">Резервацията изчаква одобрение!</p>
-					<a asp-controller="Order" asp-action="Approve" asp-route-orderId="@Model.OrderId" class="btn btn-success">Потвърди</a>
-				}
-
-				<a asp-controller="Order" asp-action="Delete" asp-route-orderId="@Model.OrderId" class="btn btn-warning">Откажи</a>
-
+				<div class="row">
+					@if (Model.IsApproved)
+					{
+						<p class="text-success">Резервацията е одобрена</p>
+					}
+					else
+					{
+						<p class="text-warning">Резервацията изчаква одобрение!</p>
+						<a asp-controller="Order" asp-action="Approve" asp-route-orderId="@Model.OrderId" class="btn btn-success col-4 offset-1 mb-2">Потвърди</a>
+					}
+					<form method="post" asp-area="" asp-controller="Order" asp-action="Delete" asp-route-orderId="@Model.OrderId" class="col-6 offset-1 delete-item-form">
+						<input class="visually-hidden" readonly value="@Model.OrderId" name="OrderId" />
+						<input class="btn btn-danger col-10" type="submit" value="Откажи" />
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
-
 </div>
 
 <script src="~/js/alert-confirm.js"></script>

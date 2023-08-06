@@ -15,6 +15,9 @@
 
 		//Delete:
 		Task DeleteOrderAsync(string orderId);
+		Task<bool> IsOwnedByTheUserAsync(string orderId, string userId);
+		Task<bool> IsOnTimeAsync(string orderId);
+
 
 	}
 }

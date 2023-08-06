@@ -54,7 +54,7 @@ namespace NosiYa.Web.Areas.Admin.Controllers
 					this.memoryCache.Remove(UsersCacheKey);
 					this.TempData[SuccessMessage] = "Потребителят беше истрит успешно!";
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
 					this.TempData[ErrorMessage] = "Операцията беше неуспешна!";
 				}

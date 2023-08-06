@@ -26,8 +26,8 @@
 		public const int UsersCacheDurationMinutes = 5;
 		public const int RentsCacheDurationMinutes = 10;
 
-
-	}
+		public const int AllowedDaysBeforeRentStartOnUserDelete = 5;
+    }
 
 	//Should match the related calling controller name !
 	public static class EntityTypesConst 

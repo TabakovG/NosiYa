@@ -1,16 +1,17 @@
 ﻿namespace NosiYa.Web.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Authorization;
 
-    using NosiYa.Services.Data.Interfaces;
-    using Infrastructure.Extensions;
-    using ViewModels.Cart;
-    using static Common.NotificationMessagesConstants;
-    using static Common.SeedingConstants;
-    using NosiYa.Web.ViewModels.Order;
+	using NosiYa.Services.Data.Interfaces;
+	using Infrastructure.Extensions;
+	using ViewModels.Cart;
+	using static Common.NotificationMessagesConstants;
+	using static Common.ApplicationConstants;
+	using static Common.SeedingConstants;
+	using NosiYa.Web.ViewModels.Order;
 
-    [Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
+	[Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
 	public class OrderController : BaseController
 	{
 		private readonly ICartService cartService;
@@ -85,6 +86,7 @@
 
 		}
 
+		[HttpPost]
 		public async Task<IActionResult> Delete(string orderId)
 		{
 			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
@@ -93,23 +95,44 @@
 			{
 				return RedirectToAction("All", "OutfitSet");
 			}
-			
-			var order = await this.orderService
-				.ExistsByIdAsync(orderId);
-
-			if (!order)
-			{
-				this.TempData[ErrorMessage] = "Поръчка с този идентификатор не съществува!";
-
-				return this.RedirectToAction("Mine", "Order");
-			}
 
 			try
 			{
+				var order = await this.orderService
+					.ExistsByIdAsync(orderId);
+
+				if (!order)
+				{
+					this.TempData[ErrorMessage] = "Поръчка с този идентификатор не съществува!";
+
+					return this.RedirectToAction("Mine", "Order");
+				}
+
+				if (!this.User!.IsInRole(AdminRoleName))
+				{
+					bool deleteOnTime = await this.orderService.IsOnTimeAsync(orderId);
+					bool userIsOwner = await this.orderService.IsOwnedByTheUserAsync(orderId, this.User!.GetId()!);
+
+					if (!userIsOwner)
+					{
+						this.TempData[ErrorMessage] = "Нямате права върху тази поръчка!";
+						return this.RedirectToAction("Mine", "Order");
+					}
+
+					if (!deleteOnTime)
+					{
+						this.TempData[ErrorMessage] = "Tази поръчка може да бъде премахната само от администратор!";
+						return this.RedirectToAction("Mine", "Order");
+					}
+				}
 				await this.orderService.DeleteOrderAsync(orderId);
 
 				this.TempData[WarningMessage] = "Поръчката беше изтрита успешно!";
 
+				if (this.User!.IsInRole(AdminRoleName))
+				{
+					return this.RedirectToAction("All", "Order", new { Area = AdminAreaName });
+				}
 				return this.RedirectToAction("Mine", "Order");
 			}
 			catch (Exception)

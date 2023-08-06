@@ -1,6 +1,6 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
-	var deleteCommentForms = document.querySelectorAll(".delete-comment-form");
-	deleteCommentForms.forEach(function (form) {
+	var deleteForms = document.querySelectorAll(".delete-item-form");
+	deleteForms.forEach(function (form) {
 		form.addEventListener("submit", function (e) {
 			// Display a confirmation dialog
 			var confirmed = confirm("Сигурни ли сте, че искате да изтриете елемента?");
