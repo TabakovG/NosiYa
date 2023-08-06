@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NosiYa.Data;
-using NosiYa.Services.Data.Interfaces;
-using NosiYa.Web.ViewModels.User;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
+	using Microsoft.EntityFrameworkCore;
+
+	using NosiYa.Data;
+	using Interfaces;
+	using Web.ViewModels.User;
+
 	public class UserService : IUserService
 	{
 		private readonly NosiYaDbContext context;
@@ -67,7 +68,7 @@ namespace NosiYa.Services.Data
 		        .Users
 		        .FindAsync(Guid.Parse(id));
 
-	        user.UserName = null;
+	        user!.UserName = null;
 			user.Email = null;
 			user.PhoneNumber = null;
 			user.NormalizedEmail = null;

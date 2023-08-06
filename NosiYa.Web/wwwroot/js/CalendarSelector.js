@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             document.getElementById('fromDate').value = selectedStartDate.toISOString().slice(0, 16);
             document.getElementById('toDate').value = selectedEndDate.toISOString().slice(0, 16);
+            var yourForm = document.getElementsByName('cartPreOrderForm')[0];
+            yourForm.checkValidity();
         },
         events: '/calendar/PopulateCalendar/'+ setId
     });

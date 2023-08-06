@@ -33,7 +33,7 @@ namespace NosiYa.Services.Data
 			await this.context.SaveChangesAsync();
 		}
 
-		public async Task<ICollection<ReservedItemsViewModel>> GetOrdersByUserIdAsync(string userId)
+		public async Task<ICollection<OrderViewModel>> GetOrdersByUserIdAsync(string userId)
 		{
 			var resultDistinct = await this.context
 				.OutfitRenterDates
@@ -47,7 +47,7 @@ namespace NosiYa.Services.Data
 				.ToArrayAsync();
 
 			var modelsResult = resultDistinct
-				.Select(o => new ReservedItemsViewModel
+				.Select(o => new OrderViewModel
 				{
 					OrderId = o.OrderId.ToString(),
 					OutfitId = o.OutfitId,
@@ -62,7 +62,28 @@ namespace NosiYa.Services.Data
 			return modelsResult;
 		}
 
-		public async Task<bool> OrderExistsById(string orderId)
+		public async Task<OrderViewModel> GetOrderByIdAsync(string orderId)
+		{
+			return await this.context
+				.OutfitRenterDates
+				.AsNoTracking()
+				.Include(o=>o.Outfit)
+				.Include(o=>o.Outfit.Images)
+				.Where(o => o.OrderId.ToString() == orderId)
+				.Select(o=> new OrderViewModel
+				{
+					OrderId = o.OrderId.ToString(),
+					OutfitId = o.OutfitId,
+					Name = o.Outfit.Name,
+					SetImage = o.Outfit.Images.Where(i=>i.IsDefault).Select(i=>i.Url).FirstOrDefault() ?? "",
+					FromDate = o.DateRangeStart,
+					ToDate = o.DateRangeEnd,
+					IsApproved = o.IsApproved
+				})
+				.FirstAsync();
+		}
+
+		public async Task<bool> ExistsByIdAsync(string orderId)
 		{
 			return await this.context
 				.OutfitRenterDates

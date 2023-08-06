@@ -34,7 +34,7 @@
 				return this.RedirectToAction("Index", "Home"); //TODO to login page
 			}
 
-			ICollection<ReservedItemsViewModel> orderModel = await this.orderService.GetOrdersByUserIdAsync(this.User!.GetId()!);
+			ICollection<OrderViewModel> orderModel = await this.orderService.GetOrdersByUserIdAsync(this.User!.GetId()!);
 
 			return View(orderModel);
 		}
@@ -95,7 +95,7 @@
 			}
 			
 			var order = await this.orderService
-				.OrderExistsById(orderId);
+				.ExistsByIdAsync(orderId);
 
 			if (!order)
 			{

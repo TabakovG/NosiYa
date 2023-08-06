@@ -9,7 +9,7 @@ namespace NosiYa.Web.Controllers
 	using static Common.NotificationMessagesConstants;
 	using static Common.SeedingConstants;
 
-	public class CalendarController : Controller
+	public class CalendarController : BaseController
 	{
 
 		private readonly ICalendarService calendarService;

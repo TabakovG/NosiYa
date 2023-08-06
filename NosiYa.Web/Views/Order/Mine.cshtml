@@ -1,4 +1,4 @@
-﻿@model ICollection<ReservedItemsViewModel>
+﻿@model ICollection<OrderViewModel>
 
 @{
 	ViewBag.Title = "Моите носии";
@@ -13,7 +13,7 @@
 }
 
 <div class="row">
-	@foreach (ReservedItemsViewModel order in Model)
+	@foreach (OrderViewModel order in Model)
 	{
 		<div class="col-md-4">
 			<div class="card mb-3">

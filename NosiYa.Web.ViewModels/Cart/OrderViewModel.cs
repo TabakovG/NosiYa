@@ -1,6 +1,6 @@
 ﻿namespace NosiYa.Web.ViewModels.Cart
 {
-	public class ReservedItemsViewModel
+	public class OrderViewModel
 	{
 		public string OrderId { get; set; } = null!;
 
