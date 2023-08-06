@@ -1,10 +1,18 @@
-﻿namespace NosiYa.Services.Data
+﻿using NosiYa.Data.Models;
+using NosiYa.Services.Data.Models;
+
+namespace NosiYa.Services.Data
 {
 	using Microsoft.EntityFrameworkCore;
 
 	using NosiYa.Data;
 	using Interfaces;
 	using Web.ViewModels.User;
+	using NosiYa.Data.Models.Enums;
+	using NosiYa.Data.Models.Outfit;
+	using NosiYa.Web.ViewModels.OutfitSet.Enums;
+	using NosiYa.Web.ViewModels.OutfitSet;
+	using NosiYa.Web.ViewModels.User.Enums;
 
 	public class UserService : IUserService
 	{
@@ -32,12 +40,43 @@
 		}
 
 
-		public async Task<IEnumerable<UserViewModel>> AllAsync()
+		public async Task<AllUsersFilteredAndPagedServiceModel> AllAsync(AllUsersQueryModel queryModel)
 		{
-			var users = await this.context
+
+			IQueryable<ApplicationUser> usersQuery = this.context
 				.Users
-				.AsNoTracking()
 				.Where(u=>u.Email != null)
+				.AsQueryable();
+
+			if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
+			{
+				string wildCard = $"%{queryModel.SearchTerm.ToLower()}%";
+
+				usersQuery = usersQuery
+					.Where(u => EF.Functions.Like(u.Email, wildCard) ||
+								EF.Functions.Like(u.PhoneNumber ?? string.Empty, wildCard) ||  
+								EF.Functions.Like(u.UserName, wildCard));
+			}
+
+			usersQuery = queryModel.UserSorting switch
+			{
+				UserSorting.NameAscending => usersQuery
+					.OrderBy(o => o.UserName),
+				UserSorting.NameDescending => usersQuery
+					.OrderByDescending(o => o.UserName),
+				UserSorting.PhoneConfirmed => usersQuery
+					.OrderByDescending(o => o.PhoneNumberConfirmed),
+				UserSorting.EmailAscending => usersQuery
+					.OrderBy(o => o.Email),
+				UserSorting.EmailDescending => usersQuery
+					.OrderByDescending(o => o.Email),
+				_ => usersQuery
+					.OrderBy(o => o.Email)
+			};
+
+			IEnumerable<UserViewModel> allUsers = await usersQuery
+				.Skip((queryModel.CurrentPage - 1) * queryModel.UsersPerPage)
+				.Take(queryModel.UsersPerPage)
 				.Select(u => new UserViewModel
 				{
 					Id = u.Id.ToString(),
@@ -46,9 +85,15 @@
 					PhoneNumber = u.PhoneNumber,
 					PhoneConfirmed = u.PhoneNumberConfirmed
 				})
-				.ToListAsync();
+				.ToArrayAsync();
 
-			return users;
+			int usersCount = usersQuery.Count();
+
+			return new AllUsersFilteredAndPagedServiceModel
+			{
+				TotalUsers = usersCount,
+				Users = allUsers
+			};
 		}
 
         public async Task ConfirmPhoneAsync(string id)
