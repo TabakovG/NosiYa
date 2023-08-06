@@ -2,6 +2,7 @@
 using NosiYa.Data;
 using NosiYa.Data.Models;
 using NosiYa.Services.Data.Interfaces;
+using NosiYa.Web.ViewModels;
 using NosiYa.Web.ViewModels.Comment;
 
 namespace NosiYa.Services.Data
@@ -55,6 +56,30 @@ namespace NosiYa.Services.Data
 				.Comments
 				.AsNoTracking()
 				.AnyAsync(c => c.IsActive && c.Id == id);
+		}
+
+		public async Task<bool> ApprovedByIdAsync(int id)
+		{
+			return await this.context
+				.Comments
+				.AsNoTracking()
+				.AnyAsync(c => c.IsApproved && c.Id == id);
+		}
+
+		public async Task<IEnumerable<ApprovalViewModel>> GetAllForApproval()
+		{
+			return await this.context
+				.Comments
+				.AsNoTracking()
+				.Where(c => c.IsApproved == false && c.IsActive)
+				.Select(e => new ApprovalViewModel
+				{
+					DetailsPath = "/Event/Details/",
+					Element = e.ModifiedContent ?? e.Content,
+					ElementId = e.EventId.ToString(),
+					UserName = e.Owner.UserName,
+				})
+				.ToArrayAsync();
 		}
 
 		public async Task<CommentFormModel> GetForEditByIdAsync(int id)

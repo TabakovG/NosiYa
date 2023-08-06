@@ -1,5 +1,6 @@
 ﻿
 using NosiYa.Services.Data.Models;
+using NosiYa.Web.ViewModels.User;
 
 namespace NosiYa.Web.Areas.Admin.Controllers
 {
@@ -8,11 +9,9 @@ namespace NosiYa.Web.Areas.Admin.Controllers
 	using Microsoft.AspNetCore.Identity;
 
 	using Data.Models;
-	using ViewModels.User;
 	using NosiYa.Services.Data.Interfaces;
 	using static Common.ApplicationConstants;
 	using static Common.NotificationMessagesConstants;
-	using NosiYa.Web.ViewModels.OutfitSet;
 
 	public class UserController : BaseAdminController
 	{

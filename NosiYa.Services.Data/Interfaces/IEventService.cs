@@ -1,6 +1,7 @@
 ﻿namespace NosiYa.Services.Data.Interfaces
 {
 	using Models;
+	using NosiYa.Web.ViewModels;
 	using Web.ViewModels.Event;
 
 	public interface IEventService
@@ -12,10 +13,13 @@
 		//Read:
 
 		Task<AllEventsPagedServiceModel> AllAvailableEventsAsync(AllEventsPaginatedModel model); // for All view
-
 		Task<bool> ExistsByIdAsync(int id);
-
+		Task<bool> ApprovedByIdAsync(int id);
+		Task<bool> IsOwnedByUserAsync(int id, string userId);
 		Task<EventDetailsViewModel> GetDetailsByIdAsync(int id);
+		Task<EventDetailsViewModel> GetDetailsForAdminByIdAsync(int id);
+		Task<IEnumerable<ApprovalViewModel>> GetAllForApproval();
+
 
 
 		//Update:

@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\ViewModels\" />
     <Folder Include="wwwroot\images\event\" />
     <Folder Include="wwwroot\images\region\" />
     <Folder Include="wwwroot\images\outfitSet\" />

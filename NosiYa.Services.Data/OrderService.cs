@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Services.Data
+﻿using NosiYa.Web.ViewModels;
+
+namespace NosiYa.Services.Data
 {
 	using Microsoft.EntityFrameworkCore;
 
@@ -8,8 +10,9 @@
 	using Web.ViewModels.Cart;
 	using Web.ViewModels.Order;
 	using static Common.ApplicationConstants;
+	using NosiYa.Data.Migrations;
 
-    public class OrderService : IOrderService
+	public class OrderService : IOrderService
 	{
 
 		private readonly NosiYaDbContext context;
@@ -60,6 +63,8 @@
 					ToDate = o.DateRangeEnd,
 					IsApproved = o.IsApproved
 				})
+				.OrderBy(x => x.FromDate)
+				.ThenBy(x => x.ToDate)
 				.ToArray();
 
 			return modelsResult;
@@ -70,18 +75,18 @@
 			return await this.context
 				.OutfitRenterDates
 				.AsNoTracking()
-				.Include(o=>o.Outfit)
-				.Include(o=>o.Outfit.Images)
+				.Include(o => o.Outfit)
+				.Include(o => o.Outfit.Images)
 				.Where(o => o.OrderId.ToString() == orderId)
-				.Select(o=> new OrderDetailsViewModel
+				.Select(o => new OrderDetailsViewModel
 				{
 					OrderId = o.OrderId.ToString(),
 					OutfitId = o.OutfitId,
 					Name = o.Outfit.Name,
 					SetImage = o.Outfit.Images.Where(i => i.IsDefault)
-						           .Select(i => i.Url)
-						           .FirstOrDefault() ??
-					           "",
+								   .Select(i => i.Url)
+								   .FirstOrDefault() ??
+							   "",
 					FromDate = o.DateRangeStart,
 					ToDate = o.DateRangeEnd,
 					IsApproved = o.IsApproved,
@@ -93,11 +98,35 @@
 				.FirstAsync();
 		}
 
+		public async Task<IEnumerable<ApprovalViewModel>> GetAllForApproval()
+		{
+			return await this.context
+				.OutfitRenterDates
+				.AsNoTracking()
+				.Where(o => o.IsApproved == false && o.IsActive)
+				.Select(o => new ApprovalViewModel
+				{
+					DetailsPath = "/Admin/Order/Details/",
+					Element = o.Outfit.Name,
+					ElementId = o.OrderId.ToString(),
+					UserName = o.Renter.UserName,
+				})
+				.ToArrayAsync();
+		}
+
 		public async Task<bool> ExistsByIdAsync(string orderId)
 		{
 			return await this.context
 				.OutfitRenterDates
 				.Where(x => x.IsActive)
+				.AnyAsync(o => o.OrderId == Guid.Parse(orderId));
+		}
+
+		public async Task<bool> ApprovedByIdAsync(string orderId)
+		{
+			return await this.context
+				.OutfitRenterDates
+			.Where(x => x.IsApproved)
 				.AnyAsync(o => o.OrderId == Guid.Parse(orderId));
 		}
 
@@ -109,8 +138,8 @@
 				.Where(o => o.IsActive)
 				.FirstAsync();
 
-				order.IsActive = false;
-			
+			order.IsActive = false;
+
 			await this.context.SaveChangesAsync();
 		}
 

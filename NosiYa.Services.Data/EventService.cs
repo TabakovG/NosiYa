@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Services.Data
+﻿using NosiYa.Web.ViewModels;
+
+namespace NosiYa.Services.Data
 {
 	using Microsoft.EntityFrameworkCore;
 
@@ -79,8 +81,25 @@
         {
 	        return await this.context
 		        .Events
-		        .Where(e => e.IsActive && e.IsApproved) //TODO to separate active from approved in another method
+		        .Where(e => e.IsActive )
 		        .AnyAsync(e => e.Id == id);
+        }
+
+        public async Task<bool> ApprovedByIdAsync(int id)
+        {
+			return await this.context
+				.Events
+				.Where(e => e.IsApproved)
+				.AnyAsync(e => e.Id == id);
+		}
+
+        public async Task<bool> IsOwnedByUserAsync(int id, string userId)
+        {
+	        return await this.context
+		        .Events
+		        .Where(e => e.Id == id)
+		        .Select(e => e.OwnerId.ToString() == userId)
+		        .FirstAsync();
         }
 
         public async Task<EventDetailsViewModel> GetDetailsByIdAsync(int id)
@@ -89,7 +108,7 @@
 		        .Events
 		        .AsNoTracking()
 		        .Include(i => i.Images)
-		        .Where(e => e.IsActive && e.IsApproved) //TODO to separate active from approved in another method
+		        .Where(e => e.IsActive && e.IsApproved) 
 		        .FirstAsync(e => e.Id == id);
 
 	        var model = new EventDetailsViewModel
@@ -107,6 +126,47 @@
 			};
             return model;
         }
+
+        public async Task<EventDetailsViewModel> GetDetailsForAdminByIdAsync(int id)
+        {
+			var evnt = await this.context
+				.Events
+				.AsNoTracking()
+				.Include(i => i.Images)
+				.Where(e => e.IsActive) 
+				.FirstAsync(e => e.Id == id);
+
+			var model = new EventDetailsViewModel
+			{
+				Id = evnt.Id,
+				Name = evnt.Name,
+				Description = evnt.Description,
+				Location = evnt.Location,
+				OwnerId = evnt.OwnerId,
+				Owner = evnt.Owner, //TODO do I need the owner or only the id as string ?
+				EventStartDate = evnt.EventStartDate,
+				EventEndDate = evnt.EventEndDate,
+				Images = evnt.Images.Select(i => i.Url).ToArray()
+
+			};
+			return model;
+		}
+
+        public async Task<IEnumerable<ApprovalViewModel>> GetAllForApproval()
+        {
+			return await this.context
+				.Events
+				.AsNoTracking()
+				.Where(e => e.IsApproved == false && e.IsActive)
+				.Select(e => new ApprovalViewModel
+				{
+					DetailsPath = "/Event/Details/",
+					Element = e.Name,
+					ElementId = e.Id.ToString(),
+					UserName = e.Owner.UserName,
+				})
+				.ToArrayAsync();
+		}
 
         //Update:
 

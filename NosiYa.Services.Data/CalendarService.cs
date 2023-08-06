@@ -51,7 +51,7 @@
 					id = r.OrderId.ToString(),
 					title = r.Outfit.Name,
 					start = r.DateRangeStart.ToString("yyyy-MM-ddTHH:mm:ss"),
-					end = r.DateRangeEnd.AddDays(1).ToString("yyyy-MM-ddTHH:mm:ss"), //+1 as otherwise it will exclude the end date
+					end = r.DateRangeEnd.AddDays(1).ToString("yyyy-MM-ddTHH:mm:ss") , // Add one day as the view is excluding the end date for allDay events
 					backgroundColor = r.IsApproved ? "green" : "gray"
 				})
 				.ToArrayAsync();

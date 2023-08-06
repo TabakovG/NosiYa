@@ -1,4 +1,6 @@
-﻿namespace NosiYa.Services.Data.Interfaces
+﻿using NosiYa.Web.ViewModels;
+
+namespace NosiYa.Services.Data.Interfaces
 {
     using NosiYa.Web.ViewModels.Cart;
     using NosiYa.Web.ViewModels.Order;
@@ -10,8 +12,10 @@
 
 		//Read:
 		Task<bool> ExistsByIdAsync(string orderId);
+		Task<bool> ApprovedByIdAsync(int id);
 		Task<ICollection<OrderViewModel>> GetOrdersByUserIdAsync(string userId);
 		Task<OrderDetailsViewModel> GetOrderDetailsByIdAsync(string orderId);
+		Task<IEnumerable<ApprovalViewModel>> GetAllForApproval();
 
 		//Delete:
 		Task DeleteOrderAsync(string orderId);

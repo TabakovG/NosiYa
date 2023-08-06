@@ -1,0 +1,33 @@
+﻿@model NosiYa.Web.Areas.Admin.ViewModels.AdminApprovalViewModel
+
+@{
+	ViewData["Title"] = "Чакащи заявки";
+}
+<div class="mt-4 p-5 bg-light text-center">
+	<h2 class="display-4">@ViewData["Title"]</h2>
+	<div class="container mt-5">
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item" role="presentation">
+				<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#rents" type="button" role="tab" aria-controls="home" aria-selected="true">Наеми</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-controls="profile" aria-selected="false">Събития</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab" aria-controls="contact" aria-selected="false">Коментари</button>
+			</li>
+		</ul>
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane fade show active" id="rents" role="tabpanel" aria-labelledby="home-tab">
+				<partial name="_ApprovalTemplatePartial" model="Model.Rents" />
+			</div>
+			<div class="tab-pane fade" id="events" role="tabpanel" aria-labelledby="profile-tab">
+				<partial name="_ApprovalTemplatePartial" model="Model.Events" />
+			</div>
+			<div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="contact-tab">
+				<partial name="_ApprovalTemplatePartial" model="Model.Comments" />
+			</div>
+		</div>
+
+	</div>
+</div>

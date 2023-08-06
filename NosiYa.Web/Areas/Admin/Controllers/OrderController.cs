@@ -4,7 +4,6 @@
 
     using NosiYa.Services.Data.Interfaces;
     using NosiYa.Web.ViewModels.Order;
-    using ViewModels.Region;
     using static Common.NotificationMessagesConstants;
 
     public class OrderController : BaseAdminController
