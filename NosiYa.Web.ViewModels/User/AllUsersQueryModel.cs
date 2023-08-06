@@ -10,7 +10,7 @@ namespace NosiYa.Web.ViewModels.User
 		public AllUsersQueryModel()
 		{
 			CurrentPage = DefaultFirstPage;
-			UsersPerPage = DefaultResultsPerPage;
+			UsersPerPage = DefaultUsersPerPage;
 			this.Users = new HashSet<UserViewModel>();
 		}
 

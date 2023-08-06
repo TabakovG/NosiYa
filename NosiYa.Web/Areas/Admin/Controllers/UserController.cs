@@ -30,7 +30,6 @@ namespace NosiYa.Web.Areas.Admin.Controllers
 			this.userManager = userManager;
 		}
 
-		[ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client)]
 		public async Task<IActionResult> All([FromQuery] AllUsersQueryModel queryModel)
 		{
 

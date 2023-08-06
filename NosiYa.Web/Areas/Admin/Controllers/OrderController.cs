@@ -1,12 +1,13 @@
 ﻿namespace NosiYa.Web.Areas.Admin.Controllers
 {
-	using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc;
 
-	using NosiYa.Services.Data.Interfaces;
-	using ViewModels.Region;
-	using static Common.NotificationMessagesConstants;
+    using NosiYa.Services.Data.Interfaces;
+    using NosiYa.Web.ViewModels.Order;
+    using ViewModels.Region;
+    using static Common.NotificationMessagesConstants;
 
-	public class OrderController : BaseAdminController
+    public class OrderController : BaseAdminController
 	{
 		private readonly IOrderService orderService;
 
@@ -37,8 +38,8 @@
 
 			try
 			{
-				var viewModel = await this.orderService
-					.GetOrderByIdAsync(id);
+				OrderViewModel viewModel = await this.orderService
+					.GetOrderDetailsByIdAsync(id);
 
 
 				return View(viewModel);

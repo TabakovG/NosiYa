@@ -3,10 +3,11 @@ using NosiYa.Data;
 using NosiYa.Data.Models.Outfit;
 using NosiYa.Services.Data.Interfaces;
 using NosiYa.Web.ViewModels.Cart;
+using NosiYa.Web.ViewModels.Order;
 
 namespace NosiYa.Services.Data
 {
-	public class OrderService : IOrderService
+    public class OrderService : IOrderService
 	{
 
 		private readonly NosiYaDbContext context;
@@ -62,7 +63,7 @@ namespace NosiYa.Services.Data
 			return modelsResult;
 		}
 
-		public async Task<OrderViewModel> GetOrderByIdAsync(string orderId)
+		public async Task<OrderDetailsViewModel> GetOrderDetailsByIdAsync(string orderId)
 		{
 			return await this.context
 				.OutfitRenterDates
@@ -70,15 +71,22 @@ namespace NosiYa.Services.Data
 				.Include(o=>o.Outfit)
 				.Include(o=>o.Outfit.Images)
 				.Where(o => o.OrderId.ToString() == orderId)
-				.Select(o=> new OrderViewModel
+				.Select(o=> new OrderDetailsViewModel
 				{
 					OrderId = o.OrderId.ToString(),
 					OutfitId = o.OutfitId,
 					Name = o.Outfit.Name,
-					SetImage = o.Outfit.Images.Where(i=>i.IsDefault).Select(i=>i.Url).FirstOrDefault() ?? "",
+					SetImage = o.Outfit.Images.Where(i => i.IsDefault)
+						           .Select(i => i.Url)
+						           .FirstOrDefault() ??
+					           "",
 					FromDate = o.DateRangeStart,
 					ToDate = o.DateRangeEnd,
-					IsApproved = o.IsApproved
+					IsApproved = o.IsApproved,
+					Username = o.Renter.UserName,
+					Email = o.Renter.Email,
+					Phone = o.Renter.PhoneNumber
+
 				})
 				.FirstAsync();
 		}

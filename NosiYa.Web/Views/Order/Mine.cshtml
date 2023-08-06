@@ -26,12 +26,11 @@
 					<p class="">@order.ToDate</p>
 					@if (order.IsApproved)
 					{
-						<p class="">Резервацията е одобрена</p>
+						<p class="text-success">Резервацията е одобрена</p>
 					}
 					else
 					{
-						<p class="">Резервацията изчаква одобрение!</p>
-
+						<p class="text-warning">Резервацията изчаква одобрение!</p>
 					}
 
 					@if (DateTime.UtcNow.Date.AddDays(5) <= order.FromDate)

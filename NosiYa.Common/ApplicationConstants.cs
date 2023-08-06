@@ -8,9 +8,10 @@
         //Pagination
         public const int DefaultFirstPage = 1;
         public const int DefaultResultsPerPage = 3;
+        public const int DefaultUsersPerPage = 20;
 
         //Messages
-        public const string DefaultOutfitImagePath = "";
+		public const string DefaultImagePath = "";
 
         //Reservations
         public const string Reserved = "Резервирана";

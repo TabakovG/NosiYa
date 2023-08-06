@@ -1,4 +1,4 @@
-﻿@model OrderViewModel
+﻿@model NosiYa.Web.ViewModels.Order.OrderDetailsViewModel
 
 @{
 	ViewBag.Title = "Детайли поръчка:";
@@ -16,19 +16,22 @@
 
 				<h4>@Model.Name</h4>
 				<br />
-				<p class="">@Model.FromDate</p>
-				<p class="">@Model.ToDate</p>
+				<p class="">Наем от: @Model.FromDate</p>
+				<p class="">Наем до: @Model.ToDate</p>
+				<p class="">Наемател: @Model.Username</p>
+				<p class="">Email: @Model.Email</p>
+				<p class="">Телефон: @Model.Phone</p>
+
 				@if (Model.IsApproved)
 				{
-					<p class="">Резервацията е одобрена</p>
+					<p class="text-success">Резервацията е одобрена</p>
 				}
 				else
 				{
-					<p class="">Резервацията изчаква одобрение!</p>
-
+					<p class="text-warning">Резервацията изчаква одобрение!</p>
+					<a asp-controller="Order" asp-action="Approve" asp-route-orderId="@Model.OrderId" class="btn btn-success">Потвърди</a>
 				}
 
-				<a asp-controller="Order" asp-action="Approve" asp-route-orderId="@Model.OrderId" class="btn btn-success">Потвърди</a>
 				<a asp-controller="Order" asp-action="Delete" asp-route-orderId="@Model.OrderId" class="btn btn-warning">Откажи</a>
 
 			</div>

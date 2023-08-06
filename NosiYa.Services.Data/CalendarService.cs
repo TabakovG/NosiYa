@@ -42,13 +42,14 @@
 			var reservations = await this.context
 				.OutfitRenterDates
 				.AsNoTracking()
+				.Include(o=>o.Outfit)
 				.Where(x => x.IsActive)
 				.Where(x => (x.DateRangeStart >= start.Date && x.DateRangeStart <= end.Date)
 				            || (x.DateRangeEnd >= start.Date && x.DateRangeEnd <= end.Date))
 				.Select(r => new ReservationsEditServiceModel
 				{
 					id = r.OrderId.ToString(),
-					title = r.IsApproved ? Reserved : WaitingForReview,
+					title = r.Outfit.Name,
 					start = r.DateRangeStart.ToString("yyyy-MM-ddTHH:mm:ss"),
 					end = r.DateRangeEnd.ToString("yyyy-MM-ddTHH:mm:ss"),
 					backgroundColor = r.IsApproved ? "green" : "gray"

@@ -115,7 +115,7 @@
                     ImageUrl = o.Images
 	                    .FirstOrDefault(i => i.IsDefault) != null 
 	                    ? o.Images.FirstOrDefault(i => i.IsDefault)!.Url 
-	                    : DefaultOutfitImagePath
+	                    : DefaultImagePath
                 })
                 .ToArrayAsync();
 

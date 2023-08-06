@@ -1,16 +1,16 @@
 ﻿namespace NosiYa.Web.Controllers
 {
-	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
 
-	using NosiYa.Services.Data.Interfaces;
-	using Infrastructure.Extensions;
-	using ViewModels.Cart;
-	using static Common.NotificationMessagesConstants;
-	using static Common.SeedingConstants;
+    using NosiYa.Services.Data.Interfaces;
+    using Infrastructure.Extensions;
+    using ViewModels.Cart;
+    using static Common.NotificationMessagesConstants;
+    using static Common.SeedingConstants;
+    using NosiYa.Web.ViewModels.Order;
 
-
-	[Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
+    [Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
 	public class OrderController : BaseController
 	{
 		private readonly ICartService cartService;
