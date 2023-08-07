@@ -114,9 +114,11 @@ namespace NosiYa.Services.Data
 				.Where(o => o.IsApproved == false && o.IsActive)
 				.Select(o => new OrderApprovalViewModel
 				{
-					Element = o.Outfit.Name,
-					ElementId = o.OrderId.ToString(),
+					OutfitName = o.Outfit.Name,
+					OutfitId = o.OrderId.ToString(),
 					UserName = o.Renter.UserName,
+					FromDate = o.DateRangeStart.ToString("dd-MM-yyyy"),
+					ToDate = o.DateRangeEnd.ToString("dd-MM-yyyy")
 				})
 				.ToArrayAsync();
 		}
@@ -126,7 +128,7 @@ namespace NosiYa.Services.Data
 			return await this.context
 				.OutfitRenterDates
 				.Where(x => x.IsActive)
-				.AnyAsync(o => o.OrderId == Guid.Parse(orderId));
+				.AnyAsync(o => o.OrderId.ToString() == orderId);
 		}
 
 		public async Task ApproveByIdAsync(string orderId)

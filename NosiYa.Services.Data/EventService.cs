@@ -163,7 +163,7 @@ namespace NosiYa.Services.Data
 					EventName = e.Name,
 					EventStart = e.EventStartDate.ToString("HH:mm dd-MM-yyyy"),
 					EventEnd = e.EventEndDate.ToString("HH:mm dd-MM-yyyy"),
-					EventId = e.Id.ToString(),
+					EventId = e.Id,
 					UserName = e.Owner.UserName,
 				})
 				.ToArrayAsync();

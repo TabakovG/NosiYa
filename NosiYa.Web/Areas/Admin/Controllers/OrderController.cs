@@ -47,6 +47,32 @@
 				return this.GeneralError();
 			}
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> Approve([FromForm] string elementId)
+		{
+			try
+			{
+				var orderExists = await this.orderService.ExistsByIdAsync(elementId);
+
+				if (!orderExists)
+				{
+					this.TempData[ErrorMessage] = "Поръчката не съществува!";
+
+					return this.RedirectToAction("All");
+				}
+
+				await this.orderService.ApproveByIdAsync(elementId);
+
+				return this.RedirectToAction("Approvals", "Home");
+
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
 		private IActionResult GeneralError()
 		{
 			this.TempData[ErrorMessage] =

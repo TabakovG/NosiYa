@@ -26,12 +26,18 @@
 				</td>
 				<td>
 					<form asp-area="Admin" asp-action="Approve" asp-controller="Comment" method="post" class="d-inline">
-						<input type="hidden" name="elementId" value="@element.EventId" />
+						<input type="hidden" name="elementId" value="@element.CommentId" />
 						<button type="submit" class="btn btn-success">Потвърди</button>
 					</form>
-					<form asp-area="" asp-action="Delete" asp-controller="Comment" method="post" class="d-inline">
-						<input type="hidden" name="elementId" value="@element.EventId" />
-						<button type="submit" class="btn btn-danger">Изтрии</button>
+					<form 
+						asp-area="" 
+						asp-action="Delete" 
+						asp-controller="Comment" 
+						asp-route-id="@element.CommentId" 
+						asp-route-eventId="@element.EventId"
+						method="post" 
+						class="d-inline">
+						<button type="submit" class="btn btn-danger">Откажи</button>
 					</form>
 				</td>
 			</tr>

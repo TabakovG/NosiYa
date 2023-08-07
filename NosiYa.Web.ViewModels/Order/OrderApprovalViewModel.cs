@@ -2,9 +2,10 @@
 {
 	public class OrderApprovalViewModel
 	{
-		public string ActionPath { get; set; } = null!;
-		public string Element { get; set; } = null!;
-		public string ElementId { get; set; } = null!;
+		public string OutfitName { get; set; } = null!;
+		public string FromDate { get; set; } = null!;
+		public string ToDate { get; set; } = null!;
+		public string OutfitId { get; set; } = null!;
 		public string UserName { get; set; } = null!;
 
 	}

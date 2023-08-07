@@ -3,16 +3,20 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>Element Name</th>
-			<th>User ID</th>
-			<th>Actions</th>
+			<th>Носия</th>
+			<th>Наем от</th>
+			<th>Наем до</th>
+			<th>Потребител</th>
+			<th>Опции</th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (var element in Model)
 		{
 			<tr>
-				<td><a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-id="@element.ElementId">@element.Element</a></td>
+				<td><a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-id="@element.OutfitId">@element.OutfitName</a></td>
+				<td>@element.FromDate</td>
+				<td>@element.ToDate</td>
 				<td>
 					<a asp-area="Admin"
 					   asp-controller="User"
@@ -24,12 +28,11 @@
 				</td>
 				<td>
 					<form asp-area="Admin" asp-action="Approve" asp-controller="Order" method="post" class="d-inline">
-						<input type="hidden" name="elementId" value="@element.ElementId" />
+						<input type="hidden" name="elementId" value="@element.OutfitId" />
 						<button type="submit" class="btn btn-success">Потвърди</button>
 					</form>
-					<form asp-area="" asp-action="Delete" asp-controller="Order" method="post" class="d-inline">
-						<input type="hidden" name="elementId" value="@element.ElementId" />
-						<button type="submit" class="btn btn-danger">Изтрии</button>
+					<form asp-area="" asp-action="Delete" asp-controller="Order" asp-route-orderId="@element.OutfitId" method="post" class="d-inline">
+						<button type="submit" class="btn btn-danger">Откажи</button>
 					</form>
 				</td>
 			</tr>

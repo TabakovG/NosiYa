@@ -97,8 +97,9 @@ namespace NosiYa.Services.Data
 				.Select(e => new CommentApprovalViewModel
 				{
 					EventName = e.Event.Name,
-					EventId = e.EventId.ToString(),
+					EventId = e.EventId,
 					Content = e.ModifiedContent ?? e.Content,
+					CommentId = e.Id,
 					UserName = e.Owner.UserName,
 				})
 				.ToArrayAsync();

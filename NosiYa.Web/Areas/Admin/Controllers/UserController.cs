@@ -5,7 +5,6 @@ using NosiYa.Web.ViewModels.User;
 namespace NosiYa.Web.Areas.Admin.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.Extensions.Caching.Memory;
 	using Microsoft.AspNetCore.Identity;
 
 	using Data.Models;
