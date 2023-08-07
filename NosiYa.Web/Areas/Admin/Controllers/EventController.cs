@@ -1,10 +1,11 @@
 ﻿namespace NosiYa.Web.Areas.Admin.Controllers
 {
-	using Microsoft.AspNetCore.Authorization;
 	using Microsoft.AspNetCore.Mvc;
+
 	using NosiYa.Services.Data.Interfaces;
 	using NosiYa.Web.ViewModels.Comment;
 	using NosiYa.Web.ViewModels.Event;
+	using static Common.NotificationMessagesConstants;
 
 	public class EventController : BaseAdminController
 	{
@@ -33,17 +34,16 @@
 
 			try
 			{
-
 				EventDetailsViewModel viewModel = await this.eventService
-					.GetDetailsByIdAsync(id);
+					.GetDetailsForAdminByIdAsync(id);
 
-				viewModel.Comments = await this.commentService.GetCommentsByEventIdAsync(id);
+				viewModel.Comments = await this.commentService.GetAllCommentsByEventIdAsync(id);
 				viewModel.CommentForm = new CommentFormModel()
 				{
 					EventId = id
 				};
 
-				return View(viewModel);
+				return View("_EventDetailsView", viewModel);
 			}
 			catch (Exception)
 			{
@@ -51,5 +51,12 @@
 			}
 
 		}
+			private IActionResult GeneralError()
+			{
+				this.TempData[ErrorMessage] =
+					"Unexpected error occurred! Please try again later or contact administrator";
+
+				return this.RedirectToAction("Index", "Home");
+			}
 	}
 }

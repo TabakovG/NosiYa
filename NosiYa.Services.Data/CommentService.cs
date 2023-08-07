@@ -29,14 +29,14 @@ namespace NosiYa.Services.Data
 			await context.SaveChangesAsync();
 		}
 
-		public async Task<IEnumerable<CommentViewModel>> GetCommentsByEventIdAsync(int eventId)
+		public async Task<IEnumerable<CommentViewModel>> GetVisibleCommentsByEventAndUserIdAsync(int eventId, string userId)
 		{
 			var comments = await this.context
 				.Comments
 				.AsNoTracking()
 				.Include(o=>o.Owner)
 				.Where(c => c.IsActive
-				            && c.IsApproved
+				            && c.IsApproved || c.OwnerId.ToString() == userId
 				            && c.EventId == eventId)
 				.Select(c => new CommentViewModel
 				{
@@ -50,6 +50,28 @@ namespace NosiYa.Services.Data
 
 			return comments;
 		}
+
+		public async Task<IEnumerable<CommentViewModel>> GetAllCommentsByEventIdAsync(int eventId)
+		{
+			var comments = await this.context
+				.Comments
+				.AsNoTracking()
+				.Include(o => o.Owner)
+				.Where(c => c.IsActive
+				            && c.EventId == eventId)
+				.Select(c => new CommentViewModel
+				{
+					Id = c.Id,
+					Content = c.Content,
+					OwnerId = c.OwnerId.ToString(),
+					OwnerEmail = c.Owner.Email,
+					IsWaitingForReview = c.ModifiedContent != null
+				})
+				.ToArrayAsync();
+
+			return comments;
+		}
+
 		public async Task<bool> ExistsByIdAsync(int id)
 		{
 			return await this.context
@@ -58,7 +80,7 @@ namespace NosiYa.Services.Data
 				.AnyAsync(c => c.IsActive && c.Id == id);
 		}
 
-		public async Task<bool> ApprovedByIdAsync(int id)
+		public async Task<bool> IsApprovedByIdAsync(int id)
 		{
 			return await this.context
 				.Comments
@@ -106,6 +128,17 @@ namespace NosiYa.Services.Data
 
 			comment.ModifiedContent = model.ModifiedContent;
 
+			await this.context.SaveChangesAsync();
+		}
+
+		public async Task ApproveByIdAsync(int id)
+		{
+			var comment = await this.context
+				.Comments
+				.Where(e => e.Id == id)
+				.FirstAsync();
+
+			comment.IsApproved = true;
 			await this.context.SaveChangesAsync();
 		}
 

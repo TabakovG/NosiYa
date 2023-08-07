@@ -12,10 +12,10 @@
 		@foreach (var element in Model)
 		{
 			<tr>
-				<td><a href="@{ element.DetailsPath + element.ElementId}">@element.Element</a></td>
+				<td><a href='@element.DetailsPath@element.ElementId'>@element.Element</a></td>
 				<td><a href="/Admin/User/All?SearchTerm=@element.UserName">@element.UserName</a></td>
 				<td>
-					<form asp-area="" asp-action="Approve" asp-controller="@element.DetailsPath" method="post" class="d-inline">
+					<form asp-area="Admin" asp-action="Approve" asp-controller="@element.DetailsPath" method="post" class="d-inline">
 						<input type="hidden" name="elementId" value="@element.ElementId" />
 						<button type="submit" class="btn btn-success">Approve</button>
 					</form>

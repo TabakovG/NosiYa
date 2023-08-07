@@ -10,13 +10,11 @@ namespace NosiYa.Web.Areas.Admin.Controllers
 
 	using Data.Models;
 	using NosiYa.Services.Data.Interfaces;
-	using static Common.ApplicationConstants;
 	using static Common.NotificationMessagesConstants;
 
 	public class UserController : BaseAdminController
 	{
 		private readonly IUserService userService;
-		private readonly IMemoryCache memoryCache;
 		private readonly UserManager<ApplicationUser> userManager;
 
 		public UserController(
@@ -50,7 +48,6 @@ namespace NosiYa.Web.Areas.Admin.Controllers
 				{
 					await this.userService.DeleteByIdAsync(userId);
 
-					this.memoryCache.Remove(UsersCacheKey);
 					this.TempData[SuccessMessage] = "Потребителят беше истрит успешно!";
 				}
 				catch (Exception)
@@ -76,7 +73,6 @@ namespace NosiYa.Web.Areas.Admin.Controllers
 			{
 				await this.userService.ConfirmPhoneAsync(userId);
 
-				this.memoryCache.Remove(UsersCacheKey);
 				this.TempData[SuccessMessage] = "Телефонът беше потвърден!";
 
 			}

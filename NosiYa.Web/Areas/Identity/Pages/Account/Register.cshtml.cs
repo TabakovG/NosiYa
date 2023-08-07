@@ -16,7 +16,6 @@ namespace NosiYa.Web.Areas.Identity.Pages.Account
     using Data.Models;
     using Services.Messaging;
     using static Common.SeedingConstants;
-    using static Common.ApplicationConstants;
 
     public class RegisterModel : PageModel
     {
@@ -26,16 +25,13 @@ namespace NosiYa.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IMemoryCache _memoryCache;
 
-
-		public RegisterModel(
+        public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
-            IMemoryCache memoryCache)
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -43,7 +39,6 @@ namespace NosiYa.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _memoryCache = memoryCache;
         }
 
         /// <summary>
@@ -141,7 +136,6 @@ namespace NosiYa.Web.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                     
-                    this._memoryCache.Remove(UsersCacheKey);
 
 					if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

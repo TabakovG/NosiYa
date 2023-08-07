@@ -12,10 +12,15 @@ namespace NosiYa.Services.Data.Interfaces
 
 		//Read:
 		Task<bool> ExistsByIdAsync(string orderId);
-		Task<bool> ApprovedByIdAsync(int id);
+		Task<bool> IsApprovedByIdAsync(string orderId);
 		Task<ICollection<OrderViewModel>> GetOrdersByUserIdAsync(string userId);
 		Task<OrderDetailsViewModel> GetOrderDetailsByIdAsync(string orderId);
 		Task<IEnumerable<ApprovalViewModel>> GetAllForApproval();
+
+		//Update:
+
+		Task ApproveByIdAsync(string orderId);
+
 
 		//Delete:
 		Task DeleteOrderAsync(string orderId);

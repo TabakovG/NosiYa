@@ -9,15 +9,17 @@
 		Task CreateCommentAsync(CommentFormModel model, Guid userId);
 
 		//Read:
-		Task<IEnumerable<CommentViewModel>> GetCommentsByEventIdAsync(int eventId);
+		Task<IEnumerable<CommentViewModel>> GetVisibleCommentsByEventAndUserIdAsync(int eventId, string userId);
+		Task<IEnumerable<CommentViewModel>> GetAllCommentsByEventIdAsync(int eventId); //Admin only
 		Task<CommentFormModel> GetForEditByIdAsync(int id);
 		Task<bool> ExistsByIdAsync(int id);
-		Task<bool> ApprovedByIdAsync(int id);
-		Task<IEnumerable<ApprovalViewModel>> GetAllForApproval();
+		Task<bool> IsApprovedByIdAsync(int id);
+		Task<IEnumerable<ApprovalViewModel>> GetAllForApproval(); //Admin only
 
 
 		//Update:
 		Task EditByModelAsync(CommentForEditFormModel model);
+		Task ApproveByIdAsync(int id); //Admin only
 
 		//Delete:
 		Task DeleteAllByEventIdAsync(int eventId);

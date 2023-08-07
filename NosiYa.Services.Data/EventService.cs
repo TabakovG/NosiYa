@@ -85,7 +85,7 @@ namespace NosiYa.Services.Data
 		        .AnyAsync(e => e.Id == id);
         }
 
-        public async Task<bool> ApprovedByIdAsync(int id)
+        public async Task<bool> IsApprovedByIdAsync(int id)
         {
 			return await this.context
 				.Events
@@ -108,7 +108,7 @@ namespace NosiYa.Services.Data
 		        .Events
 		        .AsNoTracking()
 		        .Include(i => i.Images)
-		        .Where(e => e.IsActive && e.IsApproved) 
+		        .Where(e => e.IsActive) 
 		        .FirstAsync(e => e.Id == id);
 
 	        var model = new EventDetailsViewModel
@@ -160,7 +160,7 @@ namespace NosiYa.Services.Data
 				.Where(e => e.IsApproved == false && e.IsActive)
 				.Select(e => new ApprovalViewModel
 				{
-					DetailsPath = "/Event/Details/",
+					DetailsPath = "/Admin/Event/Details/",
 					Element = e.Name,
 					ElementId = e.Id.ToString(),
 					UserName = e.Owner.UserName,
@@ -202,6 +202,17 @@ namespace NosiYa.Services.Data
             evnt.EventEndDate = model.EventEndDate;
 
             await this.context.SaveChangesAsync();
+        }
+
+        public async Task ApproveByIdAsync(int id)
+        {
+	        var evnt = await this.context
+		        .Events
+		        .Where(e => e.Id == id)
+		        .FirstAsync();
+
+			evnt.IsApproved = true;
+			await this.context.SaveChangesAsync();
         }
 
         public async Task<EventForDeleteViewModel> GetForDeleteByIdAsync(int id)

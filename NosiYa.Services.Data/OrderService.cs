@@ -39,6 +39,14 @@ namespace NosiYa.Services.Data
 			await this.context.SaveChangesAsync();
 		}
 
+		public async Task<bool> IsApprovedByIdAsync(string orderId)
+		{
+			return await this.context
+				.OutfitRenterDates
+				.Where(o => o.OrderId.ToString() == orderId)
+				.AnyAsync(o => o.IsApproved);
+		}
+
 		public async Task<ICollection<OrderViewModel>> GetOrdersByUserIdAsync(string userId)
 		{
 			var resultDistinct = await this.context
@@ -122,12 +130,15 @@ namespace NosiYa.Services.Data
 				.AnyAsync(o => o.OrderId == Guid.Parse(orderId));
 		}
 
-		public async Task<bool> ApprovedByIdAsync(string orderId)
+		public async Task ApproveByIdAsync(string orderId)
 		{
-			return await this.context
+			var order = await this.context
 				.OutfitRenterDates
-			.Where(x => x.IsApproved)
-				.AnyAsync(o => o.OrderId == Guid.Parse(orderId));
+				.FirstAsync(o => o.OrderId == Guid.Parse(orderId));
+
+			order.IsApproved = true;
+
+			await this.context.SaveChangesAsync();
 		}
 
 		public async Task DeleteOrderAsync(string orderId)

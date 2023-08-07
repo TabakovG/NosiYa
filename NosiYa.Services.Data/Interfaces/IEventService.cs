@@ -14,7 +14,7 @@
 
 		Task<AllEventsPagedServiceModel> AllAvailableEventsAsync(AllEventsPaginatedModel model); // for All view
 		Task<bool> ExistsByIdAsync(int id);
-		Task<bool> ApprovedByIdAsync(int id);
+		Task<bool> IsApprovedByIdAsync(int id);
 		Task<bool> IsOwnedByUserAsync(int id, string userId);
 		Task<EventDetailsViewModel> GetDetailsByIdAsync(int id);
 		Task<EventDetailsViewModel> GetDetailsForAdminByIdAsync(int id);
@@ -26,7 +26,7 @@
 
 		Task<EventFormModel> GetForEditByIdAsync(int id);
 		Task EditByIdAsync(int id, EventFormModel model);
-
+		Task ApproveByIdAsync(int id);
 
 		//Delete:
 		Task<EventForDeleteViewModel> GetForDeleteByIdAsync(int id);

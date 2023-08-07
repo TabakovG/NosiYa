@@ -116,7 +116,7 @@
 		public async Task<IActionResult> Details(int id)
 		{
 			var eventExists = await this.eventService.ExistsByIdAsync(id);
-			bool eventApproved = await this.eventService.ApprovedByIdAsync(id);
+			bool eventApproved = await this.eventService.IsApprovedByIdAsync(id);
 
 			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
@@ -138,13 +138,13 @@
 				EventDetailsViewModel viewModel = await this.eventService
 					.GetDetailsByIdAsync(id);
 
-				viewModel.Comments = await this.commentService.GetCommentsByEventIdAsync(id);
+				viewModel.Comments = await this.commentService.GetVisibleCommentsByEventAndUserIdAsync(id, this.User?.GetId() ?? "");
 				viewModel.CommentForm = new CommentFormModel()
 				{
 					EventId = id
 				};
 
-				return View(viewModel);
+				return View("_EventDetailsView", viewModel);
 			}
 			catch (Exception)
 			{
