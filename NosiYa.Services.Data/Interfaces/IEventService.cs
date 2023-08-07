@@ -18,7 +18,7 @@
 		Task<bool> IsOwnedByUserAsync(int id, string userId);
 		Task<EventDetailsViewModel> GetDetailsByIdAsync(int id);
 		Task<EventDetailsViewModel> GetDetailsForAdminByIdAsync(int id);
-		Task<IEnumerable<ApprovalViewModel>> GetAllForApproval();
+		Task<IEnumerable<EventApprovalViewModel>> GetAllForApproval();
 
 
 

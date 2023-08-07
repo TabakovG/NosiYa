@@ -1,4 +1,4 @@
-﻿using NosiYa.Services.Data.Interfaces;
+﻿	using NosiYa.Services.Data.Interfaces;
 
 namespace NosiYa.Web.Areas.Admin.Controllers
 {
@@ -29,7 +29,7 @@ namespace NosiYa.Web.Areas.Admin.Controllers
 	        {
 		        var model = new AdminApprovalViewModel
 		        {
-			        Rents = await this.orderService.GetAllForApproval(),
+			        Orders = await this.orderService.GetAllForApproval(),
 			        Events = await this.eventService.GetAllForApproval(),
 			        Comments = await this.commentService.GetAllForApproval()
 		        };

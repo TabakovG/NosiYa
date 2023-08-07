@@ -152,17 +152,18 @@ namespace NosiYa.Services.Data
 			return model;
 		}
 
-        public async Task<IEnumerable<ApprovalViewModel>> GetAllForApproval()
+        public async Task<IEnumerable<EventApprovalViewModel>> GetAllForApproval()
         {
 			return await this.context
 				.Events
 				.AsNoTracking()
 				.Where(e => e.IsApproved == false && e.IsActive)
-				.Select(e => new ApprovalViewModel
+				.Select(e => new EventApprovalViewModel()
 				{
-					DetailsPath = "/Admin/Event/Details/",
-					Element = e.Name,
-					ElementId = e.Id.ToString(),
+					EventName = e.Name,
+					EventStart = e.EventStartDate.ToString("HH:mm dd-MM-yyyy"),
+					EventEnd = e.EventEndDate.ToString("HH:mm dd-MM-yyyy"),
+					EventId = e.Id.ToString(),
 					UserName = e.Owner.UserName,
 				})
 				.ToArrayAsync();

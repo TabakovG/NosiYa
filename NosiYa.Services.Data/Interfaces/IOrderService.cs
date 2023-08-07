@@ -15,7 +15,7 @@ namespace NosiYa.Services.Data.Interfaces
 		Task<bool> IsApprovedByIdAsync(string orderId);
 		Task<ICollection<OrderViewModel>> GetOrdersByUserIdAsync(string userId);
 		Task<OrderDetailsViewModel> GetOrderDetailsByIdAsync(string orderId);
-		Task<IEnumerable<ApprovalViewModel>> GetAllForApproval();
+		Task<IEnumerable<OrderApprovalViewModel>> GetAllForApproval();
 
 		//Update:
 

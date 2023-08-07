@@ -106,15 +106,14 @@ namespace NosiYa.Services.Data
 				.FirstAsync();
 		}
 
-		public async Task<IEnumerable<ApprovalViewModel>> GetAllForApproval()
+		public async Task<IEnumerable<OrderApprovalViewModel>> GetAllForApproval()
 		{
 			return await this.context
 				.OutfitRenterDates
 				.AsNoTracking()
 				.Where(o => o.IsApproved == false && o.IsActive)
-				.Select(o => new ApprovalViewModel
+				.Select(o => new OrderApprovalViewModel
 				{
-					DetailsPath = "/Admin/Order/Details/",
 					Element = o.Outfit.Name,
 					ElementId = o.OrderId.ToString(),
 					UserName = o.Renter.UserName,

@@ -24,12 +24,12 @@
 				<div class="row">
 					@if (Model.IsApproved)
 					{
-						<p class="text-success">Резервацията е одобрена</p>
+						<p class="text-success">Резервацията е потвърдена</p>
 					}
 					else
 					{
 						<p class="text-warning">Резервацията изчаква одобрение!</p>
-						<a asp-controller="Order" asp-action="Approve" asp-route-orderId="@Model.OrderId" class="btn btn-success col-4 offset-1 mb-2">Потвърди</a>
+						<a asp-area="Admin" asp-controller="Order" asp-action="Approve" asp-route-orderId="@Model.OrderId" class="btn btn-success col-4 offset-1 mb-2">Потвърди</a>
 					}
 					<form method="post" asp-area="" asp-controller="Order" asp-action="Delete" asp-route-orderId="@Model.OrderId" class="col-6 offset-1 delete-item-form">
 						<input class="visually-hidden" readonly value="@Model.OrderId" name="OrderId" />

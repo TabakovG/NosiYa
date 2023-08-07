@@ -37,9 +37,8 @@
 
 			try
 			{
-				OrderViewModel viewModel = await this.orderService
+				OrderDetailsViewModel viewModel = await this.orderService
 					.GetOrderDetailsByIdAsync(id);
-
 
 				return View(viewModel);
 			}

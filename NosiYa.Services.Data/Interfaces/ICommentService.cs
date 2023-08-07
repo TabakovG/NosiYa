@@ -14,7 +14,7 @@
 		Task<CommentFormModel> GetForEditByIdAsync(int id);
 		Task<bool> ExistsByIdAsync(int id);
 		Task<bool> IsApprovedByIdAsync(int id);
-		Task<IEnumerable<ApprovalViewModel>> GetAllForApproval(); //Admin only
+		Task<IEnumerable<CommentApprovalViewModel>> GetAllForApproval(); //Admin only
 
 
 		//Update:

@@ -1,8 +1,8 @@
-﻿namespace NosiYa.Web.ViewModels
+﻿namespace NosiYa.Web.ViewModels.Order
 {
-	public class ApprovalViewModel
+	public class OrderApprovalViewModel
 	{
-		public string DetailsPath { get; set; } = null!;
+		public string ActionPath { get; set; } = null!;
 		public string Element { get; set; } = null!;
 		public string ElementId { get; set; } = null!;
 		public string UserName { get; set; } = null!;

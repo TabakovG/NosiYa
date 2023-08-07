@@ -88,17 +88,17 @@ namespace NosiYa.Services.Data
 				.AnyAsync(c => c.IsApproved && c.Id == id);
 		}
 
-		public async Task<IEnumerable<ApprovalViewModel>> GetAllForApproval()
+		public async Task<IEnumerable<CommentApprovalViewModel>> GetAllForApproval()
 		{
 			return await this.context
 				.Comments
 				.AsNoTracking()
 				.Where(c => c.IsApproved == false && c.IsActive)
-				.Select(e => new ApprovalViewModel
+				.Select(e => new CommentApprovalViewModel
 				{
-					DetailsPath = "/Event/Details/",
-					Element = e.ModifiedContent ?? e.Content,
-					ElementId = e.EventId.ToString(),
+					EventName = e.Event.Name,
+					EventId = e.EventId.ToString(),
+					Content = e.ModifiedContent ?? e.Content,
 					UserName = e.Owner.UserName,
 				})
 				.ToArrayAsync();

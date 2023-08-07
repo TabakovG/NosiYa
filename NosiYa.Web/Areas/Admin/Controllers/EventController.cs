@@ -23,17 +23,17 @@
 		[HttpGet]
 		public async Task<IActionResult> Details(int id)
 		{
-			var eventExists = await this.eventService.ExistsByIdAsync(id);
-
-			if (!eventExists)
-			{
-				this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "Event");
-			}
-
 			try
 			{
+				var eventExists = await this.eventService.ExistsByIdAsync(id);
+
+				if (!eventExists)
+				{
+					this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "Event");
+				}
+
 				EventDetailsViewModel viewModel = await this.eventService
 					.GetDetailsForAdminByIdAsync(id);
 
@@ -51,12 +51,38 @@
 			}
 
 		}
-			private IActionResult GeneralError()
-			{
-				this.TempData[ErrorMessage] =
-					"Unexpected error occurred! Please try again later or contact administrator";
 
-				return this.RedirectToAction("Index", "Home");
+		[HttpPost]
+		public async Task<IActionResult> Approve([FromForm] int elementId)
+		{
+			try
+			{
+				var eventExists = await this.eventService.ExistsByIdAsync(elementId);
+
+				if (!eventExists)
+				{
+					this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
+
+					return this.RedirectToAction("Approvals", "Home");
+				}
+
+				await this.eventService.ApproveByIdAsync(elementId);
+
+				return this.RedirectToAction("Approvals", "Home");
+
 			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		private IActionResult GeneralError()
+		{
+			this.TempData[ErrorMessage] =
+				"Unexpected error occurred! Please try again later or contact administrator";
+
+			return this.RedirectToAction("Index", "Home");
+		}
 	}
 }
