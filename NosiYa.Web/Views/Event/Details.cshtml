@@ -24,13 +24,13 @@
 					if (this.User.IsAdmin() || this.User.GetId() == @Model.OwnerId)
 					{
 						<a class="btn btn-warning" asp-area="" asp-controller="Event" asp-action="Edit"
-				   asp-route-id="@Model.Id">Edit</a>
+						   asp-route-id="@Model.Id">Edit</a>
 						<a class="ml-2 btn btn-danger" asp-area="" asp-controller="Event" asp-action="Delete"
-				   asp-route-id="@Model.Id">Delete</a>
+						   asp-route-id="@Model.Id">Delete</a>
 					}
 				}
 			</div>
-			<div class="alert-confirm-delete">
+			<div class="alert-confirm-delete all-comments-container">
 				@foreach (CommentViewModel comment in Model.Comments)
 				{
 					<partial name="_CommentPartial" model="@comment" />
@@ -45,31 +45,22 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="editCommentModal" tabindex="-1" aria-labelledby="editCommentModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="editCommentModalLabel">Edit Comment</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="editCommentModalBody">
+				<!-- Modal content will be loaded here through JavaScript -->
+			</div>
+		</div>
+	</div>
+</div>
 
-<script>
-	// Load the edit form for the clicked comment through AJAX
-	function loadEditForm(commentId) {
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", "@Url.Action("Edit", "Comment")/" + commentId, true);
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState === 4 && xhr.status === 200) {
-				document.getElementById("comment-" + commentId).innerHTML = xhr.responseText;
-			}
-		};
-		xhr.send();
-	}
 
-	// Add click event listeners to "Edit Comment" links
-	var editCommentLinks = document.getElementsByClassName("edit-comment-link");
-	for (var i = 0; i < editCommentLinks.length; i++) {
-		editCommentLinks[i].addEventListener("click", function (e) {
-			e.preventDefault();
-			var commentId = this.getAttribute("data-comment-id");
-			loadEditForm(commentId);
-		});
-	}
-</script>
-
+<script src="~/js/edit-comment-ajax.js"></script>
 
 <script src="~/js/alert-confirm-parrent.js"></script>
 
