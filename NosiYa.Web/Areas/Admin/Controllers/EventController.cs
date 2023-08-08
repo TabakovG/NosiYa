@@ -20,38 +20,6 @@
 
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> Details(int id)
-		{
-			try
-			{
-				var eventExists = await this.eventService.ExistsByIdAsync(id);
-
-				if (!eventExists)
-				{
-					this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
-
-					return this.RedirectToAction("All", "Event");
-				}
-
-				EventDetailsViewModel viewModel = await this.eventService
-					.GetDetailsForAdminByIdAsync(id);
-
-				viewModel.Comments = await this.commentService.GetAllCommentsByEventIdAsync(id);
-				viewModel.CommentForm = new CommentFormModel()
-				{
-					EventId = id
-				};
-
-				return View("_EventDetailsView", viewModel);
-			}
-			catch (Exception)
-			{
-				return this.GeneralError();
-			}
-
-		}
-
 		[HttpPost]
 		public async Task<IActionResult> Approve([FromForm] int elementId)
 		{

@@ -9,7 +9,7 @@
 	using static Common.NotificationMessagesConstants;
 	using static Common.ApplicationConstants;
 	using static Common.SeedingConstants;
-	using NosiYa.Web.ViewModels.Order;
+	using ViewModels.Order;
 
 	[Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
 	public class OrderController : BaseController
@@ -61,7 +61,11 @@
 				return this.RedirectToAction("Index", "Home");
 			}
 
-			//TODO validate dates
+			if (model.FromDate < DateTime.UtcNow || model.ToDate < model.FromDate)
+			{
+				this.TempData[ErrorMessage] = "Посочената дата е невалидна. Моля променете поръчката!";
+				return this.RedirectToAction("Items", "Cart");
+			}
 
 			try
 			{
@@ -78,10 +82,9 @@
 				return this.RedirectToAction("Items", "Cart");
 
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
-				Console.WriteLine(e);
-				throw;
+				return this.GeneralError();
 			}
 
 		}

@@ -175,7 +175,7 @@ namespace NosiYa.Services.Data
         {
 	        return await this.context
 		        .Events
-		        .Where(e => e.IsActive && e.IsApproved) //TODO to separate active from approved in another method
+		        .Where(e => e.IsActive) 
 		        .Where(e => e.Id == id)
 		        .Select(e => new EventFormModel
 		        {
@@ -192,7 +192,7 @@ namespace NosiYa.Services.Data
         {
 	        var evnt = await this.context
 		        .Events
-		        .Where(e => e.IsActive && e.IsApproved) //TODO to separate active from approved in another method
+		        .Where(e => e.IsActive) 
 		        .Where(e => e.Id == id)
 		        .FirstAsync();
 

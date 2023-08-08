@@ -13,20 +13,22 @@
 	</p>
 	<hr class="my-4">
 	<a asp-area="" asp-controller="OutfitSet" asp-action="All"
-	   class="btn btn-primary btn-lg mb-3">Каталог</a>
+	    class="btn btn-primary btn-lg mb-3">Каталог</a>
+	<a asp-area="" asp-controller="OutfitSet" asp-action="AllUnavailable"
+	    class="btn btn-primary btn-lg mb-3">Неактивни</a>
 	<a asp-area="" asp-controller="OutfitSet" asp-action="Create"
-	class="btn btn-primary btn-lg mb-3">Добави носия</a>
+		class="btn btn-primary btn-lg mb-3">Добави носия</a>
 	<a asp-area="" asp-controller="Event" asp-action="Add"
-	class="btn btn-primary btn-lg mb-3">Добави събитие</a>
+		class="btn btn-primary btn-lg mb-3">Добави събитие</a>
 	<a asp-area="" asp-controller="Region" asp-action="Add"
-	class="btn btn-primary btn-lg mb-3">Добави регион</a>
+		class="btn btn-primary btn-lg mb-3">Добави регион</a>
 	<span> | </span>
 	<a asp-area="Admin" asp-controller="Home" asp-action="Approvals"
-	class="btn btn-primary btn-lg mb-3">Чакащи заявки</a>
+		class="btn btn-primary btn-lg mb-3">Чакащи заявки</a>
 	<span> | </span>
 	<a asp-area="Admin" asp-controller="Order" asp-action="All"
 	   class="btn btn-primary btn-lg mb-3">Резервации</a>
 	<span> | </span>
 	<a asp-area="Admin" asp-controller="User" asp-action="All"
-	class="btn btn-primary btn-lg mb-3">Потребители</a>
+		class="btn btn-primary btn-lg mb-3">Потребители</a>
 </div>

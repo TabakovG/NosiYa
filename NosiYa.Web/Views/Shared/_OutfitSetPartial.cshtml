@@ -38,13 +38,18 @@
 					      asp-route-orderId="@Model.Id" 
 					      class="d-inline">
 						<input class="visually-hidden" readonly value="@Model.Id" name="id" />
-						<input class="btn btn-success" type="submit" value="Деактивирай" />
+						<input class="btn btn-warning" type="submit" value="Деактивирай" />
 					</form>
 					<p></p>
+					<a asp-area="" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id"
+					   class="btn btn-success">Резервирай</a>
 				}
 			}
-			<a asp-area="" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id"
-				class="btn btn-success">Резервирай</a>
+			else
+			{
+				<a asp-area="" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id"
+				   class="btn btn-success">Резервирай</a>
+			}
 		</div>
 	</div>
 </div>

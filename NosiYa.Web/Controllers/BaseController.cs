@@ -2,8 +2,9 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using static Common.SeedingConstants;   
 
-    [Authorize]
+	[Authorize(Roles = $"{UserRoleName}, {AdminRoleName}")]
     public class BaseController : Controller
     {
 

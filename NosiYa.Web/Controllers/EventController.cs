@@ -115,16 +115,28 @@
 		public async Task<IActionResult> Details(int id)
 		{
 			var eventExists = await this.eventService.ExistsByIdAsync(id);
+
+			if (!eventExists)
+			{
+				this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
+
+				return this.RedirectToAction("All", "Event");
+			}
+
 			bool eventApproved = await this.eventService.IsApprovedByIdAsync(id);
 
 			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+			var isAdmin = this.User!.IsInRole(AdminRoleName);
 
+			//Event not approved but user is admin or owner
 			if (!eventApproved && isAuthenticated)
 			{
-				eventApproved = await this.eventService.IsOwnedByUserAsync(id, this.User!.GetId()!);
+				var userIsOwner = await this.eventService.IsOwnedByUserAsync(id, this.User!.GetId()!);
+
+				eventApproved = userIsOwner || isAdmin;
 			}
 
-			if (!eventExists || !eventApproved)
+			if (!eventApproved)
 			{
 				this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
 
@@ -133,17 +145,23 @@
 
 			try
 			{
-
-				EventDetailsViewModel viewModel = await this.eventService
-					.GetDetailsByIdAsync(id);
-
-				viewModel.Comments = await this.commentService.GetVisibleCommentsByEventAndUserIdAsync(id, this.User?.GetId() ?? "");
+				EventDetailsViewModel viewModel;
+				if (isAdmin)
+				{
+					viewModel = await this.eventService.GetDetailsForAdminByIdAsync(id);
+					viewModel.Comments = await this.commentService.GetAllCommentsByEventIdAsync(id);
+				}
+				else
+				{
+					viewModel = await this.eventService.GetDetailsByIdAsync(id);
+					viewModel.Comments = await this.commentService.GetVisibleCommentsByEventAndUserIdAsync(id, this.User?.GetId() ?? "");
+				}
 				viewModel.CommentForm = new CommentFormModel()
 				{
 					EventId = id
 				};
 
-				return View("_EventDetailsView", viewModel);
+				return View(viewModel);
 			}
 			catch (Exception)
 			{
@@ -276,7 +294,23 @@
 
 				return this.RedirectToAction("All", "Event");
 			}
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
+			if (!isAuthenticated)
+			{
+				this.TempData["ErrorMessage"] = "Страницата е достъпна само за оторизирани потребители!";
+
+				return this.RedirectToAction("All", "Event");
+			}
+
+			bool userIsOwner = await this.eventService.IsOwnedByUserAsync(id, this.User!.GetId()!);
+
+			if (!userIsOwner && !this.User!.IsInRole(AdminRoleName))
+			{
+				this.TempData["ErrorMessage"] = "Функцията е достъпна само за оторизирани потребители!";
+
+				return this.RedirectToAction("All", "Event");
+			}
 			try
 			{
 				var viewModel =
@@ -301,7 +335,23 @@
 
 				return this.RedirectToAction("All", "Event");
 			}
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
+			if (!isAuthenticated)
+			{
+				this.TempData["ErrorMessage"] = "Страницата е достъпна само за оторизирани потребители!";
+
+				return this.RedirectToAction("All", "Event");
+			}
+
+			bool userIsOwner = await this.eventService.IsOwnedByUserAsync(id, this.User!.GetId()!);
+
+			if (!userIsOwner && !this.User!.IsInRole(AdminRoleName))
+			{
+				this.TempData["ErrorMessage"] = "Функцията е достъпна само за оторизирани потребители!";
+
+				return this.RedirectToAction("All", "Event");
+			}
 			try
 			{
 				await this.eventService.DeleteByIdAsync(id);
