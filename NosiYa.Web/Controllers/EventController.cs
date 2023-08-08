@@ -61,7 +61,6 @@
 		{
 			try
 			{
-				//TODO To check if the user is admin
 
 				if (!this.ModelState.IsValid)
 				{
@@ -231,7 +230,7 @@
 
 				if (!userIsOwner && !this.User!.IsInRole(AdminRoleName))
 				{
-					this.TempData["ErrorMessage"] = "Страницата е достъпна само за оторизирани потребители!";
+					this.TempData["ErrorMessage"] = "Функцията е достъпна само за оторизирани потребители!";
 
 					return this.RedirectToAction("All", "Event");
 				}

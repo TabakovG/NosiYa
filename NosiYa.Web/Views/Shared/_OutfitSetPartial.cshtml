@@ -7,17 +7,19 @@
 			<h4>@Model.Name</h4>
 			<br />
 			<a asp-controller="OutfitSet" asp-action="Details" asp-route-id="@Model.Id"
-			   class="btn btn-success">Детайли</a>
-			@if (this.User.Identity?.IsAuthenticated ?? false)
+				class="btn btn-success">Детайли</a>
+			@if (this.User.IsInRole(AdminRoleName))
 			{
-				<a asp-controller="OutfitSet" asp-action="Edit" asp-route-id="@Model.Id"
-				   class="btn btn-warning">Промени</a>
-				<a asp-controller="OutfitSet" asp-action="Delete" asp-route-id="@Model.Id"
-				   class="btn btn-danger">Изтрий</a>
+				<a asp-area="Admin" asp-controller="OutfitSet" asp-action="Edit" asp-route-id="@Model.Id"
+					class="btn btn-warning">Промени</a>
+				<a asp-area="Admin" asp-controller="OutfitSet" asp-action="Delete" asp-route-id="@Model.Id"
+					class="btn btn-danger">Изтрий</a>
+				<a asp-area="Admin" asp-controller="OutfitSet" asp-action="Activate" asp-route-id="@Model.Id"
+					class="btn btn-success">Активирай</a>
 				<p></p>
 			}
-			<a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id"
-			   class="btn btn-success">Резервирай</a>
+			<a asp-area="" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id"
+				class="btn btn-success">Резервирай</a>
 		</div>
 	</div>
 </div>

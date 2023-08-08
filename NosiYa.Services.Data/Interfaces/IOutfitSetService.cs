@@ -11,8 +11,8 @@ namespace NosiYa.Services.Data.Interfaces
         Task<int> CreateOutfitSetAndReturnIdAsync(OutfitSetFormModel formModel);
 
         //Read
-        Task<AllOutfitsFilteredAndPagedServiceModel> AllAvailableOutfitSetsAsync(AllOutfitsQueryModel queryModel);
-        Task<IEnumerable<OutfitSetForOptionsViewModel>> GetAllOutfitSetsForOptionsAsync();
+        Task<AllOutfitsFilteredAndPagedServiceModel> AllFilteredOutfitSetsByAvailabilityAsync(AllOutfitsQueryModel queryModel, bool AreAvailable);
+        Task<IEnumerable<OutfitSetForOptionsViewModel>> GetAllOutfitSetsForOptionsAsync(); //parrent options for part
         Task<bool> ExistByIdAsync(int outfitId);
         Task<RenterType> GetRenterTypeByIdAsync(int id);
         Task<OutfitSetForRentViewModel> GetForRentByIdAsync(int id);
