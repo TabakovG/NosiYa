@@ -2,45 +2,45 @@
 
 <table class="table">
 	<thead>
-		<tr>
-			<th>Събитие</th>
-			<th>Коментар</th>
-			<th>Потребител</th>
-			<th>Опции</th>
-		</tr>
+	<tr>
+		<th>Събитие</th>
+		<th>Коментар</th>
+		<th>Потребител</th>
+		<th>Опции</th>
+	</tr>
 	</thead>
 	<tbody>
-		@foreach (var element in Model)
-		{
-			<tr>
-				<td><a asp-area="Admin" asp-controller="Event" asp-action="Details" asp-route-id="@element.EventId">@element.EventName</a></td>
-				<td><a asp-area="Admin" asp-controller="Event" asp-action="Details" asp-route-id="@element.EventId">@element.Content</a></td>
-				<td>
-					<a asp-area="Admin"
-					   asp-controller="User"
-					   asp-action="All"
-					   asp-all-route-data='new Dictionary<string, string>{
-							{ "SearchTerm", element.UserName }
-						}
-						'>@element.UserName</a>
-				</td>
-				<td>
-					<form asp-area="Admin" asp-action="Approve" asp-controller="Comment" method="post" class="d-inline">
-						<input type="hidden" name="elementId" value="@element.CommentId" />
-						<button type="submit" class="btn btn-success">Потвърди</button>
-					</form>
-					<form 
-						asp-area="" 
-						asp-action="Delete" 
-						asp-controller="Comment" 
-						asp-route-id="@element.CommentId" 
-						asp-route-eventId="@element.EventId"
-						method="post" 
-						class="d-inline">
-						<button type="submit" class="btn btn-danger">Откажи</button>
-					</form>
-				</td>
-			</tr>
-		}
+	@foreach (var element in Model)
+	{
+		<tr>
+			<td><a asp-area="Admin" asp-controller="Event" asp-action="Details" asp-route-id="@element.EventId">@element.EventName</a></td>
+			<td><a asp-area="Admin" asp-controller="Event" asp-action="Details" asp-route-id="@element.EventId">@element.Content</a></td>
+			<td>
+				<a asp-area="Admin"
+				   asp-controller="User"
+				   asp-action="All"
+				   asp-all-route-data='new Dictionary<string, string>{
+	{ "SearchTerm", element.UserName }
+}
+'>@element.UserName</a>
+			</td>
+			<td>
+				<form asp-area="Admin" asp-action="Approve" asp-controller="Comment" method="post" class="d-inline">
+					<input type="hidden" name="elementId" value="@element.CommentId" />
+					<button type="submit" class="btn btn-success">Потвърди</button>
+				</form>
+				<form 
+					asp-area="" 
+					asp-action="Delete" 
+					asp-controller="Comment" 
+					asp-route-id="@element.CommentId" 
+					asp-route-eventId="@element.EventId"
+					method="post" 
+					class="d-inline delete-item-form">
+					<button type="submit" class="btn btn-danger ">Откажи</button>
+				</form>
+			</td>
+		</tr>
+	}
 	</tbody>
 </table>

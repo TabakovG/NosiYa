@@ -29,9 +29,12 @@
 					else
 					{
 						<p class="text-warning">Резервацията изчаква одобрение!</p>
-						<a asp-area="Admin" asp-controller="Order" asp-action="Approve" asp-route-orderId="@Model.OrderId" class="btn btn-success col-4 offset-1 mb-2">Потвърди</a>
+						<form asp-area="Admin" asp-action="Approve" asp-controller="Order" method="post" class="d-inline">
+							<input type="hidden" name="elementId" value="@Model.OrderId" />
+							<button type="submit" class="btn btn-success">Потвърди</button>
+						</form>
 					}
-					<form method="post" asp-area="" asp-controller="Order" asp-action="Delete" asp-route-orderId="@Model.OrderId" class="col-6 offset-1 delete-item-form">
+					<form method="post" asp-area="" asp-controller="Order" asp-action="Delete" asp-route-orderId="@Model.OrderId" class="d-inline delete-item-form">
 						<input class="visually-hidden" readonly value="@Model.OrderId" name="OrderId" />
 						<input class="btn btn-danger col-10" type="submit" value="Откажи" />
 					</form>

@@ -87,7 +87,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Delete(string orderId)
+		public async Task<IActionResult> Delete(string orderId, string? baseUrl=null)
 		{
 			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
@@ -129,10 +129,16 @@
 
 				this.TempData[WarningMessage] = "Поръчката беше изтрита успешно!";
 
+				if (baseUrl != null)
+				{
+					return this.Redirect(baseUrl);
+				}
+
 				if (this.User!.IsInRole(AdminRoleName))
 				{
 					return this.RedirectToAction("All", "Order", new { Area = AdminAreaName });
 				}
+
 				return this.RedirectToAction("Mine", "Order");
 			}
 			catch (Exception)
