@@ -8,14 +8,17 @@
 			<h5>@Model.EventStartDate - @Model.EventEndDate</h5>
 			<br />
 			<a asp-area="" asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id"
-	  class="btn btn-success">Детайли</a>
+				class="btn btn-success">Детайли</a>
 			@if (this.User.Identity?.IsAuthenticated ?? false)
 			{
-				<a asp-area="" asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id"
-		  class="btn btn-warning">Промени</a>
-				<a asp-area="" asp-controller="Event" asp-action="Delete" asp-route-id="@Model.Id"
-		  class="btn btn-danger">Изтрий</a>
-				<p></p>
+				if (this.User.IsInRole(AdminRoleName) || this.User.GetId() == @Model.OwnerId)
+				{
+					<a asp-area="" asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id"
+					   class="btn btn-warning">Промени</a>
+					<a asp-area="" asp-controller="Event" asp-action="Delete" asp-route-id="@Model.Id"
+					   class="btn btn-danger">Изтрий</a>
+					<p></p>
+				}
 			}
 		</div>
 	</div>

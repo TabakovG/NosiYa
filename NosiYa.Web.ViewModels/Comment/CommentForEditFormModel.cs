@@ -1,8 +1,8 @@
 ﻿namespace NosiYa.Web.ViewModels.Comment
 {
     using System.ComponentModel.DataAnnotations;
-    using static NosiYa.Common.EntityValidationConstants.Comment;
 
+    using static NosiYa.Common.EntityValidationConstants.Comment;
 
     public class CommentForEditFormModel
     {

@@ -46,7 +46,9 @@ namespace NosiYa.Services.Data
             var events = context
                 .Events
                 .AsNoTracking()
-                .Where(e => e.IsActive && e.IsApproved)
+                .Where(e => e.IsActive)
+                .Where(e=>e.IsApproved)
+                .OrderBy(e=>e.EventStartDate)
                 .AsQueryable();
 
             int eventsCount = events.Count();
@@ -60,7 +62,8 @@ namespace NosiYa.Services.Data
                 {
                     Id = e.Id,
                     Name = e.Name,
-                    EventStartDate = e.EventStartDate.Date, //TODO to specific format ?
+					OwnerId = e.OwnerId.ToString(),
+                    EventStartDate = e.EventStartDate.Date,
                     EventEndDate = e.EventEndDate.Date,
                     ImageUrl = e.Images
                         .Where(i => i.IsDefault)
@@ -77,7 +80,47 @@ namespace NosiYa.Services.Data
             };
         }
 
-        public async Task<bool> ExistsByIdAsync(int id)
+
+        public async Task<AllEventsPagedServiceModel> AllUnavailableEventsByUserIdAsync(AllEventsPaginatedModel model, string userId)
+        {
+	        var events = context
+		        .Events
+		        .AsNoTracking()
+		        .Where(e => e.IsActive && e.IsApproved == false)
+		        .Where(e => e.OwnerId.ToString() == userId)
+		        .OrderBy(e => e.EventStartDate)
+		        .AsQueryable();
+
+	        int eventsCount = events.Count();
+
+	        var eventModels = await events
+		        .Where(e => e.EventStartDate.Date >= DateTime.UtcNow.Date)
+		        .OrderBy(e => e.EventStartDate)
+		        .Skip((model.CurrentPage - 1) * model.EventsPerPage)
+		        .Take(model.EventsPerPage)
+		        .Select(e => new EventAllViewModel
+		        {
+			        Id = e.Id,
+			        Name = e.Name,
+			        OwnerId = e.OwnerId.ToString(),
+			        EventStartDate = e.EventStartDate.Date,
+			        EventEndDate = e.EventEndDate.Date,
+			        ImageUrl = e.Images
+				        .Where(i => i.IsDefault)
+				        .Select(i => i.Url)
+				        .FirstOrDefault() ?? string.Empty
+		        })
+		        .ToArrayAsync();
+
+
+	        return new AllEventsPagedServiceModel
+	        {
+		        EventsCount = eventsCount,
+		        Events = eventModels
+	        };
+        }
+
+		public async Task<bool> ExistsByIdAsync(int id)
         {
 	        return await this.context
 		        .Events
@@ -108,6 +151,7 @@ namespace NosiYa.Services.Data
 		        .Events
 		        .AsNoTracking()
 		        .Include(i => i.Images)
+		        .Include(i => i.Owner)
 		        .Where(e => e.IsActive) 
 		        .FirstAsync(e => e.Id == id);
 
@@ -117,40 +161,14 @@ namespace NosiYa.Services.Data
 		        Name = evnt.Name,
 		        Description = evnt.Description,
 		        Location = evnt.Location,
-		        OwnerId = evnt.OwnerId,
-		        Owner = evnt.Owner, //TODO do I need the owner or only the id as string ?
+		        OwnerId = evnt.OwnerId.ToString(),
+		        Owner = evnt.Owner.UserName, 
 		        EventStartDate = evnt.EventStartDate,
 		        EventEndDate = evnt.EventEndDate,
 		        Images = evnt.Images.Select(i => i.Url).ToArray()
-
-			};
+	        };
             return model;
         }
-
-        public async Task<EventDetailsViewModel> GetDetailsForAdminByIdAsync(int id)
-        {
-			var evnt = await this.context
-				.Events
-				.AsNoTracking()
-				.Include(i => i.Images)
-				.Where(e => e.IsActive) 
-				.FirstAsync(e => e.Id == id);
-
-			var model = new EventDetailsViewModel
-			{
-				Id = evnt.Id,
-				Name = evnt.Name,
-				Description = evnt.Description,
-				Location = evnt.Location,
-				OwnerId = evnt.OwnerId,
-				Owner = evnt.Owner, //TODO do I need the owner or only the id as string ?
-				EventStartDate = evnt.EventStartDate,
-				EventEndDate = evnt.EventEndDate,
-				Images = evnt.Images.Select(i => i.Url).ToArray()
-
-			};
-			return model;
-		}
 
         public async Task<IEnumerable<EventApprovalViewModel>> GetAllForApproval()
         {
@@ -201,6 +219,7 @@ namespace NosiYa.Services.Data
             evnt.Location = model.Location;
             evnt.EventStartDate = model.EventStartDate;
             evnt.EventEndDate = model.EventEndDate;
+            evnt.IsApproved = false;
 
             await this.context.SaveChangesAsync();
         }

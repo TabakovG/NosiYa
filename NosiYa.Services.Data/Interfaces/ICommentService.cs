@@ -13,8 +13,8 @@
 		Task<IEnumerable<CommentViewModel>> GetAllCommentsByEventIdAsync(int eventId); //Admin only
 		Task<CommentFormModel> GetForEditByIdAsync(int id);
 		Task<bool> ExistsByIdAsync(int id);
-		Task<bool> IsApprovedByIdAsync(int id);
 		Task<IEnumerable<CommentApprovalViewModel>> GetAllForApproval(); //Admin only
+		Task<bool> IsOwnedByUserIdAsync(int id, string userId);
 
 
 		//Update:

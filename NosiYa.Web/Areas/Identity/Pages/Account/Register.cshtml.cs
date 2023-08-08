@@ -1,7 +1,5 @@
 ﻿#nullable disable
 
-using Microsoft.Extensions.Caching.Memory;
-
 namespace NosiYa.Web.Areas.Identity.Pages.Account
 {
     using System.ComponentModel.DataAnnotations;

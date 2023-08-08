@@ -16,24 +16,30 @@
 	<div class="form-inline">
 		@if (this.User.Identity?.IsAuthenticated ?? false)
 		{
-
-			<a class="btn btn-warning" asp-area="" asp-controller="Comment" asp-action="Edit"
-		   asp-route-id="@Model.Id">Edit</a>
-
-			@* Display Edit Comment link *@
-			<a href="#" class="edit-comment-link" data-comment-id="@Model.Id">Edit Comment</a>
-			@if (this.User.IsInRole(AdminRoleName))
+			
+			@if (this.User.IsAdmin() && @Model.IsWaitingForReview)
 			{
-				<form method="post" asp-area="Admin" asp-action="Approve" asp-controller="Comment" asp-route-eventId="@ViewContext.RouteData.Values["id"]" asp-route-id="@Model.Id" class="delete-item-form">
-					<input type="submit" value="Одобри" class="btn btn-success" />
+				<div class="card col-8 border-0">
+					<p style="font-size:25px;">Преди да потвърдите моля проверете за актуалното съдържание през бутон "Промени"</p>
+				</div>
+
+				<form method="post" asp-area="Admin" asp-action="Approve" asp-controller="Comment" class="delete-item-form">
+					<input type="hidden" name="elementId" value="@Model.Id" />
+					<input type="submit" value="Потвърди" class="btn btn-success" />
 				</form>
 			}
-			@if (this.User.IsInRole(AdminRoleName) || this.User.GetId() == Model.OwnerId)
+			@if (this.User.IsAdmin() || this.User.GetId() == Model.OwnerId)
 			{
+				@* Display Edit Comment link --AJAX -- *@
+				<a href="#" class="btn btn-warning edit-comment-link" data-comment-id="@Model.Id">Промени</a>
+
 				<form method="post" asp-area="" asp-action="Delete" asp-controller="Comment" asp-route-eventId="@ViewContext.RouteData.Values["id"]" asp-route-id="@Model.Id" class="delete-item-form">
 					<input type="submit" value="Изтрии" class="btn btn-danger btn-delete" />
 				</form>
 			}
+			<div class="edit-comment-container">
+				@* This container will hold the edit comment forms dynamically *@
+			</div>
 		}
 	</div>
 </div>

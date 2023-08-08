@@ -21,8 +21,10 @@ namespace NosiYa.Services.Data
 			var comment = new Comment
 			{
 				Content = model.Content,
+				ModifiedContent = model.Content,
 				OwnerId = userId,
 				EventId = model.EventId,
+				IsActive = true
 			};
 
 			await context.Comments.AddAsync(comment);
@@ -34,10 +36,10 @@ namespace NosiYa.Services.Data
 			var comments = await this.context
 				.Comments
 				.AsNoTracking()
-				.Include(o=>o.Owner)
-				.Where(c => c.IsActive
-				            && c.IsApproved || c.OwnerId.ToString() == userId
-				            && c.EventId == eventId)
+				.Include(o => o.Owner)
+				.Where(c => c.IsActive && c.EventId == eventId)
+				.Where(c => c.IsApproved || c.OwnerId.ToString() == userId)
+				.OrderBy(c => c.CreatedOn)
 				.Select(c => new CommentViewModel
 				{
 					Id = c.Id,
@@ -45,7 +47,7 @@ namespace NosiYa.Services.Data
 					OwnerId = c.OwnerId.ToString(),
 					OwnerEmail = c.Owner.Email,
 					IsWaitingForReview = c.ModifiedContent != null
-                })
+				})
 				.ToArrayAsync();
 
 			return comments;
@@ -57,8 +59,8 @@ namespace NosiYa.Services.Data
 				.Comments
 				.AsNoTracking()
 				.Include(o => o.Owner)
-				.Where(c => c.IsActive
-				            && c.EventId == eventId)
+				.Where(c => c.IsActive && c.EventId == eventId)
+				.OrderBy(c => c.CreatedOn)
 				.Select(c => new CommentViewModel
 				{
 					Id = c.Id,
@@ -80,20 +82,15 @@ namespace NosiYa.Services.Data
 				.AnyAsync(c => c.IsActive && c.Id == id);
 		}
 
-		public async Task<bool> IsApprovedByIdAsync(int id)
-		{
-			return await this.context
-				.Comments
-				.AsNoTracking()
-				.AnyAsync(c => c.IsApproved && c.Id == id);
-		}
 
 		public async Task<IEnumerable<CommentApprovalViewModel>> GetAllForApproval()
 		{
 			return await this.context
 				.Comments
 				.AsNoTracking()
-				.Where(c => c.IsApproved == false && c.IsActive)
+				.Where(c => c.IsActive)
+				.Where(c => c.IsApproved == false || c.ModifiedContent != null)
+				.OrderBy(c => c.CreatedOn)
 				.Select(e => new CommentApprovalViewModel
 				{
 					EventName = e.Event.Name,
@@ -103,6 +100,14 @@ namespace NosiYa.Services.Data
 					UserName = e.Owner.UserName,
 				})
 				.ToArrayAsync();
+		}
+
+		public async Task<bool> IsOwnedByUserIdAsync(int id, string userId)
+		{
+			return await this.context
+				.Comments
+				.Where(c => c.IsActive && c.Id == id)
+				.AnyAsync(c => c.OwnerId.ToString() == userId);
 		}
 
 		public async Task<CommentFormModel> GetForEditByIdAsync(int id)
@@ -140,6 +145,9 @@ namespace NosiYa.Services.Data
 				.FirstAsync();
 
 			comment.IsApproved = true;
+			comment.Content = comment.ModifiedContent ?? comment.Content;
+			comment.ModifiedContent = null;
+
 			await this.context.SaveChangesAsync();
 		}
 
@@ -147,7 +155,7 @@ namespace NosiYa.Services.Data
 		{
 			var comments = await this.context
 				.Comments
-				.Where(c=>c.IsActive && c.EventId == eventId)
+				.Where(c => c.IsActive && c.EventId == eventId)
 				.ToArrayAsync();
 
 			foreach (var comment in comments)

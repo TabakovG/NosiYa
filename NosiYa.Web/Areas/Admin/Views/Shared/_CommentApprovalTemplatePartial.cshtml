@@ -3,8 +3,8 @@
 <table class="table">
 	<thead>
 	<tr>
-		<th>Събитие</th>
 		<th>Коментар</th>
+		<th>Събитие</th>
 		<th>Потребител</th>
 		<th>Опции</th>
 	</tr>
@@ -13,8 +13,8 @@
 	@foreach (var element in Model)
 	{
 		<tr>
-			<td><a asp-area="Admin" asp-controller="Event" asp-action="Details" asp-route-id="@element.EventId">@element.EventName</a></td>
 			<td><a asp-area="Admin" asp-controller="Event" asp-action="Details" asp-route-id="@element.EventId">@element.Content</a></td>
+			<td><a asp-area="Admin" asp-controller="Event" asp-action="Details" asp-route-id="@element.EventId">@element.EventName</a></td>
 			<td>
 				<a asp-area="Admin"
 				   asp-controller="User"

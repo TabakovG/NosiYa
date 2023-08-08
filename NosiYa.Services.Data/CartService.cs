@@ -70,6 +70,7 @@ namespace NosiYa.Services.Data
 			await this.context.SaveChangesAsync();
 		}
 
+		//Read: --------------------------------------------------------------------------------------------
 
 		public async Task<ICollection<CartItemsViewModel>> GetAllItemsFromUserCartAsync(string userId)
 		{
@@ -78,6 +79,8 @@ namespace NosiYa.Services.Data
 				.AsNoTracking()
 				.Where(o => o.Cart.OwnerId.ToString() == userId)
 				.Where(x => x.IsActive)
+				.OrderBy(o=>o.FromDate)
+				.ThenBy(o=>o.ToDate)
 				.Select(o => new CartItemsViewModel
 				{
 					Id = o.Id,

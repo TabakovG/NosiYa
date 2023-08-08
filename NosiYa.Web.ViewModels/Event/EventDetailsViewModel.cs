@@ -2,8 +2,6 @@
 
 namespace NosiYa.Web.ViewModels.Event
 {
-	using Data.Models;
-
 	public class EventDetailsViewModel
 	{
 		public EventDetailsViewModel()
@@ -20,8 +18,8 @@ namespace NosiYa.Web.ViewModels.Event
 
 		public string Location { get; set; } = null!;
 
-		public Guid OwnerId { get; set; }
-		public ApplicationUser Owner { get; set; } = null!;
+		public string OwnerId { get; set; }
+		public string Owner { get; set; } = null!;
 
 		public DateTime EventStartDate { get; set; }
 

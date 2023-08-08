@@ -41,6 +41,17 @@
 
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> SubmittedEvents([FromQuery] AllEventsPaginatedModel model)
+		{
+			var serviceModel = await this.eventService.AllUnavailableEventsByUserIdAsync(model, this.User!.GetId()!);
+
+			model.Events = serviceModel.Events;
+			model.EventsCount = serviceModel.EventsCount;
+
+			return View("All",model);
+
+		}
 
 		[HttpGet]
 		public IActionResult Add()
@@ -126,7 +137,7 @@
 			bool eventApproved = await this.eventService.IsApprovedByIdAsync(id);
 
 			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
-			var isAdmin = this.User!.IsInRole(AdminRoleName);
+			var isAdmin = this.User!.IsAdmin();
 
 			//Event not approved but user is admin or owner
 			if (!eventApproved && isAuthenticated)
@@ -145,15 +156,14 @@
 
 			try
 			{
-				EventDetailsViewModel viewModel;
+				EventDetailsViewModel viewModel = await this.eventService.GetDetailsByIdAsync(id);
+
 				if (isAdmin)
 				{
-					viewModel = await this.eventService.GetDetailsForAdminByIdAsync(id);
 					viewModel.Comments = await this.commentService.GetAllCommentsByEventIdAsync(id);
 				}
 				else
 				{
-					viewModel = await this.eventService.GetDetailsByIdAsync(id);
 					viewModel.Comments = await this.commentService.GetVisibleCommentsByEventAndUserIdAsync(id, this.User?.GetId() ?? "");
 				}
 				viewModel.CommentForm = new CommentFormModel()

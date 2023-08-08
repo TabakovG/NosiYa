@@ -56,8 +56,6 @@
 		{
 			try
 			{
-				//TODO To check if the user is admin
-
 				bool regionExists = await this.regionService.ExistsByIdAsync(model.RegionId);
 				if (!regionExists)
 				{
@@ -294,7 +292,7 @@
 				var hasReservations = await this.outfitService.HasFutureReservationsAsync(id);
 				if (hasReservations)
 				{
-					this.TempData[ErrorMessage] = "Носията може да бъде деактивирана след като бъдат премахнати всички активни резервации!";
+					this.TempData[ErrorMessage] = "Моля първо премахнете всички активни резервации!";
 
 					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
 				}

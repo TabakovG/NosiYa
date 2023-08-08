@@ -10,6 +10,8 @@
 		public EventFormModel()
 		{
 			this.Images = new HashSet<ImageViewModel>();
+			this.EventStartDate = DateTime.UtcNow;
+			this.EventEndDate = DateTime.UtcNow;
 		}
 
 		[Required]

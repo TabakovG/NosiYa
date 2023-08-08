@@ -6,8 +6,6 @@
 
 	public class CommentFormModel
 	{
-/*		[Key]
-		public int Id { get; set; }*/
 
 		[Required]
 		[StringLength(ContentMaxLength, MinimumLength = ContentMinLength)]
