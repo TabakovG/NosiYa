@@ -9,8 +9,8 @@
 <partial name="_ImageEditPartial" model="@Model.Images" />
 <partial name="_OutfitSetFormPartial" model="@Model" />
 
-<a asp-controller="OutfitPart" asp-action="Add" asp-route-id="@Url.ActionContext.RouteData.Values["id"]"
-   class="btn btn-warning">Добави елемент</a>
+<a asp-area="Admin" asp-controller="OutfitPart" asp-action="Add" asp-route-id="@Url.ActionContext.RouteData.Values["id"]"
+   class="btn btn-success">Добави елемент</a>
 
 @section Scripts
 {

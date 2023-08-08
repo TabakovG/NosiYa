@@ -16,7 +16,6 @@
             this.OutfitParts = new HashSet<OutfitPartFormModel>();
             this.Regions = new HashSet<PossibleRegionsFormModel>();
             this.IsActive = true;
-            this.IsAvailable = false;
         }
 
         [Required]
@@ -37,8 +36,6 @@
 
         [Range(RenterTypeMinValue,RenterTypeMaxValue)]
         public RenterType RenterType { get; set; }
-
-        public bool IsAvailable { get; set; }
 
         public bool IsActive { get; set; }
 

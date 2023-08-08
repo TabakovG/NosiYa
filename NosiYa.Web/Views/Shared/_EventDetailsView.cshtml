@@ -24,9 +24,9 @@
 					@*if (this.User.GetId() == Model.OwnerId.ToString()) //TODO owner or admin
 				{
 				}*@
-					<a class="btn btn-warning" asp-controller="Event" asp-action="Edit"
+					<a class="btn btn-warning" asp-area="" asp-controller="Event" asp-action="Edit"
 				   asp-route-id="@Model.Id">Edit</a>
-					<a class="ml-2 btn btn-danger" asp-controller="Event" asp-action="Delete"
+					<a class="ml-2 btn btn-danger" asp-area="" asp-controller="Event" asp-action="Delete"
 				   asp-route-id="@Model.Id">Delete</a>
 
 				}

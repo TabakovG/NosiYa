@@ -7,13 +7,13 @@
 			<h4>@Model.Name</h4>
 			<h5>@Model.EventStartDate - @Model.EventEndDate</h5>
 			<br />
-			<a asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id"
+			<a asp-area="" asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id"
 	  class="btn btn-success">Детайли</a>
 			@if (this.User.Identity?.IsAuthenticated ?? false)
 			{
-				<a asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id"
+				<a asp-area="" asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id"
 		  class="btn btn-warning">Промени</a>
-				<a asp-controller="Event" asp-action="Delete" asp-route-id="@Model.Id"
+				<a asp-area="" asp-controller="Event" asp-action="Delete" asp-route-id="@Model.Id"
 		  class="btn btn-danger">Изтрий</a>
 				<p></p>
 			}

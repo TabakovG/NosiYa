@@ -17,7 +17,7 @@
 		@if (this.User.Identity?.IsAuthenticated ?? false)
 		{
 
-			<a class="btn btn-warning" asp-controller="Comment" asp-action="Edit"
+			<a class="btn btn-warning" asp-area="" asp-controller="Comment" asp-action="Edit"
 		   asp-route-id="@Model.Id">Edit</a>
 
 			@* Display Edit Comment link *@
@@ -30,7 +30,7 @@
 			}
 			@if (this.User.IsInRole(AdminRoleName) || this.User.GetId() == Model.OwnerId)
 			{
-				<form method="post" asp-action="Delete" asp-controller="Comment" asp-route-eventId="@ViewContext.RouteData.Values["id"]" asp-route-id="@Model.Id" class="delete-item-form">
+				<form method="post" asp-area="" asp-action="Delete" asp-controller="Comment" asp-route-eventId="@ViewContext.RouteData.Values["id"]" asp-route-id="@Model.Id" class="delete-item-form">
 					<input type="submit" value="Изтрии" class="btn btn-danger btn-delete" />
 				</form>
 			}

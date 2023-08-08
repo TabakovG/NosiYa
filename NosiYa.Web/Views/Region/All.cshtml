@@ -26,7 +26,7 @@
 	</div>
 </form>
 
-<a class="btn btn-warning" asp-controller="Region" asp-action="Add">Добави</a>
+<a class="btn btn-warning" asp-area="Admin" asp-controller="Region" asp-action="Add">Добави</a>
 
 @{
 	int previousPage = Model.CurrentPage - 1;
@@ -44,6 +44,7 @@
 		<a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
 		   asp-controller="Region"
 		   asp-action="All"
+		   asp-area=""
 		   asp-route-regionsperpage="@Model.RegionsPerPage"
 		   asp-route-currentPage="@previousPage"><<</a>
 	</div>
@@ -58,6 +59,7 @@
            @(shouldNextPageBeDisabled ? "disabled" : string.Empty)"
 		   asp-controller="Region"
 		   asp-action="All"
+		   asp-area=""
 		   asp-route-regionsperpage="@Model.RegionsPerPage"
 		   asp-route-currentPage="@(Model.CurrentPage + 1)">>></a>
 	</div>

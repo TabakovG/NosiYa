@@ -33,7 +33,6 @@
 				PricePerDay = formModel.PricePerDay, //TODO decimal parse ?
 				Color = formModel.Color,
 				RenterType = formModel.RenterType,
-				IsAvailable = formModel.IsAvailable,
 				IsActive = formModel.IsActive,
 				Size = formModel.Size,
 				/*
@@ -49,11 +48,11 @@
 
 		//Read:  --------------//---------------
 
-		public async Task<AllOutfitsFilteredAndPagedServiceModel> AllFilteredOutfitSetsByAvailabilityAsync(AllOutfitsQueryModel queryModel, bool AreAvailable)
+		public async Task<AllOutfitsFilteredAndPagedServiceModel> AllFilteredOutfitSetsByAvailabilityAsync(AllOutfitsQueryModel queryModel, bool areAvailable)
 		{
 			IQueryable<OutfitSet> outfitQuery = this.context
 				.OutfitSets
-				.Where(o => o.IsAvailable == AreAvailable && o.IsActive)
+				.Where(o => o.IsAvailable == areAvailable && o.IsActive)
 				.AsQueryable();
 
 			if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
@@ -180,6 +179,22 @@
 			};
 		}
 
+		public async Task<bool> HasPartsByIdAsync(int id)
+		{
+			return await this.context
+				.OutfitSets
+				.Where(o => o.Id == id && o.IsActive)
+				.AnyAsync(o => o.OutfitParts.Any());
+		}
+
+		public async Task<bool> HasFutureReservationsAsync(int id)
+		{
+			return await this.context
+				.OutfitRenterDates
+				.Where(o => o.OutfitId == id && o.IsActive)
+				.AnyAsync(o => o.DateRangeStart >= DateTime.UtcNow || o.DateRangeEnd >= DateTime.UtcNow);
+		}
+
 		public async Task<OutfitSetDetailsViewModel> GetDetailsByIdAsync(int id)
 		{
 			var outfitSet = await this.context
@@ -187,7 +202,7 @@
 				.AsNoTracking()
 				.Include(r => r.Region)
 				.Include(i => i.Images)
-				.FirstAsync(o => o.Id == id); //TODO only admin to be able to see non active
+				.FirstAsync(o => o.Id == id && o.IsActive);
 
 			var outfitModel = new OutfitSetDetailsViewModel
 			{
@@ -212,7 +227,7 @@
 			var outfitSet = await this.context
 				.OutfitSets
 				.Include(r => r.Region)
-				.FirstAsync(o => o.Id == id);
+				.FirstAsync(o => o.Id == id && o.IsActive);
 
 			var editModel = new OutfitSetFormModel
 			{
@@ -222,7 +237,6 @@
 				PricePerDay = outfitSet.PricePerDay,
 				Color = outfitSet.Color,
 				RenterType = outfitSet.RenterType,
-				IsAvailable = outfitSet.IsAvailable,
 				Size = outfitSet.Size,
 			};
 
@@ -233,7 +247,8 @@
 		{
 			var outfit = await this.context
 				.OutfitSets
-				.FindAsync(outfitId);
+				.Where(o => o.IsActive && o.Id==outfitId)
+				.FirstAsync();
 
 			outfit!.Name = model.Name;
 			outfit.Description = model.Description;
@@ -241,8 +256,31 @@
 			outfit.PricePerDay = model.PricePerDay;
 			outfit.Color = model.Color;
 			outfit.RenterType = model.RenterType;
-			outfit.IsAvailable = model.IsAvailable;
 			outfit.Size = model.Size;
+
+			await this.context.SaveChangesAsync();
+		}
+
+		public async Task ActivateByIdAsync(int id)
+		{
+			var outfit = await this.context
+				.OutfitSets
+				.Where(o => o.Id == id && o.IsActive)
+				.FirstAsync();
+
+			outfit.IsAvailable = true;
+
+			await this.context.SaveChangesAsync();
+		}
+
+		public async Task DeactivateByIdAsync(int id)
+		{
+			var outfit = await this.context
+				.OutfitSets
+				.Where(o => o.Id == id && o.IsActive)
+				.FirstAsync();
+
+			outfit.IsAvailable = false;
 
 			await this.context.SaveChangesAsync();
 		}

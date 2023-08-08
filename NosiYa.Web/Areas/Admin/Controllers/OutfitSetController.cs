@@ -121,7 +121,7 @@
 			{
 				this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
 
-				return this.RedirectToAction("All", "OutfitSet");
+				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
 			}
 
 			try
@@ -158,7 +158,7 @@
 			{
 				this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
 
-				return this.RedirectToAction("All", "OutfitSet");
+				return this.RedirectToAction("All", "OutfitSet",new { Area = "" });
 			}
 
 			try
@@ -201,7 +201,7 @@
 			{
 				this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
 
-				return this.RedirectToAction("All", "OutfitSet");
+				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
 			}
 
 			try
@@ -226,7 +226,7 @@
 			{
 				this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
 
-				return this.RedirectToAction("All", "OutfitSet");
+				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
 			}
 
 			try
@@ -237,7 +237,71 @@
 				//TODO delete pictures async
 
 				this.TempData[WarningMessage] = "Носията беше изтрита успешно!";
-				return this.RedirectToAction("All", "OutfitSet");
+				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Activate(int id)
+		{
+			try
+			{
+				bool outfitSetExists = await this.outfitService
+					.ExistByIdAsync(id);
+				if (!outfitSetExists)
+				{
+					this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "OutfitSet", new {Area = ""});
+				}
+
+				var containsParts =  await this.outfitService.HasPartsByIdAsync(id);
+				if (!containsParts)
+				{
+					this.TempData[ErrorMessage] = "Носия без съставни части не може да бъде активирана!";
+
+					return this.RedirectToAction("AllUnavailable", "OutfitSet", new { Area = "" });
+				}
+				await this.outfitService.ActivateByIdAsync(id);
+
+				this.TempData[SuccessMessage] = "Носията беше активирана успешно!";
+				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Deactivate(int id)
+		{
+			try
+			{
+				bool outfitSetExists = await this.outfitService
+					.ExistByIdAsync(id);
+				if (!outfitSetExists)
+				{
+					this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+				}
+
+				var hasReservations = await this.outfitService.HasFutureReservationsAsync(id);
+				if (hasReservations)
+				{
+					this.TempData[ErrorMessage] = "Носията може да бъде деактивирана след като бъдат премахнати всички активни резервации!";
+
+					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+				}
+				await this.outfitService.DeactivateByIdAsync(id);
+
+				this.TempData[SuccessMessage] = "Носията беше деактивирана успешно!";
+				return this.RedirectToAction("AllUnavailable", "OutfitSet", new { Area = "" });
 			}
 			catch (Exception)
 			{
