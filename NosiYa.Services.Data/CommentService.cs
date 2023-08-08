@@ -2,7 +2,6 @@
 using NosiYa.Data;
 using NosiYa.Data.Models;
 using NosiYa.Services.Data.Interfaces;
-using NosiYa.Web.ViewModels;
 using NosiYa.Web.ViewModels.Comment;
 
 namespace NosiYa.Services.Data
@@ -39,7 +38,7 @@ namespace NosiYa.Services.Data
 				.Include(o => o.Owner)
 				.Where(c => c.IsActive && c.EventId == eventId)
 				.Where(c => c.IsApproved || c.OwnerId.ToString() == userId)
-				.OrderBy(c => c.CreatedOn)
+				.OrderByDescending(c => c.CreatedOn)
 				.Select(c => new CommentViewModel
 				{
 					Id = c.Id,
@@ -60,7 +59,7 @@ namespace NosiYa.Services.Data
 				.AsNoTracking()
 				.Include(o => o.Owner)
 				.Where(c => c.IsActive && c.EventId == eventId)
-				.OrderBy(c => c.CreatedOn)
+				.OrderByDescending(c => c.CreatedOn)
 				.Select(c => new CommentViewModel
 				{
 					Id = c.Id,
