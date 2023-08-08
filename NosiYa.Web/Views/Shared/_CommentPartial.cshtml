@@ -31,7 +31,7 @@
 			@if (this.User.IsInRole(AdminRoleName) || this.User.GetId() == Model.OwnerId)
 			{
 				<form method="post" asp-action="Delete" asp-controller="Comment" asp-route-eventId="@ViewContext.RouteData.Values["id"]" asp-route-id="@Model.Id" class="delete-item-form">
-					<input type="submit" value="Изтрии" class="btn btn-danger " />
+					<input type="submit" value="Изтрии" class="btn btn-danger btn-delete" />
 				</form>
 			}
 		}

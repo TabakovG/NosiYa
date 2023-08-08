@@ -4,7 +4,7 @@
 	deleteButtons.forEach(function (form) {
         form.addEventListener('submit', function (event) {
 
-            var confirmationValue = prompt("To confirm deletion, type 'delete':");
+            var confirmationValue = prompt("За да потвърдите изтриването, напишете 'delete':");
 
             if (confirmationValue !== 'delete') {
                 event.preventDefault();
