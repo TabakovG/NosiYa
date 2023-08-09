@@ -27,7 +27,6 @@ namespace NosiYa.Web
             builder.Services.AddDbContext<NosiYaDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            //builder.Services.AddDatabaseDeveloperPageExceptionFilter();  TODO da se mahne
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
                     {
@@ -64,7 +63,7 @@ namespace NosiYa.Web
 			builder.Services.AddResponseCaching();
 
 
-			builder.Services.AddControllersWithViews()
+			builder.Services.AddControllersWithViews() //CORS included with default conf
                 .AddMvcOptions(options =>
                 {
                     //Should be inserted at the beginning, otherwise the default provider will handle the binding.

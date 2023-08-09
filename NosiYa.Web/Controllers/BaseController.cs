@@ -5,7 +5,9 @@
     using static Common.SeedingConstants;   
 
 	[Authorize(Roles = $"{UserRoleName}, {AdminRoleName}")]
-    public class BaseController : Controller
+	[AutoValidateAntiforgeryToken]
+
+	public class BaseController : Controller
     {
 
     }

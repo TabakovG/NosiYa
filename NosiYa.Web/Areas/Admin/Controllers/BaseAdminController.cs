@@ -8,6 +8,8 @@ namespace NosiYa.Web.Areas.Admin.Controllers
 
 	[Area("Admin")]
 	[Authorize(Roles = AdminRoleName)]
+	[AutoValidateAntiforgeryToken]
+
 	public class BaseAdminController : Controller
 	{
 		

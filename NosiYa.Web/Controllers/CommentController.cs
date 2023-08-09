@@ -1,15 +1,12 @@
 ﻿namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.AspNetCore.Authorization;
 
 	using NosiYa.Services.Data.Interfaces;
 	using Infrastructure.Extensions;
 	using ViewModels.Comment;
 	using static Common.NotificationMessagesConstants;
-	using static Common.SeedingConstants;
 
-	[Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
 	public class CommentController : BaseController
 	{
 		private readonly ICommentService commentService;
@@ -31,7 +28,13 @@
 			{
 
 				var userId = Guid.Parse(this.User!.GetId()!);
-				await this.commentService.CreateCommentAsync(model, userId);
+				var commentId = await this.commentService.CreateCommentAndReturnIdAsync(model, userId);
+
+				if (this.User.IsAdmin())
+				{
+					await this.commentService.ApproveByIdAsync(commentId);
+				}
+				this.TempData[SuccessMessage] = "Коментара е добавен успешно и скоро ще бъде видим!";
 
 				return this.RedirectToAction("Details", "Event", new { Id = model.EventId });
 

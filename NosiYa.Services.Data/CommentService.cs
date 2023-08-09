@@ -1,12 +1,14 @@
-﻿using System.Net;
-using Microsoft.EntityFrameworkCore;
-using NosiYa.Data;
-using NosiYa.Data.Models;
-using NosiYa.Services.Data.Interfaces;
-using NosiYa.Web.ViewModels.Comment;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
+	using System.Net;
+
+	using Microsoft.EntityFrameworkCore;
+
+	using NosiYa.Data;
+	using NosiYa.Data.Models;
+	using Interfaces;
+	using Web.ViewModels.Comment;
+
 	public class CommentService : ICommentService
 	{
 		private readonly NosiYaDbContext context;
@@ -16,7 +18,7 @@ namespace NosiYa.Services.Data
 			this.context = _context;
 		}
 
-		public async Task CreateCommentAsync(CommentFormModel model, Guid userId)
+		public async Task<int> CreateCommentAndReturnIdAsync(CommentFormModel model, Guid userId)
 		{
 			var comment = new Comment
 			{
@@ -29,6 +31,8 @@ namespace NosiYa.Services.Data
 
 			await context.Comments.AddAsync(comment);
 			await context.SaveChangesAsync();
+
+			return comment.Id;
 		}
 
 		public async Task<IEnumerable<CommentViewModel>> GetVisibleCommentsByEventAndUserIdAsync(int eventId, string userId)

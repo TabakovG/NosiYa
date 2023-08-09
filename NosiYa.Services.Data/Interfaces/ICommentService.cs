@@ -6,7 +6,7 @@
 	public interface ICommentService
 	{
 		//Create:
-		Task CreateCommentAsync(CommentFormModel model, Guid userId);
+		Task<int> CreateCommentAndReturnIdAsync(CommentFormModel model, Guid userId);
 
 		//Read:
 		Task<IEnumerable<CommentViewModel>> GetVisibleCommentsByEventAndUserIdAsync(int eventId, string userId);
