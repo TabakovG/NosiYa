@@ -1,18 +1,13 @@
-﻿using NosiYa.Data.Models;
-using NosiYa.Services.Data.Models;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
 	using Microsoft.EntityFrameworkCore;
 
+    using Models;
 	using NosiYa.Data;
+    using NosiYa.Data.Models;
 	using Interfaces;
 	using Web.ViewModels.User;
-	using NosiYa.Data.Models.Enums;
-	using NosiYa.Data.Models.Outfit;
-	using NosiYa.Web.ViewModels.OutfitSet.Enums;
-	using NosiYa.Web.ViewModels.OutfitSet;
-	using NosiYa.Web.ViewModels.User.Enums;
+    using Web.ViewModels.User.Enums;
 
 	public class UserService : IUserService
 	{

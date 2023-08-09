@@ -11,6 +11,7 @@
 	using Web.ViewModels.OutfitSet;
 	using Web.ViewModels.OutfitSet.Enums;
 	using static Common.ApplicationConstants;
+    using System.Net;
 
 	public class OutfitSetService : IOutfitSetService
 	{
@@ -27,18 +28,15 @@
 		{
 			OutfitSet outfit = new OutfitSet
 			{
-				Name = formModel.Name,
-				Description = formModel.Description,
+				Name = WebUtility.HtmlEncode(formModel.Name),
+				Description = WebUtility.HtmlEncode(formModel.Description),
 				RegionId = formModel.RegionId,
-				PricePerDay = formModel.PricePerDay, //TODO decimal parse ?
-				Color = formModel.Color,
+				PricePerDay = formModel.PricePerDay,
+				Color = WebUtility.HtmlEncode(formModel.Color),
 				RenterType = formModel.RenterType,
 				IsActive = formModel.IsActive,
-				Size = formModel.Size,
-				/*
-                Images = formModel.Images, //TODO foreach fm create and add image
-                OutfitParts = formModel.OutfitParts, //TODO foreach fm create and add part*/
-			};
+				Size = WebUtility.HtmlEncode(formModel.Size),
+            };
 
 			await this.context.OutfitSets.AddAsync(outfit);
 			await this.context.SaveChangesAsync();
@@ -250,13 +248,13 @@
 				.Where(o => o.IsActive && o.Id==outfitId)
 				.FirstAsync();
 
-			outfit!.Name = model.Name;
-			outfit.Description = model.Description;
+			outfit!.Name = WebUtility.HtmlEncode(model.Name);
+			outfit.Description = WebUtility.HtmlEncode(model.Description);
 			outfit.RegionId = model.RegionId;
 			outfit.PricePerDay = model.PricePerDay;
-			outfit.Color = model.Color;
+			outfit.Color = WebUtility.HtmlEncode(model.Color);
 			outfit.RenterType = model.RenterType;
-			outfit.Size = model.Size;
+			outfit.Size = WebUtility.HtmlEncode(model.Size);
 
 			await this.context.SaveChangesAsync();
 		}

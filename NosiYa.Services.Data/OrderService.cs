@@ -1,6 +1,4 @@
-﻿using NosiYa.Web.ViewModels;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
 	using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +8,6 @@ namespace NosiYa.Services.Data
 	using Web.ViewModels.Cart;
 	using Web.ViewModels.Order;
 	using static Common.ApplicationConstants;
-	using NosiYa.Data.Migrations;
 
 	public class OrderService : IOrderService
 	{

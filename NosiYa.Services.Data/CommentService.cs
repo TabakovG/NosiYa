@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
 using NosiYa.Data;
 using NosiYa.Data.Models;
 using NosiYa.Services.Data.Interfaces;
@@ -19,8 +20,8 @@ namespace NosiYa.Services.Data
 		{
 			var comment = new Comment
 			{
-				Content = model.Content,
-				ModifiedContent = model.Content,
+				Content = WebUtility.HtmlEncode(model.Content),
+				ModifiedContent = WebUtility.HtmlEncode(model.Content),
 				OwnerId = userId,
 				EventId = model.EventId,
 				IsActive = true
@@ -131,7 +132,7 @@ namespace NosiYa.Services.Data
 				.Where(c => c.IsActive && c.Id == model.Id)
 				.FirstAsync();
 
-			comment.ModifiedContent = model.ModifiedContent;
+			comment.ModifiedContent = WebUtility.HtmlEncode(model.ModifiedContent);
 
 			await this.context.SaveChangesAsync();
 		}
@@ -144,7 +145,7 @@ namespace NosiYa.Services.Data
 				.FirstAsync();
 
 			comment.IsApproved = true;
-			comment.Content = comment.ModifiedContent ?? comment.Content;
+			comment.Content = WebUtility.HtmlEncode(comment.ModifiedContent ?? comment.Content);
 			comment.ModifiedContent = null;
 
 			await this.context.SaveChangesAsync();

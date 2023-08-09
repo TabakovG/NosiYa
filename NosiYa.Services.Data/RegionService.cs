@@ -7,6 +7,7 @@
 	using Models;
     using Interfaces;
     using Web.ViewModels.Region;
+    using System.Net;
 
     public class RegionService : IRegionService
     {
@@ -21,8 +22,8 @@
         {
 	        var region = new Region
 	        {
-		        Name = model.Name,
-		        Description = model.Description,
+		        Name = WebUtility.HtmlEncode(model.Name),
+		        Description = WebUtility.HtmlEncode(model.Description),
 	        };
 
 	        await this.context.Regions.AddAsync(region);
@@ -139,8 +140,8 @@
 				.Regions
 				.FirstAsync(r => r.IsActive && r.Id == id);
 
-			region.Name = model.Name;
-			region.Description = model.Description;
+			region.Name = WebUtility.HtmlEncode(model.Name);
+			region.Description = WebUtility.HtmlEncode(model.Description);
 
 			await this.context.SaveChangesAsync();
 		}

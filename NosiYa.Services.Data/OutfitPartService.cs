@@ -1,6 +1,4 @@
-﻿using NosiYa.Data.Models.Enums;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
 	using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +6,7 @@ namespace NosiYa.Services.Data
     using NosiYa.Data;
     using Interfaces;
     using Web.ViewModels.OutfitPart;
+    using System.Net;
 
     public class OutfitPartService : IOutfitPartService
     {
@@ -24,15 +23,14 @@ namespace NosiYa.Services.Data
         {
             OutfitPart part = new OutfitPart
             {
-                Name = formModel.Name,
-                Description = formModel.Description,
-                Color = formModel.Color,
+                Name = WebUtility.HtmlEncode(formModel.Name),
+                Description = WebUtility.HtmlEncode(formModel.Description),
+                Color = WebUtility.HtmlEncode(formModel.Color),
                 RenterType = formModel.RenterType,
                 OutfitPartType = formModel.OutfitPartType,
                 OutfitSetId = formModel.OutfitSetId,
                 OwnerId = formModel.OwnerId,
-                Size = formModel.Size,
-                //Images = null TODO fill the images via the image service
+                Size = WebUtility.HtmlEncode(formModel.Size),
             };
 
                 await this.context.OutfitParts.AddAsync(part);
@@ -130,13 +128,13 @@ namespace NosiYa.Services.Data
 				.OutfitParts
 				.FirstAsync(p => p.IsActive && p.Id == id);
 
-			outfitPart.Name = model.Name;
-			outfitPart.Description = model.Description;
-			outfitPart.Color = model.Color;
+			outfitPart.Name = WebUtility.HtmlEncode(model.Name);
+			outfitPart.Description = WebUtility.HtmlEncode(model.Description);
+			outfitPart.Color = WebUtility.HtmlEncode(model.Color);
 			outfitPart.RenterType = model.RenterType;
 			outfitPart.OutfitPartType = model.OutfitPartType;
 			outfitPart.OwnerId = model.OwnerId;
-			outfitPart.Size = model.Size;
+			outfitPart.Size = WebUtility.HtmlEncode(model.Size);
 			outfitPart.OutfitSetId = model.OutfitSetId;
 
 			await this.context.SaveChangesAsync();

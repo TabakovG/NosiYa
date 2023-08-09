@@ -1,7 +1,4 @@
-﻿using SixLabors.ImageSharp.Formats;
-using SixLabors.ImageSharp.Formats.Jpeg;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
     using System.IO;
 
@@ -12,12 +9,13 @@ namespace NosiYa.Services.Data
 	using Common;
 	using NosiYa.Data;
 	using NosiYa.Data.Models;
-	using static Common.EntityValidationConstants.Image;
 
     //using SixLabors.ImageSharp;
     using SixLabors.ImageSharp.Processing;
+    using SixLabors.ImageSharp.Formats;
     using SixLabors.ImageSharp.Formats.Jpeg;
     using System;
+    using System.Net;
 
     public class ImageService : IImageService
 	{
@@ -32,7 +30,7 @@ namespace NosiYa.Services.Data
 		{
 			var image = new Image
 			{
-				Url = model.Url,
+				Url = WebUtility.HtmlEncode(model.Url),
 				OutfitSetId = model.OutfitSetId,
 				IsDefault = model.IsDefault,
 				OutfitPartId = model.OutfitPartId,

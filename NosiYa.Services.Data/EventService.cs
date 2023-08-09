@@ -9,6 +9,7 @@ namespace NosiYa.Services.Data
 	using Interfaces;
 	using Models;
 	using Web.ViewModels.Event;
+    using System.Net;
 
     public class EventService : IEventService
     {
@@ -25,9 +26,9 @@ namespace NosiYa.Services.Data
         {
 	        var newEvent = new Event
 	        {
-		        Name = model.Name,
-		        Description = model.Description,
-		        Location = model.Location,
+		        Name = WebUtility.HtmlEncode(model.Name),
+		        Description = WebUtility.HtmlEncode(model.Description),
+		        Location = WebUtility.HtmlEncode(model.Location),
 		        OwnerId = userId,
 		        EventStartDate = model.EventStartDate,
 		        EventEndDate = model.EventEndDate,
@@ -214,9 +215,9 @@ namespace NosiYa.Services.Data
 		        .Where(e => e.Id == id)
 		        .FirstAsync();
 
-	        evnt.Name = model.Name;
-            evnt.Description = model.Description;
-            evnt.Location = model.Location;
+	        evnt.Name = WebUtility.HtmlEncode(model.Name);
+            evnt.Description = WebUtility.HtmlEncode(model.Description);
+            evnt.Location = WebUtility.HtmlEncode(model.Location);
             evnt.EventStartDate = model.EventStartDate;
             evnt.EventEndDate = model.EventEndDate;
             evnt.IsApproved = false;
