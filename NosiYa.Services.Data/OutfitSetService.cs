@@ -191,7 +191,7 @@
 			return await this.context
 				.OutfitSets
 				.Where(o => o.Id == id && o.IsActive)
-				.AnyAsync(o => o.OutfitParts.Any());
+				.AnyAsync(o => o.OutfitParts.Any(p=>p.IsActive));
 		}
 
 		public async Task<bool> HasFutureReservationsAsync(int id)

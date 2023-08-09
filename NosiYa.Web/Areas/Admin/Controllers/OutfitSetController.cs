@@ -14,7 +14,7 @@
 		private readonly IRegionService regionService;
 		private readonly IImageService imageService;
 		private readonly IWebHostEnvironment webHostEnvironment;
-		private readonly IOutfitPartService partService;
+
 
 
 		public OutfitSetController(
@@ -22,13 +22,13 @@
 			IRegionService regionService,
 			IImageService imageService,
 			IWebHostEnvironment webHostEnvironment,
-			IOutfitPartService partService)
+			IOutfitPartService partService,
+			IWebHostEnvironment hostingEnvironment)
 		{
 			this.outfitService = outfitService;
 			this.regionService = regionService;
 			this.imageService = imageService;
 			this.webHostEnvironment = webHostEnvironment;
-			this.partService = partService;
 		}
 
 
@@ -69,7 +69,6 @@
 					return this.View(model);
 				}
 
-
 				int outfitSetId =
 					await this.outfitService.CreateOutfitSetAndReturnIdAsync(model);
 
@@ -84,7 +83,6 @@
 
 					// Invoke AddImagesOnEntityCreate Action 
 					await imageController.AddImagesOnEntityCreateAsync(outfitSetId, entityType, elementImages);
-
 				}
 
 				this.TempData[SuccessMessage] = "Носията е създадена успешно!";
@@ -222,10 +220,16 @@
 
 			try
 			{
-				await this.outfitService.DeleteByIdAsync(id);
-				await this.partService.DeleteByOutfitSetIdAsync(id);
+				bool hasActiveParts = await this.outfitService.HasPartsByIdAsync(id);
+				if (hasActiveParts)
+				{
+					this.TempData[ErrorMessage] = "За да можете да изтриете носията, моля първо премахнете всички нейни части!";
 
-				//TODO delete pictures async
+					return this.RedirectToAction("Details", "OutfitSet", new {id, Area = "" });
+				}
+
+				await this.imageService.DeleteRelatedImagesByParentIdAsync(id, EntityTypesConst.OutfitSet, this.webHostEnvironment.WebRootPath);
+				await this.outfitService.DeleteByIdAsync(id);
 
 				this.TempData[WarningMessage] = "Носията беше изтрита успешно!";
 				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });

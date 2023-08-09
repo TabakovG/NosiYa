@@ -20,7 +20,7 @@ namespace NosiYa.Services.Data.Interfaces
 
 		//Delete:
 		Task DeleteImageByIdAsync(int id, string root);
-
+		Task DeleteRelatedImagesByParentIdAsync(int id, string entityType, string root);
 
 	}
 }

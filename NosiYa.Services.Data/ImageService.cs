@@ -1,6 +1,6 @@
 ﻿namespace NosiYa.Services.Data
 {
-    using System.IO;
+	using System.IO;
 
 	using Microsoft.EntityFrameworkCore;
 
@@ -10,14 +10,14 @@
 	using NosiYa.Data;
 	using NosiYa.Data.Models;
 
-    //using SixLabors.ImageSharp;
-    using SixLabors.ImageSharp.Processing;
-    using SixLabors.ImageSharp.Formats;
-    using SixLabors.ImageSharp.Formats.Jpeg;
-    using System;
-    using System.Net;
+	//using SixLabors.ImageSharp;
+	using SixLabors.ImageSharp.Processing;
+	using SixLabors.ImageSharp.Formats;
+	using SixLabors.ImageSharp.Formats.Jpeg;
+	using System;
+	using System.Net;
 
-    public class ImageService : IImageService
+	public class ImageService : IImageService
 	{
 		private readonly NosiYaDbContext context;
 
@@ -44,7 +44,7 @@
 			return image.Id;
 		}
 
-        public async Task<ICollection<ImageViewModel>> GetRelatedImagesAsync(int relatedEntityId, string entity)
+		public async Task<ICollection<ImageViewModel>> GetRelatedImagesAsync(int relatedEntityId, string entity)
 		{
 			ICollection<Image> images = new HashSet<Image>();
 			switch (entity)
@@ -64,10 +64,10 @@
 			}
 
 			return images.Select(i => new ImageViewModel()
-				{
-					Id = i.Id,
-					ImageUrl = i.Url
-				})
+			{
+				Id = i.Id,
+				ImageUrl = i.Url
+			})
 				.ToList();
 		}
 
@@ -78,7 +78,7 @@
 			switch (entity.ToLower())
 			{
 				case EntityTypesConst.Event:
-					result = await this.context.Images.Where(i => i.EventId == relatedEntityId).AnyAsync(i=>i.IsDefault);
+					result = await this.context.Images.Where(i => i.EventId == relatedEntityId).AnyAsync(i => i.IsDefault);
 					break;
 				case EntityTypesConst.OutfitSet:
 					result = await this.context.Images.Where(i => i.OutfitSetId == relatedEntityId).AnyAsync(i => i.IsDefault);
@@ -105,7 +105,7 @@
 		public async Task SetDefaultImageAsync(int relatedEntityId, string entity, int? imageId = null)
 		{
 			ICollection<Image> images = new HashSet<Image>();
-			
+
 			switch (entity.ToLower())
 			{
 				case EntityTypesConst.Event:
@@ -131,7 +131,7 @@
 			await this.context.SaveChangesAsync();
 		}
 
-		public async Task DeleteImageByIdAsync(int id, string root) 
+		public async Task DeleteImageByIdAsync(int id, string root)
 		{
 			var image = await this.context
 				.Images
@@ -140,14 +140,47 @@
 
 			this.context.Images.Remove(image);
 
-			if (File.Exists(root+image.Url))
+			if (File.Exists(root + image.Url))
 			{
 				File.Delete(root + image.Url);
 			}
 
-			await this.context.SaveChangesAsync();	
+			await this.context.SaveChangesAsync();
 		}
 
+		public async Task DeleteRelatedImagesByParentIdAsync(int relatedEntityId, string entity, string root)
+		{
+			var images = this.context
+				.Images
+				.AsNoTracking()
+				.AsQueryable();
 
+			switch (entity)
+			{
+				case EntityTypesConst.Event:
+					images = images.Where(i => i.EventId == relatedEntityId);
+					break;
+				case EntityTypesConst.Region:
+					images = images.Where(i => i.RegionId == relatedEntityId);
+					break;
+				case EntityTypesConst.OutfitPart:
+					images = images.Where(i => i.OutfitPartId == relatedEntityId);
+					break;
+				case EntityTypesConst.OutfitSet:
+					images = images.Where(i => i.OutfitSetId == relatedEntityId);
+					break;
+			}
+
+			foreach (var image in images)
+			{
+				if (File.Exists(root + image.Url))
+				{
+					File.Delete(root + image.Url);
+				}
+			}
+			this.context.Images.RemoveRange(await images.ToArrayAsync());
+
+			await this.context.SaveChangesAsync();
+		}
 	}
 }
