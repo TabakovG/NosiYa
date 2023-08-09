@@ -7,7 +7,14 @@
 <hr/>
 
 <partial name="_ImageEditPartial" model="@Model.Images" />
-<partial name="_OutfitSetFormPartial" model="@Model" />
+
+<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+		<form enctype="multipart/form-data" method="post" asp-area="Admin" asp-action="Edit" asp-controller="OutfitSet">
+			<partial name="_OutfitSetFormPartial" model="@Model" />
+		</form>
+	</div>
+</div>
 
 <a asp-area="Admin" asp-controller="OutfitPart" asp-action="Add" asp-route-id="@Url.ActionContext.RouteData.Values["id"]"
    class="btn btn-success">Добави елемент</a>

@@ -35,7 +35,8 @@
 				Color = WebUtility.HtmlEncode(formModel.Color),
 				RenterType = formModel.RenterType,
 				IsActive = formModel.IsActive,
-				Size = WebUtility.HtmlEncode(formModel.Size),
+				IsAvailable = false,
+				Size = WebUtility.HtmlEncode(formModel.Size)
             };
 
 			await this.context.OutfitSets.AddAsync(outfit);
@@ -126,12 +127,20 @@
 
 		}
 
-		public async Task<IEnumerable<OutfitSetForOptionsViewModel>> GetAllOutfitSetsForOptionsAsync()
+		public async Task<IEnumerable<OutfitSetForOptionsViewModel>> GetOutfitSetsAsOptionsAsync(int? id = null)
 		{
-			return await this.context
+			var query = this.context
 				.OutfitSets
 				.AsNoTracking()
-				.Where(o => o.IsActive && o.IsAvailable)
+				.Where(o => o.IsActive)
+				.AsQueryable();
+
+			if (id != null)
+			{
+				query = query.Where(o => o.Id == id);
+			}
+
+			return await query
 				.Select(o => new OutfitSetForOptionsViewModel()
 				{
 					Id = o.Id,

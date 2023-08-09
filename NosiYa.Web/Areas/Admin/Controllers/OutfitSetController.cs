@@ -178,7 +178,7 @@
 				}
 
 				this.TempData[SuccessMessage] = "Промените са запазени успешно!";
-				return this.RedirectToAction("Details", "OutfitSet", new { id });
+				return this.RedirectToAction("Details", "OutfitSet", new { id = id, Area = "" });
 			}
 			catch (Exception)
 			{

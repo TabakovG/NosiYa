@@ -5,10 +5,15 @@
 
 <h2 class="text-center">@ViewData["Title"]</h2>
 <hr />
-<partial name="_OutfitSetFormPartial" model="@Model" />
-
+<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+		<form enctype="multipart/form-data" method="post" asp-area="Admin" asp-action="Create" asp-controller="OutfitSet">
+			<partial name="_OutfitSetFormPartial" model="@Model" />
+		</form>
+	</div>
+</div>
 
 @section Scripts
-{
-	<partial name="_ValidationScriptsPartial"/>
+	{
+	<partial name="_ValidationScriptsPartial" />
 }

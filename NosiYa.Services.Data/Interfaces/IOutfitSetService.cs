@@ -11,7 +11,7 @@
 
         //Read
         Task<AllOutfitsFilteredAndPagedServiceModel> AllFilteredOutfitSetsByAvailabilityAsync(AllOutfitsQueryModel queryModel, bool areAvailable);
-        Task<IEnumerable<OutfitSetForOptionsViewModel>> GetAllOutfitSetsForOptionsAsync(); //parrent options for part
+        Task<IEnumerable<OutfitSetForOptionsViewModel>> GetOutfitSetsAsOptionsAsync(int? id = null); //set options for part
         Task<bool> ExistByIdAsync(int outfitId);
         Task<RenterType> GetRenterTypeByIdAsync(int id);
         Task<OutfitSetForRentViewModel> GetForRentByIdAsync(int id);

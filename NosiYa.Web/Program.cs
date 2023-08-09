@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace NosiYa.Web
 {
     using Microsoft.EntityFrameworkCore;
@@ -57,15 +59,17 @@ namespace NosiYa.Web
             builder.Services.AddTransient<IEmailSender, SendGridEmailSender>(
                 serviceProvider => new SendGridEmailSender(builder.Configuration["SendGridApiKey"]));
 
-			//Caching
+			//Caching //TODO use or remove
 			builder.Services.AddMemoryCache();
 			builder.Services.AddResponseCaching();
+
 
 			builder.Services.AddControllersWithViews()
                 .AddMvcOptions(options =>
                 {
                     //Should be inserted at the beginning, otherwise the default provider will handle the binding.
                     options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+                    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
                 }); ;
 
             var app = builder.Build();
