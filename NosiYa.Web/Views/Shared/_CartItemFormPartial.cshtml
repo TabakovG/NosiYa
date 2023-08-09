@@ -3,12 +3,12 @@
 <input asp-for="@Model.OutfitSetId" name="outfitSetId" class="visually-hidden " readonly />
 <div class="form-group">
 	<label asp-for="@Model.FromDate">Начална дата:</label>
-	<input asp-for="@Model.FromDate" id="fromDate" rows="4" class="form-control " readonly placeholder="FromDate..." value=""/>
+	<input asp-for="@Model.FromDate" id="fromDate" rows="4" class="form-control " readonly placeholder="FromDate..."/>
 	<span asp-validation-for="@Model.FromDate" class="small text-danger"></span>
 </div>
 <div class="form-group">
 	<label asp-for="@Model.ToDate">Крайна дата:</label>
-	<input asp-for="@Model.ToDate" id="toDate" rows="4" class="form-control " readonly placeholder="ToDate..." value=""/>
+	<input asp-for="@Model.ToDate" id="toDate" rows="4" class="form-control " readonly placeholder="ToDate..."/>
 	<span asp-validation-for="@Model.ToDate" class="small text-danger "></span>
 </div>
 

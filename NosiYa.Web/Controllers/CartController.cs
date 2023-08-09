@@ -49,7 +49,10 @@
 					OutfitModel = await this.outfitSetService.GetForRentByIdAsync(id),
 					CardItemFormModel = new CartItemFormModel
 					{
-						OutfitSetId = id
+						OutfitSetId = id,
+						FromDate = DateTime.UtcNow,
+						ToDate = DateTime.UtcNow
+						
 					}
 				};
 

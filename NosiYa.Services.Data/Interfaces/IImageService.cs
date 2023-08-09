@@ -9,12 +9,9 @@ namespace NosiYa.Services.Data.Interfaces
 
 		Task<int> AddImageAndReturnIdAsync(ImageFormModel model, Guid userId);
 
-
-        //Read:
+		//Read:
         Task<ICollection<ImageViewModel>> GetRelatedImagesAsync(int relatedEntityId, string entity);
-
-		Task<bool> HasDefaultAsync(int relatedEntityId, string entity);
-
+        Task<bool> HasDefaultAsync(int relatedEntityId, string entity);
 		Task<bool> ImageExistByIdAsync(int id);
 
 		//Update:

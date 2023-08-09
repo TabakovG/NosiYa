@@ -64,7 +64,7 @@
 
 				}
 
-				return this.RedirectToAction("Details", "Region", new { Id = regionId });
+				return this.RedirectToAction("Details", "Region", new { Id = regionId , Area = ""});
 			}
 			catch (Exception)
 			{
@@ -84,7 +84,7 @@
 				{
 					this.TempData[ErrorMessage] = "Регион с този идентификатор не съществува!";
 
-					return this.RedirectToAction("All", "Region");
+					return this.RedirectToAction("All", "Region", new { Area = "" });
 				}
 
 				RegionFormModel formModel = await this.regionService
@@ -117,7 +117,7 @@
 				{
 					this.TempData[ErrorMessage] = "Регион с този идентификатор не съществува!";
 
-					return this.RedirectToAction("All", "Region");
+					return this.RedirectToAction("All", "Region", new { Area = "" });
 				}
 
 				await this.regionService.EditByIdAsync(id, model);
@@ -137,7 +137,7 @@
 				}
 
 				this.TempData[SuccessMessage] = "Промените са запазени успешно!";
-				return this.RedirectToAction("Details", "Region", new { Id = id });
+				return this.RedirectToAction("Details", "Region", new { Id = id, Area = "" });
 			}
 			catch (Exception)
 			{
@@ -159,7 +159,7 @@
 				{
 					this.TempData[ErrorMessage] = "Регион с този идентификатор не съществува!";
 
-					return this.RedirectToAction("All", "Region");
+					return this.RedirectToAction("All", "Region", new { Area = "" });
 				}
 
 				RegionDetailsViewModel viewModel =
@@ -184,13 +184,13 @@
 				{
 					this.TempData[ErrorMessage] = "Регион с този идентификатор не съществува!";
 
-					return this.RedirectToAction("All", "Region");
+					return this.RedirectToAction("All", "Region", new { Area = "" });
 				}
 
 				await this.regionService.DeleteByIdAsync(model.Id);
 
 				this.TempData[WarningMessage] = "Регионa беше изтрит успешно!";
-				return this.RedirectToAction("All", "Region");
+				return this.RedirectToAction("All", "Region", new { Area = "" });
 			}
 			catch (Exception)
 			{

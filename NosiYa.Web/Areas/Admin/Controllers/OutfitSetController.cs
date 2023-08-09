@@ -69,44 +69,37 @@
 					return this.View(model);
 				}
 
-				try
+
+				int outfitSetId =
+					await this.outfitService.CreateOutfitSetAndReturnIdAsync(model);
+
+				//Add images to the event
+				if (elementImages.Any())
 				{
+					// Call Add from ImageController without redirecting
+					var imageController = new ImageController(imageService, webHostEnvironment);
+					imageController.ControllerContext = ControllerContext;
 
-					int outfitSetId =
-						await this.outfitService.CreateOutfitSetAndReturnIdAsync(model);
+					string entityType = EntityTypesConst.OutfitSet;
 
-					//Add images to the event
-					if (elementImages.Any())
-					{
-						// Call Add from ImageController without redirecting
-						var imageController = new ImageController(imageService, webHostEnvironment);
-						imageController.ControllerContext = ControllerContext;
+					// Invoke AddImagesOnEntityCreate Action 
+					await imageController.AddImagesOnEntityCreateAsync(outfitSetId, entityType, elementImages);
 
-						string entityType = EntityTypesConst.OutfitSet;
-
-						// Invoke AddImagesOnEntityCreate Action 
-						await imageController.AddImagesOnEntityCreateAsync(outfitSetId, entityType, elementImages);
-
-					}
-
-					this.TempData[SuccessMessage] = "Носията е създадена успешно!";
-					this.TempData[WarningMessage] = "Моля добавете поне една част на носията, преди активация!";
-
-
-					return this.RedirectToAction("Add", "OutfitPart", new { Id = outfitSetId });
 				}
-				catch (Exception)
-				{
-					model.Regions = await this.regionService.GetAllRegionsAsync();
 
-					return this.View(model);
-				}
+				this.TempData[SuccessMessage] = "Носията е създадена успешно!";
+				this.TempData[WarningMessage] = "Моля добавете поне една част на носията, преди активация!";
+
+
+				return this.RedirectToAction("Add", "OutfitPart", new { Id = outfitSetId });
 			}
 			catch (Exception)
 			{
-				return this.GeneralError();
+				model.Regions = await this.regionService.GetAllRegionsAsync();
 
+				return this.View(model);
 			}
+
 		}
 
 
@@ -156,7 +149,7 @@
 			{
 				this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
 
-				return this.RedirectToAction("All", "OutfitSet",new { Area = "" });
+				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
 			}
 
 			try
@@ -254,10 +247,10 @@
 				{
 					this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
 
-					return this.RedirectToAction("All", "OutfitSet", new {Area = ""});
+					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
 				}
 
-				var containsParts =  await this.outfitService.HasPartsByIdAsync(id);
+				var containsParts = await this.outfitService.HasPartsByIdAsync(id);
 				if (!containsParts)
 				{
 					this.TempData[ErrorMessage] = "Носия без съставни части не може да бъде активирана!";
