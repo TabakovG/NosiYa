@@ -11,7 +11,7 @@
 		<p style="font-size:25px;">@Model.CreatedOn</p>
 	</div>
 	<div class="card col-8 border-0">
-		<p style="font-size:25px;">@Model.Content</p>
+		<p style="font-size:25px;" class="comment-content" id="comment-content-@Model.Id">@Model.Content</p>
 	</div>
 	<div class="form-inline">
 		@if (this.User.Identity?.IsAuthenticated ?? false)
@@ -25,7 +25,7 @@
 
 				<form method="post" asp-area="Admin" asp-action="Approve" asp-controller="Comment" class="delete-item-form">
 					<input type="hidden" name="elementId" value="@Model.Id" />
-					<input type="submit" value="Потвърди" class="btn btn-success" />
+					<input type="submit" value="Потвърди" class="btn btn-success btn-approve-@Model.Id" />
 				</form>
 			}
 			@if (this.User.IsAdmin() || this.User.GetId() == Model.OwnerId)

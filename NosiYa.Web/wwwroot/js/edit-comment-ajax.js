@@ -14,6 +14,39 @@ function loadEditFormAndOpenModal(commentId) {
             var modalBody = document.getElementById('editCommentModalBody');
             modalBody.innerHTML = modalContent;
 
+            // Add submit event listener to the form
+            var editForm = modalBody.querySelector('form');
+            editForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                fetch(editForm.action, {
+                    method: editForm.method,
+                    body: new FormData(editForm)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update the comment content in the modal
+                            var modalCommentContent = document.getElementById('comment-content-' + commentId);
+                            modalCommentContent.textContent = data.editedCommentContent;
+
+                            // Hide the approve button
+                            var approveButton = document.querySelector('.btn-approve-' + commentId);
+                            if (approveButton) {
+                                approveButton.style.display = 'none';
+                            }
+
+                            // Close the modal
+                            modal.hide();
+                        } else {
+                            console.log('Comment edit failed.');
+                        }
+                    })
+                    .catch(error => {
+                        console.log('Error:', error);
+                    });
+            });
+
             // Show the modal
             modal.show();
         })
@@ -22,7 +55,8 @@ function loadEditFormAndOpenModal(commentId) {
         });
 }
 
-// Add a single click event listener at the container level
+// Add a single click event listener at the container level 
+
 var container = document.querySelector(".all-comments-container");
 container.addEventListener("click", function (e) {
     var target = e.target;

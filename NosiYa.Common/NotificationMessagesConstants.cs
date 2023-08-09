@@ -13,6 +13,7 @@
 
         public const string SendGridTestUserEmailAddress = "TabakovG@students.softuni.bg";
 
+        public const string CommentWaitingForReviewText = "Коментара беше променен и очаква одобрение. ";
 
-    }
+	}
 }

@@ -89,8 +89,7 @@
 		{
 			if (!this.ModelState.IsValid)
 			{
-				return this.RedirectToAction("Details", "Event", new { Id = model.EventId });
-
+				return Json(new { success = false });
 			}
 
 			try
@@ -101,8 +100,7 @@
 				if (!commentExists)
 				{
 					this.TempData[ErrorMessage] = "Коментар с този идентификатор не съществува!";
-
-					return this.RedirectToAction("All", "Event");
+					return Json(new { success = false });
 				}
 
 				var userIsOwner = await this.commentService.IsOwnedByUserIdAsync(model.Id, this.User!.GetId()!);
@@ -110,21 +108,27 @@
 				if (!userIsOwner && !this.User.IsAdmin())
 				{
 					this.TempData[ErrorMessage] = "Нямате права върху този коментар!";
-
-					return RedirectToAction("Details", "Event", new { Id = model.EventId });
+					return Json(new { success = false });
 				}
 
 				await this.commentService.EditByModelAsync(model);
-				this.TempData[SuccessMessage] = "Промените са запазени успешно и скоро ще бъдат видими! ";
 
-				return RedirectToAction("Details", "Event", new { Id = model.EventId });
+				if (this.User.IsAdmin())
+				{
+					await this.commentService.ApproveByIdAsync(model.Id);
+					return Json(new { success = true, editedCommentContent = model.ModifiedContent });
+
+				}
+				this.TempData[SuccessMessage] = "Промените са запазени успешно и скоро ще бъдат видими! ";
+				return Json(new { success = true, editedCommentContent = CommentWaitingForReviewText });
 			}
 			catch (Exception)
 			{
 				this.ModelState.AddModelError(string.Empty,
 					"Възникна грешка при обработване на заявката. Моля опитайте отново или се свържете с администратор!");
 
-				return RedirectToAction("Details", "Event", new { Id = model.EventId });
+				return Json(new { success = false });
+
 			}
 		}
 

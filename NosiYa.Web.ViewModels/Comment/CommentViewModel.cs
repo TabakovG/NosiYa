@@ -1,6 +1,5 @@
 ﻿namespace NosiYa.Web.ViewModels.Comment
 {
-
 	public class CommentViewModel
 	{
 		public int Id { get; set; }
