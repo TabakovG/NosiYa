@@ -12,7 +12,6 @@
 	using Common;
 	using static Common.SeedingConstants;
 
-	[Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
 	public class EventController : BaseController
 	{
 		private readonly IEventService eventService;
@@ -32,130 +31,129 @@
 		[AllowAnonymous]
 		public async Task<IActionResult> All([FromQuery] AllEventsPaginatedModel model)
 		{
-			var serviceModel = await this.eventService.AllAvailableEventsAsync(model);
+			try
+			{
+				var serviceModel = await this.eventService.AllAvailableEventsAsync(model);
 
-			model.Events = serviceModel.Events;
-			model.EventsCount = serviceModel.EventsCount;
+				model.Events = serviceModel.Events;
+				model.EventsCount = serviceModel.EventsCount;
 
-			return View(model);
-
+				return View(model);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> SubmittedEvents([FromQuery] AllEventsPaginatedModel model)
 		{
-			var serviceModel = await this.eventService.AllUnavailableEventsByUserIdAsync(model, this.User!.GetId()!);
+			try
+			{
+				var serviceModel = await this.eventService.AllUnavailableEventsByUserIdAsync(model, this.User!.GetId()!);
 
-			model.Events = serviceModel.Events;
-			model.EventsCount = serviceModel.EventsCount;
+				model.Events = serviceModel.Events;
+				model.EventsCount = serviceModel.EventsCount;
 
-			return View("All",model);
-
+				return View("All", model);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
 		}
 
 		[HttpGet]
 		public IActionResult Add()
 		{
-			try
-			{
-				var eventModel = new EventFormModel();
-				return this.View(eventModel);
-			}
-			catch (Exception)
-			{
-				return this.GeneralError();
-			}
+			var eventModel = new EventFormModel();
+			return this.View(eventModel);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Add(EventFormModel model, [FromForm] ICollection<IFormFile> elementImages)
 		{
+
+			if (!this.ModelState.IsValid)
+			{
+				return this.View(model);
+			}
+
+			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+			if (!isAuthenticated)
+			{
+				return this.View(model);
+			}
+
+			var userId = Guid.Parse(this.User!.GetId()!);
+
 			try
 			{
+				//Create event
+				int eventId =
+					await this.eventService.CreateAndReturnIdAsync(model, userId);
 
-				if (!this.ModelState.IsValid)
+				//Add images to the event
+				if (elementImages.Any())
 				{
-					return this.View(model);
+					// Call Add from ImageController without redirecting
+					var imageController = new ImageController(imageService, webHostEnvironment);
+					imageController.ControllerContext = ControllerContext;
+
+					string entityType = EntityTypesConst.Event;
+
+					// Invoke AddImagesOnEntityCreate Action 
+					await imageController.AddImagesOnEntityCreateAsync(eventId, entityType, elementImages);
+
 				}
 
-				var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
-
-				if (!isAuthenticated)
-				{
-					return this.View(model);
-				}
-
-				try
-				{
-					var userId = Guid.Parse(this.User!.GetId()!);
-
-					//Create event
-					int eventId =
-						await this.eventService.CreateAndReturnIdAsync(model, userId);
-
-					//Add images to the event
-					if (elementImages.Any())
-					{
-						// Call Add from ImageController without redirecting
-						var imageController = new ImageController(imageService, webHostEnvironment);
-						imageController.ControllerContext = ControllerContext;
-
-						string entityType = EntityTypesConst.Event;
-
-						// Invoke AddImagesOnEntityCreate Action 
-						await imageController.AddImagesOnEntityCreateAsync(eventId, entityType, elementImages);
-
-					}
-
-					return this.RedirectToAction("All", "Event"); //Can't redirect to details as the event must be approved first
-				}
-				catch (Exception)
-				{
-					return this.View(model);
-				}
+				return this.RedirectToAction("All", "Event"); //Can't redirect to details as the event must be approved first
 			}
 			catch (Exception)
 			{
-				return this.GeneralError();
-
+				return this.View(model);
 			}
+
 		}
 
 		[HttpGet]
 		[AllowAnonymous]
 		public async Task<IActionResult> Details(int id)
 		{
-			var eventExists = await this.eventService.ExistsByIdAsync(id);
-
-			if (!eventExists)
-			{
-				this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "Event");
-			}
-
-			bool eventApproved = await this.eventService.IsApprovedByIdAsync(id);
-
-			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
-			var isAdmin = this.User!.IsAdmin();
-
-			//Event not approved but user is admin or owner
-			if (!eventApproved && isAuthenticated)
-			{
-				var userIsOwner = await this.eventService.IsOwnedByUserAsync(id, this.User!.GetId()!);
-
-				eventApproved = userIsOwner || isAdmin;
-			}
-
-			if (!eventApproved)
-			{
-				this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "Event");
-			}
-
 			try
 			{
+				var eventExists = await this.eventService.ExistsByIdAsync(id);
+
+				if (!eventExists)
+				{
+					this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "Event");
+				}
+
+				bool eventApproved = await this.eventService.IsApprovedByIdAsync(id);
+
+				var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+				var isAdmin = this.User!.IsAdmin();
+
+				//Event not approved but user is admin or owner
+				if (!eventApproved && isAuthenticated)
+				{
+					var userIsOwner = await this.eventService.IsOwnedByUserAsync(id, this.User!.GetId()!);
+
+					eventApproved = userIsOwner || isAdmin;
+				}
+
+				if (!eventApproved)
+				{
+					this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "Event");
+				}
+
+
 				EventDetailsViewModel viewModel = await this.eventService.GetDetailsByIdAsync(id);
 
 				if (isAdmin)
@@ -295,34 +293,33 @@
 		[HttpGet]
 		public async Task<IActionResult> Delete(int id)
 		{
-
-			var eventExists = await this.eventService.ExistsByIdAsync(id);
-
-			if (!eventExists)
-			{
-				this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "Event");
-			}
-			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
-
-			if (!isAuthenticated)
-			{
-				this.TempData["ErrorMessage"] = "Страницата е достъпна само за оторизирани потребители!";
-
-				return this.RedirectToAction("All", "Event");
-			}
-
-			bool userIsOwner = await this.eventService.IsOwnedByUserAsync(id, this.User!.GetId()!);
-
-			if (!userIsOwner && !this.User!.IsInRole(AdminRoleName))
-			{
-				this.TempData["ErrorMessage"] = "Функцията е достъпна само за оторизирани потребители!";
-
-				return this.RedirectToAction("All", "Event");
-			}
 			try
 			{
+				var eventExists = await this.eventService.ExistsByIdAsync(id);
+
+				if (!eventExists)
+				{
+					this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "Event");
+				}
+				var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+				if (!isAuthenticated)
+				{
+					this.TempData["ErrorMessage"] = "Страницата е достъпна само за оторизирани потребители!";
+
+					return this.RedirectToAction("All", "Event");
+				}
+
+				bool userIsOwner = await this.eventService.IsOwnedByUserAsync(id, this.User!.GetId()!);
+
+				if (!userIsOwner && !this.User!.IsInRole(AdminRoleName))
+				{
+					this.TempData["ErrorMessage"] = "Функцията е достъпна само за оторизирани потребители!";
+
+					return this.RedirectToAction("All", "Event");
+				}
 				var viewModel =
 					await this.eventService.GetForDeleteByIdAsync(id);
 
@@ -337,33 +334,34 @@
 		[HttpPost]
 		public async Task<IActionResult> Delete(int id, EventForDeleteViewModel model)
 		{
-			var eventExists = await this.eventService.ExistsByIdAsync(id);
-
-			if (!eventExists)
-			{
-				this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "Event");
-			}
-			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
-
-			if (!isAuthenticated)
-			{
-				this.TempData["ErrorMessage"] = "Страницата е достъпна само за оторизирани потребители!";
-
-				return this.RedirectToAction("All", "Event");
-			}
-
-			bool userIsOwner = await this.eventService.IsOwnedByUserAsync(id, this.User!.GetId()!);
-
-			if (!userIsOwner && !this.User!.IsInRole(AdminRoleName))
-			{
-				this.TempData["ErrorMessage"] = "Функцията е достъпна само за оторизирани потребители!";
-
-				return this.RedirectToAction("All", "Event");
-			}
 			try
 			{
+				var eventExists = await this.eventService.ExistsByIdAsync(id);
+
+				if (!eventExists)
+				{
+					this.TempData["ErrorMessage"] = "Събитие с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "Event");
+				}
+				var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+				if (!isAuthenticated)
+				{
+					this.TempData["ErrorMessage"] = "Страницата е достъпна само за оторизирани потребители!";
+
+					return this.RedirectToAction("All", "Event");
+				}
+
+				bool userIsOwner = await this.eventService.IsOwnedByUserAsync(id, this.User!.GetId()!);
+
+				if (!userIsOwner && !this.User!.IsInRole(AdminRoleName))
+				{
+					this.TempData["ErrorMessage"] = "Функцията е достъпна само за оторизирани потребители!";
+
+					return this.RedirectToAction("All", "Event");
+				}
+				await this.imageService.DeleteRelatedImagesByParentIdAsync(id, EntityTypesConst.Event, this.webHostEnvironment.WebRootPath);
 				await this.eventService.DeleteByIdAsync(id);
 				await this.commentService.DeleteAllByEventIdAsync(id);
 

@@ -1,54 +1,56 @@
 ﻿namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Authorization;
 
 	using NosiYa.Services.Data.Interfaces;
 	using ViewModels.Region;
 	using static Common.NotificationMessagesConstants;
-	using static Common.SeedingConstants;
 
-    [Authorize(Roles = AdminRoleName)]
-    public class RegionController : BaseController
-    {
+	public class RegionController : BaseController
+	{
 		private readonly IRegionService regionService;
-		private readonly IImageService imageService;
-		private readonly IWebHostEnvironment webHostEnvironment;
 
-		public RegionController(IRegionService regionService, IImageService imageService, IWebHostEnvironment webHostEnvironment)
+		public RegionController(IRegionService regionService)
 		{
 			this.regionService = regionService;
-			this.imageService = imageService;
-			this.webHostEnvironment = webHostEnvironment;
-		}
-
-        [AllowAnonymous]
-        public async Task<IActionResult> All([FromQuery] AllRegionsPaginatedModel model)
-		{
-			var serviceModel = await this.regionService.AllAvailableRegionsAsync(model);
-
-			model.Regions = serviceModel.Regions;
-			model.RegionsCount = serviceModel.RegionsCount;
-
-			return View(model);
 
 		}
 
 		[HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Details(int id)
+		[AllowAnonymous]
+		public async Task<IActionResult> All([FromQuery] AllRegionsPaginatedModel model)
 		{
-			var regionExists = await this.regionService.ExistsByIdAsync(id);
-
-			if (!regionExists)
-			{
-				this.TempData[ErrorMessage] = "Регионът не съществува!";
-
-				return this.RedirectToAction("All", "Region");
-			}
-
 			try
 			{
+				var serviceModel = await this.regionService.AllAvailableRegionsAsync(model);
+
+				model.Regions = serviceModel.Regions;
+				model.RegionsCount = serviceModel.RegionsCount;
+
+				return View(model);
+			}
+			catch (Exception e)
+			{
+				return this.GeneralError();
+			}
+		}
+
+		[HttpGet]
+		[AllowAnonymous]
+		public async Task<IActionResult> Details(int id)
+		{
+			try
+			{
+				var regionExists = await this.regionService.ExistsByIdAsync(id);
+
+				if (!regionExists)
+				{
+					this.TempData[ErrorMessage] = "Регионът не съществува!";
+
+					return this.RedirectToAction("All", "Region");
+				}
+
 				RegionDetailsViewModel viewModel = await this.regionService
 					.GetDetailsByIdAsync(id);
 

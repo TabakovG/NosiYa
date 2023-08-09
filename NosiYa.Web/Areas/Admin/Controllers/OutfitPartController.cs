@@ -46,14 +46,14 @@
 		[HttpPost]
 		public async Task<IActionResult> Add(OutfitPartFormModel model, [FromForm] ICollection<IFormFile> elementImages)
 		{
+			if (!this.ModelState.IsValid)
+			{
+				model.OutfitSets = await this.outfitSetService.GetOutfitSetsAsOptionsAsync(model.OutfitSetId);
+				return this.View(model);
+			}
+
 			try
 			{
-				if (!this.ModelState.IsValid)
-				{
-					model.OutfitSets = await this.outfitSetService.GetOutfitSetsAsOptionsAsync(model.OutfitSetId);
-					return this.View(model);
-				}
-
 				var ownerExist = await this.userService.UserExistByEmail(model.OwnerEmail);
 
 				if (!ownerExist)
@@ -65,37 +65,30 @@
 
 				model.OwnerId = await this.userService.GetUserIdFromEmailAsync(model.OwnerEmail);
 
-				try
+
+				int outfitPartId =
+					await this.outfitPartService.CreateAndReturnIdAsync(model);
+
+				//Add images to the event
+				if (elementImages.Any())
 				{
-					int outfitPartId =
-						await this.outfitPartService.CreateAndReturnIdAsync(model);
+					// Call Add from ImageController without redirecting
+					var imageController = new ImageController(imageService, webHostEnvironment);
+					imageController.ControllerContext = ControllerContext;
 
-					//Add images to the event
-					if (elementImages.Any())
-					{
-						// Call Add from ImageController without redirecting
-						var imageController = new ImageController(imageService, webHostEnvironment);
-						imageController.ControllerContext = ControllerContext;
+					string entityType = EntityTypesConst.OutfitPart;
 
-						string entityType = EntityTypesConst.OutfitPart;
+					// Invoke AddImagesOnEntityCreate Action 
+					await imageController.AddImagesOnEntityCreateAsync(outfitPartId, entityType, elementImages);
 
-						// Invoke AddImagesOnEntityCreate Action 
-						await imageController.AddImagesOnEntityCreateAsync(outfitPartId, entityType, elementImages);
-
-					}
-
-					return this.RedirectToAction("AllUnavailable", "OutfitSet", new { Area = "", Id = model.OutfitSetId });
 				}
-				catch (Exception)
-				{
-					model.OutfitSets = await this.outfitSetService.GetOutfitSetsAsOptionsAsync(model.OutfitSetId);
-					return this.View(model);
-				}
+
+				return this.RedirectToAction("AllUnavailable", "OutfitSet", new { Area = "", Id = model.OutfitSetId });
 			}
 			catch (Exception)
 			{
-				return this.GeneralError();
-
+				model.OutfitSets = await this.outfitSetService.GetOutfitSetsAsOptionsAsync(model.OutfitSetId);
+				return this.View(model);
 			}
 		}
 
@@ -103,17 +96,17 @@
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
-			var outfitPartExists = await this.outfitPartService.ExistByIdAsync(id);
-
-			if (!outfitPartExists)
-			{
-				this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "OutfitSet", new { Area = ""});
-			}
-
 			try
 			{
+				var outfitPartExists = await this.outfitPartService.ExistByIdAsync(id);
+
+				if (!outfitPartExists)
+				{
+					this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+				}
+
 				OutfitPartFormModel formModel = await this.outfitPartService
 					.GetForEditByIdAsync(id);
 
@@ -140,36 +133,36 @@
 				return this.View(model);
 			}
 
-			var outfitPartExists = await this.outfitPartService.ExistByIdAsync(id);
-
-			if (!outfitPartExists)
-			{
-				this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
-			}
-
-			var ownerExist = await this.userService.UserExistByEmail(model.OwnerEmail);
-
-			if (!ownerExist)
-			{
-				model.OutfitSets = await this.outfitSetService.GetOutfitSetsAsOptionsAsync();
-				this.TempData[ErrorMessage] = "Посочения собственик на елемента няма акаунт в системата!";
-				return this.View(model);
-			}
-
-			model.OwnerId = await this.userService.GetUserIdFromEmailAsync(model.OwnerEmail);
-
-			var outfitSetType = await this.outfitSetService.GetRenterTypeByIdAsync(model.OutfitSetId);
-			if (outfitSetType != model.RenterType)
-			{
-				model.OutfitSets = await this.outfitSetService.GetOutfitSetsAsOptionsAsync();
-				this.TempData[ErrorMessage] = $"Елементът трябва да съответсва на носията и да е подходящ за ${outfitSetType.ToString()}";
-				return this.View(model);
-			}
-
 			try
 			{
+				var outfitPartExists = await this.outfitPartService.ExistByIdAsync(id);
+
+				if (!outfitPartExists)
+				{
+					this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+				}
+
+				var ownerExist = await this.userService.UserExistByEmail(model.OwnerEmail);
+
+				if (!ownerExist)
+				{
+					model.OutfitSets = await this.outfitSetService.GetOutfitSetsAsOptionsAsync();
+					this.TempData[ErrorMessage] = "Посочения собственик на елемента няма акаунт в системата!";
+					return this.View(model);
+				}
+
+				model.OwnerId = await this.userService.GetUserIdFromEmailAsync(model.OwnerEmail);
+
+				var outfitSetType = await this.outfitSetService.GetRenterTypeByIdAsync(model.OutfitSetId);
+				if (outfitSetType != model.RenterType)
+				{
+					model.OutfitSets = await this.outfitSetService.GetOutfitSetsAsOptionsAsync();
+					this.TempData[ErrorMessage] = $"Елементът трябва да съответсва на носията и да е подходящ за ${outfitSetType.ToString()}";
+					return this.View(model);
+				}
+
 				await this.outfitPartService.EditByIdAsync(id, model);
 
 				//Add images to the outfitPart
@@ -203,17 +196,17 @@
 		[HttpGet]
 		public async Task<IActionResult> Delete(int id)
 		{
-			bool outfitPartExists = await this.outfitPartService
-				.ExistByIdAsync(id);
-			if (!outfitPartExists)
-			{
-				this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
-			}
-
 			try
 			{
+				bool outfitPartExists = await this.outfitPartService
+					.ExistByIdAsync(id);
+				if (!outfitPartExists)
+				{
+					this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+				}
+
 				OutfitPartForDelete viewModel =
 					await this.outfitPartService.GetOutfitPartForDeleteAsync(id);
 
@@ -228,17 +221,18 @@
 		[HttpPost]
 		public async Task<IActionResult> Delete(int id, OutfitSetForDelete model)
 		{
-			bool outfitPartExists = await this.outfitPartService
-				.ExistByIdAsync(id);
-			if (!outfitPartExists)
-			{
-				this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
-			}
-
 			try
 			{
+				bool outfitPartExists = await this.outfitPartService
+					.ExistByIdAsync(id);
+				if (!outfitPartExists)
+				{
+					this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+				}
+
+				await this.imageService.DeleteRelatedImagesByParentIdAsync(id, EntityTypesConst.OutfitPart, this.webHostEnvironment.WebRootPath);
 				var outfitSetId = await this.outfitPartService.DeleteByIdAsyncAndReturnParentId(id);
 
 				this.TempData[WarningMessage] = "Елементът беше изтрит успешно!";

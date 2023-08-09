@@ -23,21 +23,21 @@
 		[Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
 		public async Task<string> PopulateCalendarAll(string start, string end)
 		{
+			if (!DateTime.TryParseExact(start, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out var startDate))
+			{
+				this.TempData[ErrorMessage] =
+					"Unexpected error occurred during calendar population request! ";
+				return "";
+			}
+			if (!DateTime.TryParseExact(end, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out var endDate))
+			{
+				this.TempData[ErrorMessage] =
+					"Unexpected error occurred during calendar population request! ";
+				return "";
+			}
+
 			try
 			{
-				if (!DateTime.TryParseExact(start, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out var startDate))
-				{
-					this.TempData[ErrorMessage] =
-						"Unexpected error occurred during calendar population request! ";
-					return "";
-				}
-				if (!DateTime.TryParseExact(end, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out var endDate))
-				{
-					this.TempData[ErrorMessage] =
-						"Unexpected error occurred during calendar population request! ";
-					return "";
-				}
-
 				var reservations = await this.calendarService.GetAllRentsAsync(startDate, endDate);
 
 				return JsonConvert.SerializeObject(reservations);

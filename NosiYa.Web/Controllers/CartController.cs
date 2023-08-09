@@ -9,8 +9,6 @@
 	using static Common.NotificationMessagesConstants;
 	using static Common.SeedingConstants;
 
-
-	[Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
 	public class CartController : BaseController
 	{
 		private readonly ICartService cartService;
@@ -52,7 +50,7 @@
 						OutfitSetId = id,
 						FromDate = DateTime.UtcNow,
 						ToDate = DateTime.UtcNow
-						
+
 					}
 				};
 
@@ -102,23 +100,24 @@
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
-			var itemExistsById = await this.cartService
-				.CartItemExistsById(id);
-
-			if (!itemExistsById)
-			{
-				this.TempData[ErrorMessage] = "Продукт с този идентификатор не съществува!";
-
-				return this.RedirectToAction("Items", "Cart");
-			}
-
 			try
 			{
+				var itemExistsById = await this.cartService
+					.CartItemExistsById(id);
+
+				if (!itemExistsById)
+				{
+					this.TempData[ErrorMessage] = "Продукт с този идентификатор не съществува!";
+
+					return this.RedirectToAction("Items", "Cart");
+				}
+
 				var formModel = new CartPreOrderFormModel
 				{
 					CardItemFormModel = await this.cartService
 						.GetForEditByIdAsync(id)
 				};
+
 				formModel.OutfitModel = await this.outfitSetService
 					.GetForRentByIdAsync(formModel.CardItemFormModel.OutfitSetId);
 
@@ -193,26 +192,26 @@
 		[HttpPost]
 		public async Task<IActionResult> Delete(int id)
 		{
-			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
-
-			if (!isAuthenticated)
-			{
-				return RedirectToAction("All", "OutfitSet");
-			}
-
-			var cartItem = await this.cartService
-				.CartItemExistsById(id);
-
-			if (!cartItem)
-			{
-				this.TempData[ErrorMessage] = "Продукт с този идентификатор не съществува!";
-
-				return this.RedirectToAction("Items", "Cart");
-			}
-
-
 			try
 			{
+				var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
+
+				if (!isAuthenticated)
+				{
+					return RedirectToAction("All", "OutfitSet");
+				}
+
+				var cartItem = await this.cartService
+					.CartItemExistsById(id);
+
+				if (!cartItem)
+				{
+					this.TempData[ErrorMessage] = "Продукт с този идентификатор не съществува!";
+
+					return this.RedirectToAction("Items", "Cart");
+				}
+
+
 				await this.cartService.DeleteItemFromUserCartAsync(id);
 
 				this.TempData[WarningMessage] = "Продукта беше изтрит успешно!";

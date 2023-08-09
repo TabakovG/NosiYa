@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using NosiYa.Common;
-using NosiYa.Services.Messaging;
-using ConfigurationManager = System.Configuration.ConfigurationManager;
-
-namespace NosiYa.Web.Controllers
+﻿namespace NosiYa.Web.Controllers
 {
     using System.Diagnostics;
+
     using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Authorization;
 
     using ViewModels.Home;
     using static Common.SeedingConstants;
@@ -25,7 +22,6 @@ namespace NosiYa.Web.Controllers
 
             return View();
         }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

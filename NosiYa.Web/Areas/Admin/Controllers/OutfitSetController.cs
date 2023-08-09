@@ -104,17 +104,17 @@
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
-			var outfitSetExists = await this.outfitService.ExistByIdAsync(id);
-
-			if (!outfitSetExists)
-			{
-				this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
-			}
-
 			try
 			{
+				var outfitSetExists = await this.outfitService.ExistByIdAsync(id);
+
+				if (!outfitSetExists)
+				{
+					this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+				}
+
 				OutfitSetFormModel formModel = await this.outfitService
 					.GetForEditByIdAsync(id);
 
@@ -141,17 +141,17 @@
 				return this.View(model);
 			}
 
-			var outfitSetExists = await this.outfitService.ExistByIdAsync(id);
-
-			if (!outfitSetExists)
-			{
-				this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
-			}
-
 			try
 			{
+				var outfitSetExists = await this.outfitService.ExistByIdAsync(id);
+
+				if (!outfitSetExists)
+				{
+					this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+				}
+
 				await this.outfitService.EditByIdAsync(id, model);
 
 				//Add images to the outfitSet
@@ -184,17 +184,17 @@
 		[HttpGet]
 		public async Task<IActionResult> Delete(int id)
 		{
-			bool outfitSetExists = await this.outfitService
-				.ExistByIdAsync(id);
-			if (!outfitSetExists)
-			{
-				this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
-			}
-
 			try
 			{
+				bool outfitSetExists = await this.outfitService
+					.ExistByIdAsync(id);
+				if (!outfitSetExists)
+				{
+					this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+				}
+
 				OutfitSetForDelete viewModel =
 					await this.outfitService.GetOutfitSetForDeleteAsync(id);
 
@@ -209,23 +209,23 @@
 		[HttpPost]
 		public async Task<IActionResult> Delete(int id, OutfitSetForDelete model)
 		{
-			bool outfitSetExists = await this.outfitService
-				.ExistByIdAsync(id);
-			if (!outfitSetExists)
-			{
-				this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
-			}
-
 			try
 			{
+				bool outfitSetExists = await this.outfitService
+					.ExistByIdAsync(id);
+				if (!outfitSetExists)
+				{
+					this.TempData[ErrorMessage] = "Носия с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "OutfitSet", new { Area = "" });
+				}
+
 				bool hasActiveParts = await this.outfitService.HasPartsByIdAsync(id);
 				if (hasActiveParts)
 				{
 					this.TempData[ErrorMessage] = "За да можете да изтриете носията, моля първо премахнете всички нейни части!";
 
-					return this.RedirectToAction("Details", "OutfitSet", new {id, Area = "" });
+					return this.RedirectToAction("Details", "OutfitSet", new { id, Area = "" });
 				}
 
 				await this.imageService.DeleteRelatedImagesByParentIdAsync(id, EntityTypesConst.OutfitSet, this.webHostEnvironment.WebRootPath);

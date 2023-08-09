@@ -1,12 +1,12 @@
 ﻿namespace NosiYa.Web.Areas.Admin.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Mvc;
 
-    using NosiYa.Services.Data.Interfaces;
-    using NosiYa.Web.ViewModels.Order;
-    using static Common.NotificationMessagesConstants;
+	using NosiYa.Services.Data.Interfaces;
+	using NosiYa.Web.ViewModels.Order;
+	using static Common.NotificationMessagesConstants;
 
-    public class OrderController : BaseAdminController
+	public class OrderController : BaseAdminController
 	{
 		private readonly IOrderService orderService;
 
@@ -19,24 +19,23 @@
 		[HttpGet]
 		public IActionResult All()
 		{
-
 			return View();
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> Details(string id)
 		{
-			var orderExists = await this.orderService.ExistsByIdAsync(id);
-
-			if (!orderExists)
-			{
-				this.TempData[ErrorMessage] = "Поръчката не съществува!";
-
-				return this.RedirectToAction("All");
-			}
-
 			try
 			{
+				var orderExists = await this.orderService.ExistsByIdAsync(id);
+
+				if (!orderExists)
+				{
+					this.TempData[ErrorMessage] = "Поръчката не съществува!";
+
+					return this.RedirectToAction("All");
+				}
+
 				OrderDetailsViewModel viewModel = await this.orderService
 					.GetOrderDetailsByIdAsync(id);
 

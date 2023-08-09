@@ -25,15 +25,8 @@
 		[HttpGet]
 		public IActionResult Add()
 		{
-			try
-			{
-				var region = new RegionFormModel();
-				return this.View(region);
-			}
-			catch (Exception)
-			{
-				return this.GeneralError();
-			}
+			var region = new RegionFormModel();
+			return this.View(region);
 		}
 
 		[HttpPost]
@@ -64,7 +57,7 @@
 
 				}
 
-				return this.RedirectToAction("Details", "Region", new { Id = regionId , Area = ""});
+				return this.RedirectToAction("Details", "Region", new { Id = regionId, Area = "" });
 			}
 			catch (Exception)
 			{
@@ -187,6 +180,7 @@
 					return this.RedirectToAction("All", "Region", new { Area = "" });
 				}
 
+				await this.imageService.DeleteRelatedImagesByParentIdAsync(model.Id, EntityTypesConst.Region, this.webHostEnvironment.WebRootPath);
 				await this.regionService.DeleteByIdAsync(model.Id);
 
 				this.TempData[WarningMessage] = "Регионa беше изтрит успешно!";

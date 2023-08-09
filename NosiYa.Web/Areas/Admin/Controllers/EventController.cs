@@ -3,20 +3,16 @@
 	using Microsoft.AspNetCore.Mvc;
 
 	using NosiYa.Services.Data.Interfaces;
-	using NosiYa.Web.ViewModels.Comment;
-	using NosiYa.Web.ViewModels.Event;
 	using static Common.NotificationMessagesConstants;
 
 	public class EventController : BaseAdminController
 	{
 		private readonly IEventService eventService;
-		private readonly ICommentService commentService;
 
 
-		public EventController(IEventService eventService, ICommentService commentService)
+		public EventController(IEventService eventService)
 		{
 			this.eventService = eventService;
-			this.commentService = commentService;
 
 		}
 

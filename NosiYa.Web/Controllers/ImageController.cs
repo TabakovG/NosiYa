@@ -14,10 +14,8 @@
 
 	using SixLabors.ImageSharp.Formats.Jpeg;
 	using SixLabors.ImageSharp.Processing;
-	using Microsoft.AspNetCore.Authorization;
-	using static Common.SeedingConstants;
 
-	[Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
+
 	public class ImageController : BaseController
 	{
 		private readonly IImageService imageService;
@@ -28,14 +26,23 @@
 			this.imageService = imageService;
 			this.hostingEnvironment = hostingEnvironment;
 		}
+
 		[HttpPost]
 		public async Task AddImagesOnEntityCreateAsync(int entityId, string entityType, ICollection<IFormFile> elementImages)
 		{
-
-			await this.UploadImagesAsync(entityId, entityType, elementImages);
-			await this.imageService.SetDefaultImageAsync(entityId, entityType);
+			try
+			{
+				await this.UploadImagesAsync(entityId, entityType, elementImages);
+				await this.imageService.SetDefaultImageAsync(entityId, entityType);
+			}
+			catch (Exception)
+			{
+				this.TempData[ErrorMessage] =
+					"Unexpected error occurred during the images processing! Please try again later or contact administrator";
+			}
 		}
 
+		[HttpGet]
 		public async Task<bool> FormatIsValid(IFormFile file)
 		{
 			await using var fileStream = file.OpenReadStream();
@@ -124,19 +131,19 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Delete (int id, [FromForm] string returnUrl)
+		public async Task<IActionResult> Delete(int id, [FromForm] string returnUrl)
 		{
-			var imageExists = await this.imageService.ImageExistByIdAsync(id);
-
-			if (!imageExists)
-			{
-				this.TempData[ErrorMessage] = "Снимка с този идентификатор не съществува!";
-
-				return this.Redirect(returnUrl);
-			}
-
 			try
 			{
+				var imageExists = await this.imageService.ImageExistByIdAsync(id);
+
+				if (!imageExists)
+				{
+					this.TempData[ErrorMessage] = "Снимка с този идентификатор не съществува!";
+
+					return this.Redirect(returnUrl);
+				}
+
 				await this.imageService.DeleteImageByIdAsync(id, this.hostingEnvironment.WebRootPath);
 
 				this.TempData[WarningMessage] = "Снимката беше изтрита успешно!";
@@ -206,7 +213,7 @@
 				if (!imageExists)
 				{
 					this.TempData[ErrorMessage] = "Снимка с този идентификатор не съществува!";
-					return this.RedirectToAction("Edit", entityType, new { id = entityId , Area = area});
+					return this.RedirectToAction("Edit", entityType, new { id = entityId, Area = area });
 				}
 
 				entityType = WebUtility.HtmlEncode(entityType).ToLower();

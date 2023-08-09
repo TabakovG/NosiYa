@@ -1,5 +1,4 @@
-﻿
-namespace NosiYa.Web.Areas.Admin.Controllers
+﻿namespace NosiYa.Web.Areas.Admin.Controllers
 {
 	using Microsoft.AspNetCore.Authorization;
 	using Microsoft.AspNetCore.Mvc;
@@ -12,6 +11,5 @@ namespace NosiYa.Web.Areas.Admin.Controllers
 
 	public class BaseAdminController : Controller
 	{
-		
 	}
 }

@@ -1,8 +1,8 @@
-﻿	using NosiYa.Services.Data.Interfaces;
-
-namespace NosiYa.Web.Areas.Admin.Controllers
+﻿namespace NosiYa.Web.Areas.Admin.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
+
+	using NosiYa.Services.Data.Interfaces;
 	using ViewModels;
 
 	public class HomeController : BaseAdminController
@@ -39,8 +39,6 @@ namespace NosiYa.Web.Areas.Admin.Controllers
 	        {
 		        return this.RedirectToAction("Index");
 	        }
-	        
-
         }
 	}
 }

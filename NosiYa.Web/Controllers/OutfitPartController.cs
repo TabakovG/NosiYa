@@ -1,15 +1,15 @@
 ﻿namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Authorization;
 
 	using NosiYa.Services.Data.Interfaces;
 
 	using ViewModels.OutfitPart;
 	using static Common.NotificationMessagesConstants;
 
-    public class OutfitPartController : BaseController
-    {
+	public class OutfitPartController : BaseController
+	{
 		private readonly IOutfitPartService outfitPartService;
 
 
@@ -19,20 +19,20 @@
 		}
 
 		[HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Details(int id)
+		[AllowAnonymous]
+		public async Task<IActionResult> Details(int id)
 		{
-			var outfitPartExists = await this.outfitPartService.ExistByIdAsync(id);
-
-			if (!outfitPartExists)
-			{
-				this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
-
-				return this.RedirectToAction("All", "OutfitSet");
-			}
-
 			try
 			{
+				var outfitPartExists = await this.outfitPartService.ExistByIdAsync(id);
+
+				if (!outfitPartExists)
+				{
+					this.TempData[ErrorMessage] = "Елемент на носия с този идентификатор не съществува!";
+
+					return this.RedirectToAction("All", "OutfitSet");
+				}
+
 				OutfitPartDetailsViewModel viewModel = await this.outfitPartService
 					.GetDetailsByIdAsync(id);
 

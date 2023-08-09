@@ -11,7 +11,6 @@
 	using static Common.SeedingConstants;
 	using ViewModels.Order;
 
-	[Authorize(Roles = $"{AdminRoleName}, {UserRoleName}")]
 	public class OrderController : BaseController
 	{
 		private readonly ICartService cartService;
@@ -35,9 +34,17 @@
 				return this.RedirectToAction("Index", "Home"); //TODO to login page
 			}
 
-			ICollection<OrderViewModel> orderModel = await this.orderService.GetOrdersByUserIdAsync(this.User!.GetId()!);
+			try
+			{
+				ICollection<OrderViewModel> orderModel = await this.orderService.GetOrdersByUserIdAsync(this.User!.GetId()!);
 
-			return View(orderModel);
+				return View(orderModel);
+			}
+			catch (Exception)
+			{
+				return this.GeneralError();
+			}
+
 		}
 
 		[HttpPost]
@@ -53,22 +60,22 @@
 			{
 				return this.RedirectToAction("Index", "Home");
 			}
-
-			var orderExists = await this.cartService.CartItemExistsById(id);
-			if (!orderExists)
-			{
-				this.TempData[ErrorMessage] = "Поръчка с посочения идентификатор не съществува!";
-				return this.RedirectToAction("Index", "Home");
-			}
-
-			if (model.FromDate < DateTime.UtcNow || model.ToDate < model.FromDate)
-			{
-				this.TempData[ErrorMessage] = "Посочената дата е невалидна. Моля променете поръчката!";
-				return this.RedirectToAction("Items", "Cart");
-			}
-
 			try
 			{
+				var orderExists = await this.cartService.CartItemExistsById(id);
+				if (!orderExists)
+				{
+					this.TempData[ErrorMessage] = "Поръчка с посочения идентификатор не съществува!";
+					return this.RedirectToAction("Index", "Home");
+				}
+
+				if (model.FromDate < DateTime.UtcNow || model.ToDate < model.FromDate)
+				{
+					this.TempData[ErrorMessage] = "Посочената дата е невалидна. Моля променете поръчката!";
+					return this.RedirectToAction("Items", "Cart");
+				}
+
+
 				var isReserved = await this.calendarService.ValidateDatesAsync(model.FromDate, model.ToDate, model.OutfitId);
 
 				if (!isReserved)
@@ -90,7 +97,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Delete(string orderId, string? baseUrl=null)
+		public async Task<IActionResult> Delete(string orderId, string? baseUrl = null)
 		{
 			var isAuthenticated = this.User?.Identity?.IsAuthenticated ?? false;
 
