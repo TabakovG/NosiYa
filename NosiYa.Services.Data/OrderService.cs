@@ -46,33 +46,28 @@
 
 		public async Task<ICollection<OrderViewModel>> GetOrdersByUserIdAsync(string userId)
 		{
-			var resultDistinct = await this.context
+			var result = await this.context
 				.OutfitRenterDates
 				.AsNoTracking()
 				.Include(o => o.Outfit)
 				.Include(o => o.Outfit.Images)
 				.Where(o => o.IsActive)
 				.Where(o => o.RenterId.ToString() == userId)
-				.GroupBy(o => new { o.OutfitId, o.DateRangeStart, o.DateRangeEnd })
-				.Select(o => o.First())
-				.ToArrayAsync();
-
-			var modelsResult = resultDistinct
 				.Select(o => new OrderViewModel
 				{
 					OrderId = o.OrderId.ToString(),
 					OutfitId = o.OutfitId,
 					Name = o.Outfit.Name,
-					SetImage = o.Outfit.Images.Where(i => i.IsDefault).Select(i => i.Url).First(),
+					SetImage = o.Outfit.Images.Where(i => i.IsDefault).Select(i => i.Url).FirstOrDefault() ?? "",
 					FromDate = o.DateRangeStart,
 					ToDate = o.DateRangeEnd,
 					IsApproved = o.IsApproved
 				})
 				.OrderBy(x => x.FromDate)
 				.ThenBy(x => x.ToDate)
-				.ToArray();
+				.ToArrayAsync();
 
-			return modelsResult;
+			return result;
 		}
 
 		public async Task<OrderDetailsViewModel> GetOrderDetailsByIdAsync(string orderId)
