@@ -1,17 +1,13 @@
 ﻿@model EventAllViewModel
 
-<div class="col-md-4">
-	<div class="card mb-3">
-		<img class="card-img-top" src="@Model.ImageUrl" alt="Outfit Image">
+<div class="card mb-3">
 		<div class="card-body text-center">
 			<h4>@Model.Name</h4>
 			<h5>@Model.EventStartDate - @Model.EventEndDate</h5>
 			<br />
-			<a asp-area="" asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id"
-				class="btn btn-success">Детайли</a>
 			@if (this.User.Identity?.IsAuthenticated ?? false)
 			{
-				if (this.User.IsInRole(AdminRoleName) || this.User.GetId() == @Model.OwnerId)
+			if (this.User?.IsAdmin() ?? false || this.User?.GetId() == @Model.OwnerId)
 				{
 					<a asp-area="" asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id"
 					   class="btn btn-warning">Промени</a>
@@ -21,5 +17,9 @@
 				}
 			}
 		</div>
-	</div>
+	<a asp-area="" asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id" class="card-link">
+		<img class="card-img-top" src="@Model.ImageUrl" alt="Outfit Image" style="height: 25vh; object-fit: cover;">
+	</a>
 </div>
+
+
