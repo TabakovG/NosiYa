@@ -21,7 +21,7 @@
 			<div class="form-inline">
 				@if (this.User.Identity?.IsAuthenticated ?? false)
 				{
-					if (this.User.IsAdmin() || this.User.GetId() == @Model.OwnerId)
+					if (this.User.IsAdmin() || this.User.GetId() == @Model.OwnerId.ToUpper())
 					{
 						<a class="btn btn-warning" asp-area="" asp-controller="Event" asp-action="Edit"
 						   asp-route-id="@Model.Id">Промени</a>

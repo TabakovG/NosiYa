@@ -29,7 +29,7 @@
 				{
 					title = r.IsApproved ? Reserved : WaitingForReview,
 					start = r.DateRangeStart.ToString("yyyy-MM-ddTHH:mm:ss"),
-					end = r.DateRangeEnd.ToString("yyyy-MM-ddTHH:mm:ss"),
+					end = r.DateRangeEnd.AddDays(1).ToString("yyyy-MM-ddTHH:mm:ss"), // Add one day as the view is excluding the end date for allDay events
 					backgroundColor = r.IsApproved ? "green" : "gray"
 				})
 				.ToArrayAsync();

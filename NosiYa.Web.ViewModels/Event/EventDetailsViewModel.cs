@@ -1,7 +1,7 @@
-﻿using NosiYa.Web.ViewModels.Comment;
-
-namespace NosiYa.Web.ViewModels.Event
+﻿namespace NosiYa.Web.ViewModels.Event
 {
+	using Comment;
+
 	public class EventDetailsViewModel
 	{
 		public EventDetailsViewModel()
@@ -18,7 +18,7 @@ namespace NosiYa.Web.ViewModels.Event
 
 		public string Location { get; set; } = null!;
 
-		public string OwnerId { get; set; }
+		public string OwnerId { get; set; } = null!;
 		public string Owner { get; set; } = null!;
 
 		public DateTime EventStartDate { get; set; }
