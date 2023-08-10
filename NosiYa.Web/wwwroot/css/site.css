@@ -98,3 +98,39 @@
     opacity: 0.5;
     transition: opacity 0.5s ease-in-out;
 }
+
+
+/*Gallery ------------------------------------------------------------*/
+
+.image-gallery.masonry {
+    column-count: 3;
+    column-gap: 15px;
+}
+
+.gallery-item {
+    break-inside: avoid-column;
+    margin-bottom: 15px;
+}
+
+.gallery-image {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s;
+}
+
+.image-title {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.gallery-item:hover .image-title {
+    opacity: 1;
+}
