@@ -4,7 +4,7 @@
 @{
 	ViewBag.Title = "Детайли";
 	var defaultImageUrl = await this.imageService.GetDefaultIfExistsAsync(Model.Id, OutfitPart) ?? string.Empty;
-	var RenterTypeMappingDictionary = new Dictionary<string, string>
+	var renterTypeMappingDictionary = new Dictionary<string, string>
 	{
 		{"All","Всички"},
 		{"Male","Мъжка"},
@@ -29,7 +29,7 @@
 			<p>Елемент тип: @Model.OutfitPartType</p>
 			<p>@Model.Description</p>
 			<p>Цвят: <b>@Model.Color</b></p>
-			<p>Вид: <b>@RenterTypeMappingDictionary[Model.RenterType]</b></b></p>
+			<p>Вид: <b>@renterTypeMappingDictionary[Model.RenterType]</b></b></p>
 			<p>Размер: <b>@Model.Size</b></p>
 			<p>Елемент от носия: <b>@Model.OutfitSet</b></p>
 			<p>Описание: <p>@Model.Description</p></p>

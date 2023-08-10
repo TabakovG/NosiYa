@@ -1,31 +1,49 @@
-﻿@model RegionDetailsViewModel
+﻿@using NosiYa.Common
+@model RegionDetailsViewModel
+@inject IImageService imageService;
 
 @{
 	ViewBag.Title = "Регион";
+	var defaultImageUrl = await this.imageService.GetDefaultIfExistsAsync(Model.Id, EntityTypesConst.Region) ?? string.Empty;
 }
+
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
 <div class="container" style="display:inline">
-	<div class="row">
+	<div class="row d-flex justify-content-between">
+		<div class="col-lg-6 col-md-8 col-sm-12" style="height: 60vh">
+			<a href="@defaultImageUrl" data-lightbox="outfit-gallery">
+				<img class="col-12" src="@defaultImageUrl" style="height: 60vh; object-fit: cover;" />
+			</a>
+		</div>
 
-		<partial name="_ImageGalleryPartial" model="@Model.Images" />
-
-		<div class="card col-8 border-0">
-			<p style="font-size:25px;"><u>@Model.Name</u></p>
-			<p>@Model.Description</p>
-
+		<div class="card col-md-4 col-sm-12 border-0">
+			<p style="font-size: 25px;"><u>@Model.Name</u></p>
+			<p>Описание: <p>@Model.Description</p></p>
 			<div class="form-inline">
-				@if (this.User.Identity?.IsAuthenticated ?? false)
-				{
-					<a class="btn btn-warning" asp-area="Admin" asp-controller="Region" asp-action="Edit"
-				   asp-route-id="@Model.Id">Edit</a>
-					<a class="ml-2 btn btn-danger" asp-area="Admin" asp-controller="Region" asp-action="Delete"
-				   asp-route-id="@Model.Id">Delete</a>
+				<div class="d-flex justify-content-between mt-2">
+					@if (this.User?.IsAdmin() ?? false)
+					{
+						<a class="btn btn-warning col-lg-5 col-md-6" asp-area="Admin" asp-controller="Region" asp-action="Edit"
+						   asp-route-id="@Model.Id">Edit</a>
+						<a class="ml-2 btn btn-danger col-lg-5 col-md-6" asp-area="Admin" asp-controller="Region" asp-action="Delete"
+						   asp-route-id="@Model.Id">Delete</a>
+					}
+				</div>
+			</div>
 
-				}
+		</div>
+
+		<h3 class="text-center mt-5">Галерия</h3>
+		<hr />
+
+		<div class="" name="outfitSetGallery">
+			<div class="">
+				<partial name="_ImageGalleryPartial" model="@Model.Images" style="height: 50vh" />
 			</div>
 		</div>
 	</div>
 </div>
+
