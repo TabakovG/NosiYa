@@ -1,37 +1,65 @@
 ﻿@model OutfitPartDetailsViewModel
+@inject IImageService imageService;
 
 @{
 	ViewBag.Title = "Детайли";
+	var defaultImageUrl = await this.imageService.GetDefaultIfExistsAsync(Model.Id, OutfitPart) ?? string.Empty;
+	var RenterTypeMappingDictionary = new Dictionary<string, string>
+	{
+		{"All","Всички"},
+		{"Male","Мъжка"},
+		{"Female","Женска"},
+		{"Boy","За момче"},
+		{"Girl","За момиче"}
+	};
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
-
 <div class="container" style="display:inline">
-	<div class="row">
+	<div class="row d-flex justify-content-between">
+		<div class="col-lg-6 col-md-8 col-sm-12" style="height: 60vh">
+			<a href="@defaultImageUrl" data-lightbox="outfit-gallery">
+				<img class="col-12" src="@defaultImageUrl" style="height: 60vh; object-fit: cover;" />
+			</a>
+		</div>
 
-		<partial name="_ImageGalleryPartial" model="@Model.Images"/>
-
-		<div class="card col-8 border-0">
+		<div class="card col-md-4 col-sm-12 border-0">
 			<p style="font-size: 25px;"><u>@Model.Name</u></p>
 			<p>Елемент тип: @Model.OutfitPartType</p>
 			<p>@Model.Description</p>
 			<p>Цвят: <b>@Model.Color</b></p>
-			<p>Подходяща за: <b>@Model.RenterType</b></p>
+			<p>Вид: <b>@RenterTypeMappingDictionary[Model.RenterType]</b></b></p>
 			<p>Размер: <b>@Model.Size</b></p>
 			<p>Елемент от носия: <b>@Model.OutfitSet</b></p>
-			<p>Собственик: <b>@Model.OwnerEmail</b></p> @*TODO samo Admina*@
+			<p>Описание: <p>@Model.Description</p></p>
 
+			@if (this.User?.IsAdmin() ?? false)
+			{
+				<p>Собственик: <b>@Model.OwnerEmail</b></p>
+			}
 			<div class="form-inline">
-				@if (this.User.IsInRole(AdminRoleName))
-				{
-					<a class="btn btn-warning" asp-area="Admin" asp-controller="OutfitPart" asp-action="Edit"
-					   asp-route-id="@Model.Id">Edit</a>
-					<a class="ml-2 btn btn-danger" asp-area="Admin" asp-controller="OutfitPart" asp-action="Delete"
-					   asp-route-id="@Model.Id">Delete</a>
+				<div class="d-flex justify-content-between mt-2">
+					@if (this.User?.IsAdmin() ?? false)
+					{
+						<a class="btn btn-warning col-lg-5 col-md-6" asp-area="Admin" asp-controller="OutfitPart" asp-action="Edit"
+						   asp-route-id="@Model.Id">Edit</a>
+						<a class="ml-2 btn btn-danger col-lg-5 col-md-6" asp-area="Admin" asp-controller="OutfitPart" asp-action="Delete"
+						   asp-route-id="@Model.Id">Delete</a>
+					}
+				</div>
+			</div>
 
-				}
+		</div>
+
+		<h3 class="text-center mt-5">Галерия</h3>
+		<hr />
+
+		<div class="" name="outfitSetGallery">
+			<div class="">
+				<partial name="_ImageGalleryPartial" model="@Model.Images" style="height: 50vh" />
 			</div>
 		</div>
 	</div>
 </div>
+

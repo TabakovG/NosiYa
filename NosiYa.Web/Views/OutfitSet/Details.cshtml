@@ -20,11 +20,12 @@
 <hr />
 
 <div class="container" style="display:inline">
-	<div class="row d-flex justify-content-between">
+	<div class="row d-flex justify-content-between">	
 		<div class="col-lg-6 col-md-8 col-sm-12" style="height: 60vh">
-			<img class="col-12" src="@defaultImageUrl" style="height: 60vh; object-fit: cover;" />
+			<a href="@defaultImageUrl" data-lightbox="outfit-gallery">
+				<img class="col-12 gallery-image" src="@defaultImageUrl" style="height: 60vh; object-fit: cover;" />
+			</a>
 		</div>
-
 		<div class="card col-md-4 col-sm-12 border-0">
 			<p style="font-size: 25px;"><u>@Model.Name</u></p>
 			<p>
@@ -41,7 +42,7 @@
 					   class="btn btn-success col-lg-5 col-md-7">Резервирай</a>
 				</div>
 				<div class="d-flex justify-content-between mt-2">
-					@if (this.User.IsInRole(AdminRoleName))
+					@if (this.User?.IsAdmin() ?? false)
 					{
 						<a class="btn btn-warning col-lg-5 col-md-7" asp-area="Admin" asp-controller="OutfitSet" asp-action="Edit"
 						   asp-route-id="@Model.Id">Промени</a>
