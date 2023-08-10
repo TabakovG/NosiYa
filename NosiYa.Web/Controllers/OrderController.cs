@@ -1,7 +1,6 @@
 ﻿namespace NosiYa.Web.Controllers
 {
 	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.AspNetCore.Authorization;
 
 	using NosiYa.Services.Data.Interfaces;
 	using Infrastructure.Extensions;

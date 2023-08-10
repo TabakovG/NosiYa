@@ -1,42 +1,75 @@
 ﻿@model OutfitSetDetailsViewModel
+@inject IImageService imageService;
 
 @{
 	ViewBag.Title = "Детайли на носията";
 }
+@{
+	var defaultImageUrl = await this.imageService.GetDefaultIfExistsAsync(Model.Id, OutfitSet) ?? string.Empty;
 
+	var RenterTypeMappingDictionary = new Dictionary<string, string>
+		{
+			{"All","Всички"},
+			{"Male","Мъжка"},
+			{"Female","Женска"},
+			{"Boy","За момче"},
+			{"Girl","За момиче"}
+		};
+}
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
 <div class="container" style="display:inline">
-	<div class="row">
+	<div class="row d-flex justify-content-between">
+		<div class="col-lg-6 col-md-8 col-sm-12" style="height: 60vh">
+			<img class="col-12" src="@defaultImageUrl" style="height: 60vh; object-fit: cover;" />
+		</div>
 
-		<partial name="_ImageGalleryPartial" model="@Model.Images"/>
-
-		<div class="card col-8 border-0">
+		<div class="card col-md-4 col-sm-12 border-0">
 			<p style="font-size: 25px;"><u>@Model.Name</u></p>
 			<p>
-				Price Per Day:
+				Цена:
 				<b>@($"{Model.PricePerDay:f2}") BGN</b>
 			</p>
 			<p>@Model.Description</p>
-			<p>Region: <b>@Model.Region</b></p>
-			<p>Подходяща за: <b>@Model.RenterType</b></p>
+			<p>Регион: <b>@Model.Region</b></p>
+			<p>Вид: <b>@RenterTypeMappingDictionary[Model.RenterType]</b></p>
 			<p>Размер: <b>@Model.Size</b></p>
 			<div class="form-inline">
-				@if (this.User.IsInRole(AdminRoleName))
-				{
-					<a class="btn btn-warning" asp-area="Admin" asp-controller="OutfitSet" asp-action="Edit"
-					   asp-route-id="@Model.Id">Edit</a>
-					<a class="ml-2 btn btn-danger" asp-area="Admin" asp-controller="OutfitSet" asp-action="Delete"
-					   asp-route-id="@Model.Id">Delete</a>
-
-				}
+				<div class="d-flex justify-content-between align-items-center ">
+					<a asp-area="" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id"
+					   class="btn btn-success col-lg-5 col-md-7">Резервирай</a>
+				</div>
+				<div class="d-flex justify-content-between mt-2">
+					@if (this.User.IsInRole(AdminRoleName))
+					{
+						<a class="btn btn-warning col-lg-5 col-md-7" asp-area="Admin" asp-controller="OutfitSet" asp-action="Edit"
+						   asp-route-id="@Model.Id">Edit</a>
+						<a class="ml-2 btn btn-danger col-lg-5 col-md-7" asp-area="Admin" asp-controller="OutfitSet" asp-action="Delete"
+						   asp-route-id="@Model.Id">Delete</a>
+					}
+				</div>
 			</div>
 
+		</div>
+
+		<h3 class="text-center mt-5">Какво включва</h3>
+		<hr />
+
+		<div name="outfitParts" class="row d-flex justify-content-center align-items-center">
 			@foreach (OutfitPartViewModel part in Model.OutfitParts)
 			{
-				<partial name="_OutfitPartPartial" model="@part"/>
+				<partial name="_OutfitPartPartial" model="@part" />
 			}
+		</div>
+		
+		<h3 class="text-center mt-5">Галерия</h3>
+		<hr />
+
+		<div class="" name="outfitSetGallery">
+			<div class="">
+				<partial name="_ImageGalleryPartial" model="@Model.Images" style="height: 50vh" />
+			</div>
 		</div>
 	</div>
 </div>

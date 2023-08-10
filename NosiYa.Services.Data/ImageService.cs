@@ -71,27 +71,31 @@
 				.ToList();
 		}
 
-		public async Task<bool> HasDefaultAsync(int relatedEntityId, string entity)
+		public async Task<string?> GetDefaultIfExistsAsync(int relatedEntityId, string entity)
 		{
-			bool result = false;
+			var result = this.context
+				.Images
+				.AsNoTracking()
+				.Where(i => i.IsDefault)
+				.AsQueryable();
 
 			switch (entity.ToLower())
 			{
 				case EntityTypesConst.Event:
-					result = await this.context.Images.Where(i => i.EventId == relatedEntityId).AnyAsync(i => i.IsDefault);
+					result = result.Where(i => i.EventId == relatedEntityId);
 					break;
 				case EntityTypesConst.OutfitSet:
-					result = await this.context.Images.Where(i => i.OutfitSetId == relatedEntityId).AnyAsync(i => i.IsDefault);
+					result = result.Where(i => i.OutfitSetId == relatedEntityId);
 					break;
 				case EntityTypesConst.Region:
-					result = await this.context.Images.Where(i => i.RegionId == relatedEntityId).AnyAsync(i => i.IsDefault);
+					result = result.Where(i => i.RegionId == relatedEntityId);
 					break;
 				case EntityTypesConst.OutfitPart:
-					result = await this.context.Images.Where(i => i.OutfitPartId == relatedEntityId).AnyAsync(i => i.IsDefault);
+					result = result.Where(i => i.OutfitPartId == relatedEntityId);
 					break;
 			}
 
-			return result;
+			return await result.Select(i=>i.Url).FirstOrDefaultAsync();
 		}
 
 
