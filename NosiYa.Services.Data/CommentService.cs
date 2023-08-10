@@ -8,6 +8,7 @@
 	using NosiYa.Data.Models;
 	using Interfaces;
 	using Web.ViewModels.Comment;
+	using static Common.NotificationMessagesConstants;
 
 	public class CommentService : ICommentService
 	{
@@ -137,8 +138,9 @@
 				.FirstAsync();
 
 			comment.ModifiedContent = WebUtility.HtmlEncode(model.ModifiedContent);
+			comment.Content = CommentWaitingForReviewText + comment.Content;
 
-			await this.context.SaveChangesAsync();
+			                  await this.context.SaveChangesAsync();
 		}
 
 		public async Task ApproveByIdAsync(int id)
@@ -149,7 +151,8 @@
 				.FirstAsync();
 
 			comment.IsApproved = true;
-			comment.Content = WebUtility.HtmlEncode(comment.ModifiedContent ?? comment.Content);
+			comment.Content = WebUtility.HtmlEncode(comment.ModifiedContent ?? comment.Content)
+				.Replace(CommentWaitingForReviewText, string.Empty);
 			comment.ModifiedContent = null;
 
 			await this.context.SaveChangesAsync();

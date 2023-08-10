@@ -30,7 +30,7 @@
 
 				return View(model);
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				return this.GeneralError();
 			}
