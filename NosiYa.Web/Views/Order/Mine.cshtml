@@ -17,10 +17,9 @@
 	{
 		<div class="col-md-4">
 			<div class="card mb-3">
-				<img class="card-img-top" src="@order.SetImage" alt="Outfit Image">
+				<img class="card-img-top" src="@order.SetImage" style="height: 45vh;" alt="Outfit Image">
 				<div class="card-body text-center">
-
-					<h4>@order.Name</h4>
+					<a asp-area="" asp-controller="OutfitSet" asp-action="Details" asp-route-id="@order.OutfitId"><h4>@order.Name</h4></a>
 					<br />
 					<p class="">@order.FromDate</p>
 					<p class="">@order.ToDate</p>
