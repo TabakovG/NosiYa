@@ -1,7 +1,6 @@
 ﻿@model OutfitSetFormModel
 
 
-<partial name="_AddImagePartial" />
 <div class="form-group">
 	<label asp-for="Name"></label>
 	<input asp-for="Name" class="form-control" placeholder="Name...">
@@ -48,6 +47,7 @@
 	</select>
 	<span asp-validation-for="RenterType" class="small text-danger"></span>
 </div>
-<div class="text-center">
-	<input class="btn btn-primary mt-3" type="submit" value="Запази" />
+<div class="text-center d-flex justify-content-between">
+	<partial name="_AddImagePartial" />
+	<input class="btn btn-primary mt-3" type="submit" value="Запази"/>
 </div>

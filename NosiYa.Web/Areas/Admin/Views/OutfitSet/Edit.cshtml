@@ -13,11 +13,12 @@
 		<form enctype="multipart/form-data" method="post" asp-area="Admin" asp-action="Edit" asp-controller="OutfitSet">
 			<partial name="_OutfitSetFormPartial" model="@Model" />
 		</form>
+		<a asp-area="Admin" asp-controller="OutfitPart" asp-action="Add" asp-route-id="@Url.ActionContext.RouteData.Values["id"]"
+		   class="btn btn-success">Добави елемент</a>
 	</div>
 </div>
 
-<a asp-area="Admin" asp-controller="OutfitPart" asp-action="Add" asp-route-id="@Url.ActionContext.RouteData.Values["id"]"
-   class="btn btn-success">Добави елемент</a>
+
 
 @section Scripts
 {

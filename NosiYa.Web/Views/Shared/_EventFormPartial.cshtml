@@ -4,7 +4,7 @@
 	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
 		<form enctype="multipart/form-data" method="post">
 
-			<partial name="_AddImagePartial"/>
+			
 
 			<div class="form-group">
 				<label asp-for="Name"></label>
@@ -32,7 +32,8 @@
 				<input asp-for="EventEndDate" rows="4" class="form-control" placeholder="End date..." />
 				<span asp-validation-for="EventEndDate" class="small text-danger"></span>
 			</div>
-			<div class="text-center">
+			<div class="text-center d-flex justify-content-between">
+				<partial name="_AddImagePartial" />
 				<input class="btn btn-primary mt-3" type="submit" value="Запази"/>
 			</div>
 		</form>
