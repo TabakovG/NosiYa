@@ -1,20 +1,15 @@
 ﻿@model CommentFormModel
 
-<div class="row">
-	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-		<form method="post" asp-area="" asp-action="Add" asp-controller="Comment">
+<form method="post" asp-area="" asp-action="Add" asp-controller="Comment">
+	<input asp-for="EventId" class="form-control visually-hidden" placeholder="EventId...">
 
-				<input asp-for="EventId" class="form-control visually-hidden" placeholder="EventId...">
-
-				<div class="form-group">
-				<label asp-for="Content"></label>
-				<textarea asp-for="Content" rows="4" class="form-control" placeholder="Description..."></textarea>
-				<span asp-validation-for="Content" class="small text-danger"></span>
-			</div>
-
-			<div class="text-center">
-				<input class="btn btn-primary mt-3" type="submit" value="Запази" />
-			</div>
-		</form>
+	<div class="form-group">
+		<label asp-for="Content">Коментар</label>
+		<textarea asp-for="Content" rows="4" class="form-control" placeholder="Description..."></textarea>
+		<span asp-validation-for="Content" class="small text-danger"></span>
 	</div>
-</div>
+
+	<div class="text-center">
+		<input class="btn btn-primary mt-3" type="submit" value="Запази" />
+	</div>
+</form>

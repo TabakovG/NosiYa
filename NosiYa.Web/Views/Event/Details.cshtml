@@ -1,59 +1,103 @@
-﻿@model EventDetailsViewModel
+﻿@using NosiYa.Common
+@model EventDetailsViewModel
+@inject IImageService imageService;
 
 @{
 	ViewBag.Title = "Детайли на Събитието";
 }
-
+@{
+	var defaultImageUrl = await this.imageService.GetDefaultIfExistsAsync(Model.Id, EntityTypesConst.Event) ?? string.Empty;
+}
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
 <div class="container" style="display:inline">
 	<div class="row">
 
-		<partial name="_ImageGalleryPartial" model="@Model.Images" />
-
-		<div class="card col-8 border-0">
-			<p style="font-size:25px;"><u>@Model.Name</u></p>
-			<p>@Model.Description</p>
-			<p>@Model.Location</p>
-			<p>@Model.EventStartDate</p>
-			<p>@Model.EventEndDate</p>
-			<div class="form-inline">
-				@if (this.User.Identity?.IsAuthenticated ?? false)
-				{
-					if (this.User.IsAdmin() || this.User.GetId() == @Model.OwnerId.ToUpper())
-					{
-						<a class="btn btn-warning" asp-area="" asp-controller="Event" asp-action="Edit"
-						   asp-route-id="@Model.Id">Промени</a>
-						<a class="ml-2 btn btn-danger" asp-area="" asp-controller="Event" asp-action="Delete"
-						   asp-route-id="@Model.Id">Изтрии</a>
-					}
-				}
-			</div>
-			<div class="alert-confirm-delete all-comments-container">
-				@foreach (CommentViewModel comment in Model.Comments)
-				{
-					<partial name="_CommentPartial" model="@comment" />
-				}
-			</div>
-			@if (this.User?.Identity?.IsAuthenticated ?? false)
-			{
-				<div class="new-comment-form">
-					<partial name="_CommentFormPartial" model="@Model.CommentForm" />
+		<div class="container" style="display:inline">
+			<div class="row d-flex justify-content-between">
+				<div class="col-lg-6 col-md-8 col-sm-12" style="height: 60vh">
+					<img class="col-12" src="@defaultImageUrl" style="height: 60vh; object-fit: cover;" />
 				</div>
-			}
+
+				<div class="card col-md-4 col-sm-12 border-0">
+					<p style="font-size:25px;"><u>@Model.Name</u></p>
+					<p>@Model.Description</p>
+					<p>@Model.Location</p>
+					<p>@Model.EventStartDate</p>
+					<p>@Model.EventEndDate</p>
+					<div class="form-inline">
+
+						<div class="d-flex justify-content-between mt-2">
+							@if (this.User.Identity?.IsAuthenticated ?? false)
+							{
+								if (this.User.IsAdmin() || this.User.GetId() == @Model.OwnerId.ToUpper())
+								{
+									<a class="btn btn-warning col-lg-5 col-md-7" asp-area="" asp-controller="Event" asp-action="Edit"
+							   asp-route-id="@Model.Id">Промени</a>
+									<a class="ml-2 btn btn-danger col-lg-5 col-md-7" asp-area="" asp-controller="Event" asp-action="Delete"
+							   asp-route-id="@Model.Id">Изтрии</a>
+								}
+							}
+						</div>
+					</div>
+				</div>
+
+				<h3 class="text-center mt-5">Коментари</h3>
+				<hr />
+
+				@if (this.User?.Identity?.IsAuthenticated ?? false)
+				{
+					<div class="new-comment-form d-flex justify-content-center mb-3">
+						<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#commentModal">
+							Добави коментар
+						</button>
+					</div>
+				}
+
+
+				<div class="alert-confirm-delete all-comments-container  col-12">
+					@foreach (CommentViewModel comment in Model.Comments)
+					{
+						<partial name="_CommentPartial" model="@comment" />
+					}
+				</div>
+
+				<h3 class="text-center mt-5">Галерия</h3>
+				<hr />
+
+				<div class="" name="outfitSetGallery">
+					<div class="">
+						<partial name="_ImageGalleryPartial" model="@Model.Images" style="height: 50vh" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="editCommentModal" tabindex="-1" aria-labelledby="editCommentModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title " id="editCommentModalLabel">Промени Коментара</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" id="editCommentModalBody">
+					<!-- Modal content will be loaded here through JavaScript -->
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="editCommentModal" tabindex="-1" aria-labelledby="editCommentModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
+
+<div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title " id="editCommentModalLabel">Промени Коментара</h5>
+				<h5 class="modal-title" id="commentModalLabel">Добави коментар</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body" id="editCommentModalBody">
-				<!-- Modal content will be loaded here through JavaScript -->
+			<div class="modal-body">
+				<partial name="_CommentFormPartial" model="@Model.CommentForm" />
 			</div>
 		</div>
 	</div>
@@ -63,6 +107,8 @@
 <script src="~/js/edit-comment-ajax.js"></script>
 
 <script src="~/js/alert-confirm-parrent.js"></script>
+
+
 
 
 

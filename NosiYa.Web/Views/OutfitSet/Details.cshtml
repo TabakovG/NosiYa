@@ -44,9 +44,9 @@
 					@if (this.User.IsInRole(AdminRoleName))
 					{
 						<a class="btn btn-warning col-lg-5 col-md-7" asp-area="Admin" asp-controller="OutfitSet" asp-action="Edit"
-						   asp-route-id="@Model.Id">Edit</a>
+						   asp-route-id="@Model.Id">Промени</a>
 						<a class="ml-2 btn btn-danger col-lg-5 col-md-7" asp-area="Admin" asp-controller="OutfitSet" asp-action="Delete"
-						   asp-route-id="@Model.Id">Delete</a>
+						   asp-route-id="@Model.Id">Изтрии</a>
 					}
 				</div>
 			</div>
