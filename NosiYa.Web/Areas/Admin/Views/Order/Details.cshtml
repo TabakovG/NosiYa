@@ -19,7 +19,15 @@
 				<p class="">Наем от: @Model.FromDate</p>
 				<p class="">Наем до: @Model.ToDate</p>
 				<p class="">Наемател: @Model.Username</p>
-				<p class="">Email: @Model.Email</p>
+				<p class="">
+					<a asp-area="Admin"
+						   asp-controller="User"
+						   asp-action="All"
+						   asp-all-route-data='new Dictionary<string, string>{
+						{ "SearchTerm", Model.Email }
+					}
+					'>@Model.Email</a>
+				</p>
 				<p class="">Телефон: @Model.Phone</p>
 				<div class="row">
 					@if (Model.IsApproved)
@@ -31,12 +39,12 @@
 						<p class="text-warning">Резервацията изчаква одобрение!</p>
 						<form asp-area="Admin" asp-action="Approve" asp-controller="Order" method="post" class="d-inline">
 							<input type="hidden" name="elementId" value="@Model.OrderId" />
-							<button type="submit" class="btn btn-success">Потвърди</button>
+							<button type="submit" class="btn btn-success col-10 offset-1">Потвърди</button>
 						</form>
 					}
 					<form method="post" asp-area="" asp-controller="Order" asp-action="Delete" asp-route-orderId="@Model.OrderId" class="d-inline delete-item-form">
 						<input class="visually-hidden" readonly value="@Model.OrderId" name="OrderId" />
-						<input class="btn btn-danger col-10" type="submit" value="Откажи" />
+						<input class="btn btn-danger col-10 offset-1 mt-2" type="submit" value="Откажи" />
 					</form>
 				</div>
 			</div>
