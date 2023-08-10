@@ -34,26 +34,30 @@
 							<a class="nav-link text-dark" asp-area="" asp-controller="OutfitSet" asp-action="All">Каталог</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Mine">Моите носии</a>
-						</li>
-						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="All">Събития</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="SubmittedEvents">Предложени Събития</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Region" asp-action="All">Региони</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Настройки</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="Admin" asp-controller="OutfitSet" asp-action="Create">Създай</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Items">Количка</a>
-						</li>
+						
+						@if (this.User?.Identity?.IsAuthenticated ?? false)
+						{
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="SubmittedEvents">Предложени Събития</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Mine">Моите носии</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Items">Количка</a>
+							</li>
+						}
+						@if (this.User?.IsAdmin() ?? false)
+						{
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Администрация</a>
+							</li>
+						}
 					</ul>
 					<partial name="_LoginPartial" />
 				</div>

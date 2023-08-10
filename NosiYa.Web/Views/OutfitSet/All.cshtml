@@ -92,7 +92,7 @@
 	<div class="col-6  d-flex justify-content-start">
 		<a class="btn btn-primary col-md-2 col-sm-3 @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
 		   asp-controller="OutfitSet"
-		   asp-action="All"
+		   asp-action="@this.ViewContext.RouteData.Values["Action"]"
 		   asp-area=""
 		   asp-route-currentPage="@previousPage"
 		   asp-route-region="@Model.Region"
@@ -112,7 +112,7 @@
 		<a class="btn btn-primary col-md-2 col-sm-3
            @(shouldNextPageBeDisabled ? "disabled" : string.Empty)"
 		   asp-controller="OutfitSet"
-		   asp-action="All"
+		   asp-action="@this.ViewContext.RouteData.Values["Action"]"
 		   asp-area=""
 		   asp-route-currentPage="@(Model.CurrentPage + 1)"
 		   asp-route-region="@Model.Region"
