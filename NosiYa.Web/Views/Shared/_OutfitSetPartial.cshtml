@@ -6,50 +6,59 @@
 		<div class="card-body text-center">
 			<h4>@Model.Name</h4>
 			<br />
-			<a asp-area="" asp-controller="OutfitSet" asp-action="Details" asp-route-id="@Model.Id"
-				class="btn btn-success">Детайли</a>
-			@if (this.User.IsInRole(AdminRoleName))
-			{
-				<a asp-area="Admin" asp-controller="OutfitSet" asp-action="Edit" asp-route-id="@Model.Id"
-					class="btn btn-warning">Промени</a>
-				<a asp-area="Admin" asp-controller="OutfitSet" asp-action="Delete" asp-route-id="@Model.Id"
-					class="btn btn-danger">Изтрий</a>
-				@if (this.Url.ActionContext.RouteData.Values["Action"]?.ToString() == "AllUnavailable")
-				{
-					<form method="post" 
-					      asp-area="Admin" 
-					      asp-controller="OutfitSet" 
-					      asp-action="Activate" 
-					      asp-route-id="@Model.Id" 
-					      asp-route-orderId="@Model.Id" 
-					      class="d-inline">
-						<input class="visually-hidden" readonly value="@Model.Id" name="id" />
-						<input class="btn btn-success" type="submit" value="Активирай" />
-					</form>
-					<p></p>
-				}
-				else
-				{
-					<form method="post" 
-					      asp-area="Admin" 
-					      asp-controller="OutfitSet" 
-					      asp-action="Deactivate" 
-					      asp-route-id="@Model.Id" 
-					      asp-route-orderId="@Model.Id" 
-					      class="d-inline">
-						<input class="visually-hidden" readonly value="@Model.Id" name="id" />
-						<input class="btn btn-warning" type="submit" value="Деактивирай" />
-					</form>
-					<p></p>
-					<a asp-area="" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id"
-					   class="btn btn-success">Резервирай</a>
-				}
-			}
-			else
-			{
-				<a asp-area="" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id"
-				   class="btn btn-success">Резервирай</a>
-			}
+			<div class="row">
+				<div class="col">
+					<div class="d-flex justify-content-between align-items-center ">
+						<a asp-area="" asp-controller="OutfitSet" asp-action="Details" asp-route-id="@Model.Id"
+						   class="btn btn-info col-5">Детайли</a>
+						<a asp-area="" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id"
+						   class="btn btn-success col-5">Резервирай</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="d-flex justify-content-between align-items-center mt-2">
+						@if (this.User.IsInRole(AdminRoleName))
+						{
+							<a asp-area="Admin" asp-controller="OutfitSet" asp-action="Edit" asp-route-id="@Model.Id"
+							   class="btn btn-warning col-4">Промени</a>
+							<div class="d-flex justify-content-center align-items-center col-4">
+							<a asp-area="Admin" asp-controller="OutfitSet" asp-action="Delete" asp-route-id="@Model.Id"
+								class="btn btn-danger col-10">Изтрий</a>
+							</div>
+							@if (this.Url.ActionContext.RouteData.Values["Action"]?.ToString() == "AllUnavailable")
+							{
+								<form method="post"
+								      asp-area="Admin"
+								      asp-controller="OutfitSet"
+								      asp-action="Activate"
+								      asp-route-id="@Model.Id"
+								      asp-route-orderId="@Model.Id"
+								      class=" col-4">
+									<input class="visually-hidden" readonly value="@Model.Id" name="id" />
+									<input class="btn btn-success col-12" type="submit" value="Активирай" />
+								</form>
+								<p></p>
+							}
+							else
+							{
+								<form method="post"
+								      asp-area="Admin"
+								      asp-controller="OutfitSet"
+								      asp-action="Deactivate"
+								      asp-route-id="@Model.Id"
+								      asp-route-orderId="@Model.Id"
+								      class=" col-4">
+									<input class="visually-hidden" readonly value="@Model.Id" name="id" />
+									<input class="btn btn-warning col-12" type="submit" value="Деактивирай" />
+								</form>
+								<p></p>
+							}
+						}
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

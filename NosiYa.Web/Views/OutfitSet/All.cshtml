@@ -88,9 +88,9 @@
 		Model.OutfitsPerPage);
 }
 
-<div class="row mb-5 mt-2">
-	<div class="col-sm-6 d-grid gap-2 d-md-flex justify-content-md-start">
-		<a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+<div class="row mb-3 mt-2">
+	<div class="col-6  d-flex justify-content-start">
+		<a class="btn btn-primary col-md-2 col-sm-3 @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
 		   asp-controller="OutfitSet"
 		   asp-action="All"
 		   asp-area=""
@@ -108,8 +108,8 @@
 		!Model.Outfits.Any();
 	}
 
-	<div class="col-sm-6 d-grid gap-2 d-md-flex justify-content-sm-end">
-		<a class="btn btn-primary
+	<div class="col-6 d-grid d-flex justify-content-end">
+		<a class="btn btn-primary col-md-2 col-sm-3
            @(shouldNextPageBeDisabled ? "disabled" : string.Empty)"
 		   asp-controller="OutfitSet"
 		   asp-action="All"

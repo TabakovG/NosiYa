@@ -24,9 +24,9 @@
 					if (this.User.IsAdmin() || this.User.GetId() == @Model.OwnerId)
 					{
 						<a class="btn btn-warning" asp-area="" asp-controller="Event" asp-action="Edit"
-						   asp-route-id="@Model.Id">Edit</a>
+						   asp-route-id="@Model.Id">Промени</a>
 						<a class="ml-2 btn btn-danger" asp-area="" asp-controller="Event" asp-action="Delete"
-						   asp-route-id="@Model.Id">Delete</a>
+						   asp-route-id="@Model.Id">Изтрии</a>
 					}
 				}
 			</div>
