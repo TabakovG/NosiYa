@@ -1,7 +1,9 @@
 # NosiYa
 Inspired by https://www.facebook.com/nosiyapodnaem
+
 /Not Yet Seeded with actual data/
-How to start the Project: 
+
+__How to start the Project:__ 
 
 __1. Add Connection string to user secrets /__
 ```raw
