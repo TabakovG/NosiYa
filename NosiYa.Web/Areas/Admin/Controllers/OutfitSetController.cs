@@ -7,6 +7,7 @@
 	using NosiYa.Web.Controllers;
 	using NosiYa.Web.ViewModels.OutfitSet;
 	using static Common.NotificationMessagesConstants;
+	using static Common.SeedingConstants;
 
 	public class OutfitSetController : BaseAdminController
 	{
@@ -243,6 +244,14 @@
 		[HttpPost]
 		public async Task<IActionResult> Activate(int id)
 		{
+			if (id == InMaintenanceSetContainerId) //Current In Maintenance outfit set 
+			{
+				this.TempData[ErrorMessage] = "'In Maintenance' контейнерът не може да се активира!";
+
+				return this.RedirectToAction("AllUnavailable", "OutfitSet", new { Area = "" });
+
+			}
+
 			try
 			{
 				bool outfitSetExists = await this.outfitService

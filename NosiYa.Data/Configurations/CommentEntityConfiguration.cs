@@ -29,29 +29,45 @@
             {
                 new Comment
                 {
-                    Id = 1,
-                    Content = "Страхотна локация! :) ",
+                    Id = 71,
+                    Content = "Здравейте, Тази година входа за паркинга ще е зад сцената! ",
                     OwnerId = Guid.Parse(AdminId),
                     EventId = 1,
                     IsApproved = true
                 },
                 new Comment
                 {
-                    Id = 2,
-                    Content = "бля бля бля",
+                    Id = 72,
+                    Content = "Някой знае ли дали може да се плати вход само за първия ден?",
                     OwnerId = Guid.Parse(UserId),
                     EventId = 1,
-                    IsApproved = false
-                },
+                    IsApproved = true
+				},
                 new Comment
                 {
-                    Id = 3,
-                    Content = "Този фестивал вече е добавен.",
+	                Id = 73,
+	                Content = "Миналата година можеше. Цената беше 10лв.",
+	                OwnerId = Guid.Parse(AdminId),
+	                EventId = 1,
+	                IsApproved = true
+				},
+				new Comment
+                {
+                    Id = 74,
+                    Content = "Този фестивал вече е добавен. Можете да премахнете това събитие.",
                     OwnerId = Guid.Parse(AdminId),
                     EventId = 2,
                     IsApproved = true
-                }
-            };
+                },
+				new Comment
+				{
+					Id = 75,
+					Content = "Международен фолклорен фестивал „Витоша“ е неделима част от Културния календар на София. Провеждането му е уникална възможност за българската публика да се запознае с музикалната и танцова традиция на държави от цял свят. Това е шанс младата аудитория да види най-атрактивното лице на фолклора.",
+					OwnerId = Guid.Parse(AdminId),
+					EventId = 73,
+					IsApproved = true
+				}
+			};
         }
     }
 }

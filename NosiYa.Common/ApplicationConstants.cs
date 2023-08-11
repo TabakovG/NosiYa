@@ -52,6 +52,6 @@
         public const string UserRoleName = "User";
         public const string DevUserEmail = "user@nosiya.com";
 
-
+        public const int InMaintenanceSetContainerId = 73;
     }
 }

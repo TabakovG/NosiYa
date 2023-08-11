@@ -1,11 +1,10 @@
 ﻿namespace NosiYa.Data.Configurations
 {
-
-    using Microsoft.EntityFrameworkCore;
+	using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     using Models;
-    using static NosiYa.Common.SeedingConstants;
+    using static Common.SeedingConstants;
 
     public class EventEntityConfiguration : IEntityTypeConfiguration<Event>
     {
@@ -39,8 +38,20 @@
                     OwnerId = Guid.Parse(UserId),
                     EventStartDate = DateTime.Parse("07-07-2023"),
                     EventEndDate = DateTime.Parse("07-07-2023"),
-                }
-            };
+                },
+
+                new Event
+                {
+                Id = 73,
+                Name = "Международен фолклорен фестивал „Витоша",
+                Description = "Местоположение на сцените\r\n\r\nПешеходна зона пред Национален исторически музей, Бояна – 10.07, 11.07, 12.07, 13.07, 14.07 и15.07\r\nКино Кабана – 11.07\r\nс. Владая, НЧ „Светлина – 1906“ – 12.07\r\nкв. Княжево, пл. „Сред село“ – 13.07\r\nкв. Симеоново, НЧ „Отец Паисий“ – 14.07\r\nкв. Драгалевци, ул. „Карнобатски проход“ – 13.07\r\nкв. Бояна, парк „Воденичница“ – 14.07\r\nс. Мърчаево, 152 ОУ – 12.07\r\nМега Мол София, бул. „Царица Йоанна“ № 15 – 15.07",
+                Location = "42.652049852021584, 23.26517291652124",
+                IsApproved = true,
+                OwnerId = Guid.Parse(UserId),
+                EventStartDate = DateTime.Parse("27-09-2023"),
+                EventEndDate = DateTime.Parse("04-10-2023"),
+                },
+			};
         }
     }
 }
