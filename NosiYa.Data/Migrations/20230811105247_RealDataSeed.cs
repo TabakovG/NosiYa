@@ -60,6 +60,13 @@ namespace NosiYa.Data.Migrations
                     { 74, "Този фестивал вече е добавен. Можете да премахнете това събитие.", 2, true, true, null, new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7") }
                 });
 
+            migrationBuilder.UpdateData(
+                table: "Events",
+                keyColumn: "Id",
+                keyValue: 1,
+                columns: new[] { "EventEndDate", "EventStartDate" },
+                values: new object[] { new DateTime(2023, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+
             migrationBuilder.InsertData(
                 table: "Events",
                 columns: new[] { "Id", "Description", "EventEndDate", "EventStartDate", "IsActive", "IsApproved", "Location", "Name", "OwnerId" },
@@ -78,11 +85,8 @@ namespace NosiYa.Data.Migrations
                     { 179, 2, true, null, null, null, "/images/event/92c33c52-81c0-4234-9540-d110fe071f97.jpeg" },
                     { 183, null, true, null, null, 1, "/images/region/12f52c5a-24ac-4b8b-99fb-34e245967555.jpg" },
                     { 184, null, false, null, null, 1, "/images/region/85deec0a-67cc-47ab-997b-a17ad7546041.jpg" },
-                    { 185, null, true, null, null, 2, "/images/region/04d45bb6-1100-453f-9377-862a4c10dda6.jpg" },
-                    { 186, null, false, null, null, 2, "/images/region/1ccc5fc0-15c9-4fa9-bad8-a3f23ca301c1.jpg" },
-                    { 187, null, true, null, null, 3, "/images/region/ce68a779-2c71-488b-8cde-25b01df35ec5.jpg" },
-                    { 188, null, true, 1, null, null, "272645779_2401898696606845_187359302713407143_n.jpg" },
-                    { 189, null, true, 2, null, null, "272645779_2401898696606845_187359302713407143_n.jpg" }
+                    { 188, null, true, 1, null, null, "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg" },
+                    { 189, null, true, 2, null, null, "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg" }
                 });
 
             migrationBuilder.InsertData(
@@ -100,8 +104,8 @@ namespace NosiYa.Data.Migrations
                 columns: new[] { "OrderId", "DateRangeEnd", "DateRangeStart", "IsActive", "IsApproved", "OutfitId", "RenterId" },
                 values: new object[,]
                 {
-                    { new Guid("57416e4d-61ca-403e-a625-aafd98fbc244"), new DateTime(2023, 9, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 1, new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7") },
-                    { new Guid("b016d81e-76c0-4ad3-9743-e877caccaea7"), new DateTime(2023, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, true, 1, new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7") }
+                    { new Guid("13bf08ed-1805-4eb6-9b60-cc56834e567c"), new DateTime(2023, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, true, 1, new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7") },
+                    { new Guid("c17279d7-83ce-4acb-9890-f6f8d47949f5"), new DateTime(2023, 9, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 1, new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7") }
                 });
 
             migrationBuilder.InsertData(
@@ -155,9 +159,12 @@ namespace NosiYa.Data.Migrations
                     { 180, 73, true, null, null, null, "/images/event/f74ddf23-68d9-4b58-a982-18f3cba1a1f3.jpg" },
                     { 181, 73, false, null, null, null, "/images/event/59b6dce3-8fe8-42a1-8998-7967e282c7b8.jpg" },
                     { 182, 73, false, null, null, null, "/images/event/30fde865-6e69-4408-b490-ff5b0c49e70e.jpg" },
-                    { 192, null, true, 5, null, null, "272645779_2401898696606845_187359302713407143_n.jpg" },
-                    { 193, null, true, 6, null, null, "272645779_2401898696606845_187359302713407143_n.jpg" },
-                    { 194, null, true, 7, null, null, "272645779_2401898696606845_187359302713407143_n.jpg" }
+                    { 185, null, true, null, null, 72, "/images/region/04d45bb6-1100-453f-9377-862a4c10dda6.jpg" },
+                    { 186, null, false, null, null, 72, "/images/region/1ccc5fc0-15c9-4fa9-bad8-a3f23ca301c1.jpg" },
+                    { 187, null, true, null, null, 73, "/images/region/ce68a779-2c71-488b-8cde-25b01df35ec5.jpg" },
+                    { 192, null, true, 5, null, null, "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg" },
+                    { 193, null, true, 6, null, null, "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg" },
+                    { 194, null, true, 7, null, null, "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg" }
                 });
 
             migrationBuilder.UpdateData(
@@ -188,8 +195,8 @@ namespace NosiYa.Data.Migrations
                 columns: new[] { "OrderId", "DateRangeEnd", "DateRangeStart", "IsActive", "IsApproved", "OutfitId", "RenterId" },
                 values: new object[,]
                 {
-                    { new Guid("75783de1-cc9d-4857-b36b-0a1393c79c32"), new DateTime(2023, 8, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 2, new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7") },
-                    { new Guid("c32dd678-5232-409d-8ae6-5a05cc407c09"), new DateTime(2023, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, true, 2, new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7") }
+                    { new Guid("dcf5cfb0-1fed-4808-8421-cddfca785e09"), new DateTime(2023, 8, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 2, new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7") },
+                    { new Guid("f5e540b6-949c-4dc4-9fd3-b775590cc023"), new DateTime(2023, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, true, 2, new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7") }
                 });
 
             migrationBuilder.UpdateData(
@@ -211,12 +218,12 @@ namespace NosiYa.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Images",
                 columns: new[] { "Id", "EventId", "IsDefault", "OutfitPartId", "OutfitSetId", "RegionId", "Url" },
-                values: new object[] { 190, null, true, 3, null, null, "272645779_2401898696606845_187359302713407143_n.jpg" });
+                values: new object[] { 190, null, true, 3, null, null, "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg" });
 
             migrationBuilder.InsertData(
                 table: "Images",
                 columns: new[] { "Id", "EventId", "IsDefault", "OutfitPartId", "OutfitSetId", "RegionId", "Url" },
-                values: new object[] { 191, null, true, 4, null, null, "272645779_2401898696606845_187359302713407143_n.jpg" });
+                values: new object[] { 191, null, true, 4, null, null, "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -369,22 +376,22 @@ namespace NosiYa.Data.Migrations
             migrationBuilder.DeleteData(
                 table: "OutfitRenterDates",
                 keyColumn: "OrderId",
-                keyValue: new Guid("57416e4d-61ca-403e-a625-aafd98fbc244"));
+                keyValue: new Guid("13bf08ed-1805-4eb6-9b60-cc56834e567c"));
 
             migrationBuilder.DeleteData(
                 table: "OutfitRenterDates",
                 keyColumn: "OrderId",
-                keyValue: new Guid("75783de1-cc9d-4857-b36b-0a1393c79c32"));
+                keyValue: new Guid("c17279d7-83ce-4acb-9890-f6f8d47949f5"));
 
             migrationBuilder.DeleteData(
                 table: "OutfitRenterDates",
                 keyColumn: "OrderId",
-                keyValue: new Guid("b016d81e-76c0-4ad3-9743-e877caccaea7"));
+                keyValue: new Guid("dcf5cfb0-1fed-4808-8421-cddfca785e09"));
 
             migrationBuilder.DeleteData(
                 table: "OutfitRenterDates",
                 keyColumn: "OrderId",
-                keyValue: new Guid("c32dd678-5232-409d-8ae6-5a05cc407c09"));
+                keyValue: new Guid("f5e540b6-949c-4dc4-9fd3-b775590cc023"));
 
             migrationBuilder.DeleteData(
                 table: "OutfitSets",
@@ -417,16 +424,6 @@ namespace NosiYa.Data.Migrations
                 keyValue: 175);
 
             migrationBuilder.DeleteData(
-                table: "Regions",
-                keyColumn: "Id",
-                keyValue: 72);
-
-            migrationBuilder.DeleteData(
-                table: "Regions",
-                keyColumn: "Id",
-                keyValue: 73);
-
-            migrationBuilder.DeleteData(
                 table: "Events",
                 keyColumn: "Id",
                 keyValue: 73);
@@ -457,6 +454,16 @@ namespace NosiYa.Data.Migrations
                 keyValue: 7);
 
             migrationBuilder.DeleteData(
+                table: "Regions",
+                keyColumn: "Id",
+                keyValue: 72);
+
+            migrationBuilder.DeleteData(
+                table: "Regions",
+                keyColumn: "Id",
+                keyValue: 73);
+
+            migrationBuilder.DeleteData(
                 table: "OutfitSets",
                 keyColumn: "Id",
                 keyValue: 2);
@@ -470,6 +477,13 @@ namespace NosiYa.Data.Migrations
                     { 2, "бля бля бля", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, true, false, null, new Guid("2f29d591-89ef-45b2-89a9-08db83ceb60e") },
                     { 3, "Този фестивал вече е добавен.", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, true, true, null, new Guid("7c34fb52-0fdb-4cd7-027f-08db822aa1b7") }
                 });
+
+            migrationBuilder.UpdateData(
+                table: "Events",
+                keyColumn: "Id",
+                keyValue: 1,
+                columns: new[] { "EventEndDate", "EventStartDate" },
+                values: new object[] { new DateTime(2023, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.InsertData(
                 table: "Images",

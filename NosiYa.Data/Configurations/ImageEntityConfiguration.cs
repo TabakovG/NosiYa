@@ -157,7 +157,7 @@ namespace NosiYa.Data.Configurations
 			{
 				Id = 185,
 				Url = "/images/region/04d45bb6-1100-453f-9377-862a4c10dda6.jpg",
-				RegionId = 2,
+				RegionId = 72,
 				IsDefault = true
 			};
 			images.Add(image);
@@ -166,7 +166,7 @@ namespace NosiYa.Data.Configurations
 			{
 				Id = 186,
 				Url = "/images/region/1ccc5fc0-15c9-4fa9-bad8-a3f23ca301c1.jpg",
-				RegionId = 2
+				RegionId = 72
 			};
 			images.Add(image);
 
@@ -176,7 +176,7 @@ namespace NosiYa.Data.Configurations
 			{
 				Id = 187,
 				Url = "/images/region/ce68a779-2c71-488b-8cde-25b01df35ec5.jpg",
-				RegionId = 3,
+				RegionId = 73,
 				IsDefault = true
 			};
 			images.Add(image);
@@ -187,7 +187,7 @@ namespace NosiYa.Data.Configurations
 				image = new Image()
 				{
 					Id = 188 +i,
-					Url = "272645779_2401898696606845_187359302713407143_n.jpg",
+					Url = "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg",
 					OutfitPartId = 1+i,
 					IsDefault = true
 				};

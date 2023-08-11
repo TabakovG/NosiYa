@@ -12,7 +12,7 @@ using NosiYa.Data;
 namespace NosiYa.Data.Migrations
 {
     [DbContext(typeof(NosiYaDbContext))]
-    [Migration("20230811095927_RealDataSeed")]
+    [Migration("20230811105247_RealDataSeed")]
     partial class RealDataSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -388,8 +388,8 @@ namespace NosiYa.Data.Migrations
                         {
                             Id = 1,
                             Description = "Фестивалът е създаден през 2008 година по идея на Христо Димитров – продуцент, хореограф и режисьор на Национален фолклорен ансамбъл „Българе”. Атрактивната им сватба с фолклорната певица Албена Вескова през 2005 г. в местността \"Костина\" край с. Рибарица по старинен български обичай, на която младоженците и присъстващите 400 гости са с български народни носии, има широк позитивен отзвук. Това мотивира създателя на „Българе” с помощта на неговите партньори Ян и Елена Андерсон, на тогавашния кмет на Жеравна Лъчезар Германов, бизнесмените Георги Манев и Калин Григоров, както и на други съмишленици, да организира много по-мащабно събитие, което да дава възможност на всеки желаещ поне за три дни в годината да облече българска носия и се откъсне от цивилизацията, като направи скок век и половина назад във времето.",
-                            EventEndDate = new DateTime(2023, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventStartDate = new DateTime(2023, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventEndDate = new DateTime(2023, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventStartDate = new DateTime(2023, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             IsApproved = true,
                             Location = "42.8336195015454, 26.45904413725397",
@@ -565,21 +565,21 @@ namespace NosiYa.Data.Migrations
                         {
                             Id = 185,
                             IsDefault = true,
-                            RegionId = 2,
+                            RegionId = 72,
                             Url = "/images/region/04d45bb6-1100-453f-9377-862a4c10dda6.jpg"
                         },
                         new
                         {
                             Id = 186,
                             IsDefault = false,
-                            RegionId = 2,
+                            RegionId = 72,
                             Url = "/images/region/1ccc5fc0-15c9-4fa9-bad8-a3f23ca301c1.jpg"
                         },
                         new
                         {
                             Id = 187,
                             IsDefault = true,
-                            RegionId = 3,
+                            RegionId = 73,
                             Url = "/images/region/ce68a779-2c71-488b-8cde-25b01df35ec5.jpg"
                         },
                         new
@@ -587,49 +587,49 @@ namespace NosiYa.Data.Migrations
                             Id = 188,
                             IsDefault = true,
                             OutfitPartId = 1,
-                            Url = "272645779_2401898696606845_187359302713407143_n.jpg"
+                            Url = "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg"
                         },
                         new
                         {
                             Id = 189,
                             IsDefault = true,
                             OutfitPartId = 2,
-                            Url = "272645779_2401898696606845_187359302713407143_n.jpg"
+                            Url = "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg"
                         },
                         new
                         {
                             Id = 190,
                             IsDefault = true,
                             OutfitPartId = 3,
-                            Url = "272645779_2401898696606845_187359302713407143_n.jpg"
+                            Url = "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg"
                         },
                         new
                         {
                             Id = 191,
                             IsDefault = true,
                             OutfitPartId = 4,
-                            Url = "272645779_2401898696606845_187359302713407143_n.jpg"
+                            Url = "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg"
                         },
                         new
                         {
                             Id = 192,
                             IsDefault = true,
                             OutfitPartId = 5,
-                            Url = "272645779_2401898696606845_187359302713407143_n.jpg"
+                            Url = "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg"
                         },
                         new
                         {
                             Id = 193,
                             IsDefault = true,
                             OutfitPartId = 6,
-                            Url = "272645779_2401898696606845_187359302713407143_n.jpg"
+                            Url = "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg"
                         },
                         new
                         {
                             Id = 194,
                             IsDefault = true,
                             OutfitPartId = 7,
-                            Url = "272645779_2401898696606845_187359302713407143_n.jpg"
+                            Url = "/images/common/nosiq17/ba4d583c-31d7-44c1-99a9-b02a7006d9eb.jpg"
                         });
                 });
 
@@ -891,7 +891,7 @@ namespace NosiYa.Data.Migrations
                     b.HasData(
                         new
                         {
-                            OrderId = new Guid("57416e4d-61ca-403e-a625-aafd98fbc244"),
+                            OrderId = new Guid("c17279d7-83ce-4acb-9890-f6f8d47949f5"),
                             DateRangeEnd = new DateTime(2023, 9, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateRangeStart = new DateTime(2023, 9, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -901,7 +901,7 @@ namespace NosiYa.Data.Migrations
                         },
                         new
                         {
-                            OrderId = new Guid("b016d81e-76c0-4ad3-9743-e877caccaea7"),
+                            OrderId = new Guid("13bf08ed-1805-4eb6-9b60-cc56834e567c"),
                             DateRangeEnd = new DateTime(2023, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateRangeStart = new DateTime(2023, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -911,7 +911,7 @@ namespace NosiYa.Data.Migrations
                         },
                         new
                         {
-                            OrderId = new Guid("c32dd678-5232-409d-8ae6-5a05cc407c09"),
+                            OrderId = new Guid("f5e540b6-949c-4dc4-9fd3-b775590cc023"),
                             DateRangeEnd = new DateTime(2023, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateRangeStart = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -921,7 +921,7 @@ namespace NosiYa.Data.Migrations
                         },
                         new
                         {
-                            OrderId = new Guid("75783de1-cc9d-4857-b36b-0a1393c79c32"),
+                            OrderId = new Guid("dcf5cfb0-1fed-4808-8421-cddfca785e09"),
                             DateRangeEnd = new DateTime(2023, 8, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateRangeStart = new DateTime(2023, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,

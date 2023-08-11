@@ -25,8 +25,8 @@
                     Location = "42.8336195015454, 26.45904413725397",
                     IsApproved = true,
                     OwnerId = Guid.Parse(AdminId),
-                    EventStartDate = DateTime.Parse("07-07-2023"),
-                    EventEndDate = DateTime.Parse("07-07-2023"),
+                    EventStartDate = DateTime.Parse("07-10-2023"),
+                    EventEndDate = DateTime.Parse("12-10-2023"),
                 },
                 new Event
                 {
