@@ -16,9 +16,9 @@
 <div class="row">
 	@foreach (CartItemsViewModel order in Model)
 	{
-		<div class="col-lg-4 col-md-6">
+		<div class="col-lg-4 col-sm-8 col-md-5 col-xl-3">
 			<div class="card mb-3">
-				<img class="card-img-top" src="@order.SetImage" alt="Outfit Image">
+				<img class="card-img-top" src="@order.SetImage" alt="Outfit Image" style="object-fit: cover; height: 45vh">
 				<div class="card-body text-center">
 					
 					

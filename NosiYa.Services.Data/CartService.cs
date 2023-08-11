@@ -72,10 +72,19 @@
 
 		public async Task<ICollection<CartItemsViewModel>> GetAllItemsFromUserCartAsync(string userId)
 		{
+/*			var user = await this.context
+				.Users
+				.FindAsync(Guid.Parse(userId));
+				
+			var cartId = user!.Cart.Id;*/
+
 			var result = await this.context
 				.OutfitsForCarts
 				.AsNoTracking()
-				.Where(o => o.Cart.OwnerId.ToString() == userId)
+				.Include(o=>o.OutfitSet)
+				.Include(o=>o.OutfitSet.Images)
+				.Include(o=>o.Cart)
+				.Where(o => o.Cart.OwnerId == Guid.Parse(userId))
 				.Where(x => x.IsActive)
 				.OrderBy(o=>o.FromDate)
 				.ThenBy(o=>o.ToDate)
@@ -84,7 +93,7 @@
 					Id = o.Id,
 					OutfitId = o.OutfitId,
 					Name = o.OutfitSet.Name,
-					SetImage = o.OutfitSet.Images.Where(i => i.IsDefault).Select(i => i.Url).First(),
+					SetImage = o.OutfitSet.Images.Where(i => i.IsDefault).Select(i => i.Url).First() ?? "",
 					FromDate = o.FromDate,
 					ToDate = o.ToDate
 				})

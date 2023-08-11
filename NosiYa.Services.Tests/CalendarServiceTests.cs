@@ -1,14 +1,12 @@
 using NosiYa.Services.Data;
 using NosiYa.Services.Data.Interfaces;
-using NUnit.Framework.Internal;
-using System.Buffers.Text;
 
 namespace NosiYa.Services.Tests
 {
 	using Microsoft.EntityFrameworkCore;
-	using static Tests.DbSeedData;
+	using static DbSeedData;
 	using NosiYa.Data;
-	using NosiYa.Services.Data.Models;
+	
 
 	public class CalendarServiceTests
 	{
@@ -138,7 +136,7 @@ namespace NosiYa.Services.Tests
 			// Arrange
 			var start = DateTime.Parse("2023-08-01");
 			var end = DateTime.Parse("2023-08-02");
-			var setId = 1;
+			var setId = 2;
 
 			// Act
 			var result = await calendarService.ValidateDatesIfItemIsReservedAsync(start, end, setId);
@@ -154,6 +152,21 @@ namespace NosiYa.Services.Tests
 			var start = DateTime.Parse("2023-08-10");
 			var end = DateTime.Parse("2023-08-12");
 			var setId = 1;
+
+			// Act
+			var result = await calendarService.ValidateDatesIfItemIsReservedAsync(start, end, setId);
+
+			// Assert
+			Assert.IsFalse(result);
+		}
+
+		[Test]
+		public async Task ValidateDatesIfItemIsReservedAsync_ShouldReturnFalseWhenInvalidId()
+		{
+			// Arrange
+			var start = DateTime.Parse("2023-08-10");
+			var end = DateTime.Parse("2023-08-12");
+			var setId = 13;
 
 			// Act
 			var result = await calendarService.ValidateDatesIfItemIsReservedAsync(start, end, setId);
