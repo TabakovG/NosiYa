@@ -1,6 +1,6 @@
 # NosiYa
 Inspired by https://www.facebook.com/nosiyapodnaem
-
+/Not Yet Seeded with actual data/
 How to start the Project: 
 
 __1. Add Connection string to user secrets /__
@@ -57,3 +57,4 @@ __6. Go to Visual Studio > Package management console and run:__
 ```
   accountspass- 123123
    
+#fullCalendar #sendGrid #ajax #lightBox #imageSharp 
