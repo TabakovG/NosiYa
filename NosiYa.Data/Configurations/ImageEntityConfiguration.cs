@@ -1,5 +1,4 @@
-﻿
-namespace NosiYa.Data.Configurations
+﻿namespace NosiYa.Data.Configurations
 {
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Microsoft.EntityFrameworkCore;

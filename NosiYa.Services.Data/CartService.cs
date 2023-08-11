@@ -1,6 +1,4 @@
-﻿using NosiYa.Web.ViewModels.OutfitSet;
-
-namespace NosiYa.Services.Data
+﻿namespace NosiYa.Services.Data
 {
 	using Microsoft.EntityFrameworkCore;
 

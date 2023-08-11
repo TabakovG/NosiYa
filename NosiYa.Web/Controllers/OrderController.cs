@@ -75,7 +75,7 @@
 				}
 
 
-				var isReserved = await this.calendarService.ValidateDatesAsync(model.FromDate, model.ToDate, model.OutfitId);
+				var isReserved = await this.calendarService.ValidateDatesIfItemIsReservedAsync(model.FromDate, model.ToDate, model.OutfitId);
 
 				if (!isReserved)
 				{

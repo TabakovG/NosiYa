@@ -59,7 +59,7 @@
 			return reservations;
 		}
 
-		public async Task<bool> ValidateDatesAsync(DateTime start, DateTime end, int setId)
+		public async Task<bool> ValidateDatesIfItemIsReservedAsync(DateTime start, DateTime end, int setId)
 		{
 			return await this.context
 					.OutfitRenterDates

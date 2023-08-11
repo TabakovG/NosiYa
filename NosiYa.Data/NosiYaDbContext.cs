@@ -1,5 +1,4 @@
-﻿
-namespace NosiYa.Data
+﻿namespace NosiYa.Data
 {
 
     using System.Reflection;
@@ -14,6 +13,7 @@ namespace NosiYa.Data
         public NosiYaDbContext(DbContextOptions<NosiYaDbContext> options)
             : base(options)
         {
+
         }
 
 
