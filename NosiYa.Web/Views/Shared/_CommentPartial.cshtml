@@ -17,7 +17,7 @@
                     <p>Преди да потвърдите моля проверете за актуалното съдържание през бутон "Промени"</p>
                 </div>
 
-                <form method="post" asp-area="Admin" asp-action="Approve" asp-controller="Comment" class="delete-item-form">
+                <form method="post" asp-area="Admin" asp-action="Approve" asp-controller="Comment" asp-route-returnUrl="@ViewContext.HttpContext.Request.Path" class="delete-item-form">
                     <input type="hidden" name="elementId" value="@Model.Id" />
                     <input type="submit" value="Потвърди" class="btn btn-success btn-approve-@Model.Id" />
                 </form>

@@ -54,7 +54,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Approve([FromForm] string elementId, [FromForm] string email, [FromForm] string outfitSet)
+		public async Task<IActionResult> Approve([FromForm] string elementId, [FromForm] string email, [FromForm] string outfitSet, [FromQuery] string? returnUrl = null)
 		{
 			try
 			{
@@ -78,7 +78,12 @@
 						$"Здравейте, Заявката ви за наем на {outfitSet} беше одобрена.");
 				}
 
-				return this.RedirectToAction("Approvals", "Home");
+				if (returnUrl != null && !returnUrl.ToLower().Contains("approvals"))
+				{
+					return Redirect(returnUrl);
+				}
+
+				return this.RedirectToAction("Approvals", "Home", new {tab = "rents"});
 
 			}
 			catch (Exception)

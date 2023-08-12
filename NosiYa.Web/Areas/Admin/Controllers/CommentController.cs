@@ -15,7 +15,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Approve([FromForm] int elementId)
+		public async Task<IActionResult> Approve([FromForm] int elementId, [FromQuery]string? returnUrl = null)
 		{
 			try
 			{
@@ -30,7 +30,12 @@
 
 				await this.commentService.ApproveByIdAsync(elementId);
 
-				return this.RedirectToAction("Approvals", "Home");
+				if (returnUrl != null && !returnUrl.ToLower().Contains("approvals"))
+				{
+					return Redirect(returnUrl);
+				}
+
+				return this.RedirectToAction("Approvals", "Home", new { tab = "comments" });
 
 			}
 			catch (Exception)

@@ -8,23 +8,23 @@
 	<div class="container mt-5">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 			<li class="nav-item" role="presentation">
-				<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#rents" type="button" role="tab" aria-controls="home" aria-selected="true">Наеми</button>
+				<button class="nav-link active" id="rents-tab" data-bs-toggle="tab" data-bs-target="#rents" type="button" role="tab" aria-controls="home" aria-selected="true">Наеми</button>
 			</li>
 			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-controls="profile" aria-selected="false">Събития</button>
+				<button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-controls="profile" aria-selected="false">Събития</button>
 			</li>
 			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab" aria-controls="contact" aria-selected="false">Коментари</button>
+				<button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab" aria-controls="contact" aria-selected="false">Коментари</button>
 			</li>
 		</ul>
 		<div class="tab-content alert-confirm-delete" id="myTabContent">
-			<div class="tab-pane fade show active" id="rents" role="tabpanel" aria-labelledby="home-tab">
+			<div class="tab-pane fade show active" id="rents" role="tabpanel" aria-labelledby="rents-tab">
 				<partial name="_OrderApprovalTemplatePartial" model="Model.Orders" />
 			</div>
-			<div class="tab-pane fade" id="events" role="tabpanel" aria-labelledby="profile-tab">
+			<div class="tab-pane fade" id="events" role="tabpanel" aria-labelledby="events-tab">
 				<partial name="_EventApprovalTemplatePartial" model="Model.Events" />
 			</div>
-			<div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="contact-tab">
+			<div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
 				<partial name="_CommentApprovalTemplatePartial" model="Model.Comments" />
 			</div>
 		</div>
@@ -35,4 +35,5 @@
 @section Scripts
 	{
 	<script src="~/js/alert-confirm-parrent.js"></script>
+	<script src="~/js/return-to-tab.js"></script>
 }
