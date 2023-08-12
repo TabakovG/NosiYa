@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using NosiYa.Data;
 using NosiYa.Data.Models;
 
 namespace NosiYa.Services.Tests
 {
+	using Microsoft.Extensions.Logging;
 	using NosiYa.Data.Models.Outfit;
+	using NosiYa.Services.Data;
 	using static Common.SeedingConstants;
 
 	public static class DbSeedData
@@ -13,6 +16,8 @@ namespace NosiYa.Services.Tests
 		public static ICollection<Cart> Carts = new HashSet<Cart>();
 		public static ICollection<ApplicationUser> Users = new HashSet<ApplicationUser>();
 		public static ICollection<OutfitForCart> OutfitsForCarts = new HashSet<OutfitForCart>();
+		public static ICollection<Event> Events = new HashSet<Event>();
+		public static ICollection<Comment> Comments = new HashSet<Comment>();
 
 		public static void SeedDatabase(NosiYaDbContext dbContext)
 		{
@@ -28,9 +33,8 @@ namespace NosiYa.Services.Tests
 				SecurityStamp = "random_security_stamp",
 				ConcurrencyStamp = "random_concurrency_stamp",
 				PhoneNumber = "1234567890",
-
-
 			};
+			
 			admin.Cart.Outfits = new HashSet<OutfitForCart>()
 			{
 				new OutfitForCart
@@ -89,6 +93,63 @@ namespace NosiYa.Services.Tests
 				IsActive = false
 			}};
 
+			//Event:
+
+			Events = new HashSet<Event>()
+			{
+				new Event
+				{
+					Id = 77,
+					Name = "Test Event",
+					Description = "Test Event description",
+					Location = "Test event location",
+					IsApproved = true,
+					IsActive = true,
+					OwnerId = admin.Id,
+					Owner = admin,
+					EventStartDate = DateTime.UtcNow,
+					EventEndDate = DateTime.UtcNow.AddDays(3),
+				}
+			};
+
+			// Seed visible comments for the event and user
+			var visibleComment1 = new Comment
+			{
+				Id = 77,
+				Content = "Visible Comment 1",
+				OwnerId = admin.Id,
+				EventId = 77,
+				IsApproved = true,
+				IsActive = true,
+				CreatedOn = DateTime.UtcNow
+			};
+
+			var visibleComment2 = new Comment
+			{
+				Id = 78,
+				Content = "Visible Comment 2",
+				OwnerId = admin.Id,
+				EventId = 77,
+				IsApproved = false, // Visible due to user ownership
+				IsActive = true,
+				ModifiedContent = "Modified Content",
+				CreatedOn = DateTime.UtcNow
+			};
+
+			var visibleComment3 = new Comment
+			{
+				Id = 79,
+				Content = "Visible Comment 3",
+				OwnerId = Guid.NewGuid(),
+				EventId = 77,
+				IsApproved = true,
+				IsActive = true,
+				CreatedOn = DateTime.UtcNow
+			};
+
+			var visibleComments = new List<Comment> { visibleComment1, visibleComment2, visibleComment3 };
+			dbContext.Events.AddRange(Events);
+			dbContext.Comments.AddRange(visibleComments);
 			dbContext.OutfitsForCarts.AddRange(OutfitsForCarts);
 			dbContext.OutfitRenterDates.AddRange(OutfitRenterDates);
 			dbContext.Carts.AddRange(Carts);

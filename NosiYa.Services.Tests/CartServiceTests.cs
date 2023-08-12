@@ -1,6 +1,3 @@
-using System.Collections;
-using NosiYa.Data.Models;
-
 namespace NosiYa.Services.Tests
 {
 	using Microsoft.EntityFrameworkCore;

@@ -14,6 +14,7 @@ namespace NosiYa.Web.Areas.Identity.Pages.Account
     using Data.Models;
     using Services.Messaging;
     using static Common.SeedingConstants;
+    using static Common.EntityValidationConstants.User;
 
     public class RegisterModel : PageModel
     {
@@ -64,6 +65,7 @@ namespace NosiYa.Web.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [EmailAddress]
+            [StringLength(UserEmailMaxLength, MinimumLength = UserEmailMinLength)]
             [Display(Name = "Email")]
             public string Email { get; set; }
 

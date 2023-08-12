@@ -66,5 +66,11 @@
             public const int ImageResizeMaxWidth = 1920;
         }
 
+        public static class User
+        {
+            public const int UserEmailMinLength = 5;
+            public const int UserEmailMaxLength = 50;
+
+        }
     }
 }

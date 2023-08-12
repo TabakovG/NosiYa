@@ -1,13 +1,13 @@
 ﻿@model RegionAllViewModel
 
-<div class="col-md-4">
+<div class="col-md-6 col-xl-4">
 	<div class="card mb-3">
 		
 		<div class="card-body text-center">
 			<h4>@Model.Name</h4>
 			<br />
 			<a asp-area="" asp-controller="Region" asp-action="Details" asp-route-id="@Model.Id">
-				<img class="card-img-top" src="@Model.ImageUrl" alt="Region Image" style="height: 25vh; object-fit: cover;">
+				<img class="card-img-top" src="@Model.ImageUrl" alt="Region Image" style="height: 25vh; object-fit: contain;">
 			</a>
 			@if (this.User?.IsAdmin() ?? false)
 			{

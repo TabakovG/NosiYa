@@ -7,7 +7,7 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="row">
+<div class="row d-flex justify-content-center">
 
 	<div class="col-md-4">
 		<div class="card mb-3">
@@ -39,6 +39,8 @@
 						<p class="text-warning">Резервацията изчаква одобрение!</p>
 						<form asp-area="Admin" asp-action="Approve" asp-controller="Order" method="post" class="d-inline">
 							<input type="hidden" name="elementId" value="@Model.OrderId" />
+							<input type="hidden" name="email" value="@Model.Email" />
+							<input type="hidden" name="outfitSet" value="@Model.Name" />
 							<button type="submit" class="btn btn-success col-10 offset-1">Потвърди</button>
 						</form>
 					}
