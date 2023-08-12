@@ -27,7 +27,8 @@
 				ModifiedContent = WebUtility.HtmlEncode(model.Content),
 				OwnerId = userId,
 				EventId = model.EventId,
-				IsActive = true
+				IsActive = true,
+				CreatedOn = DateTime.UtcNow
 			};
 
 			await context.Comments.AddAsync(comment);
@@ -51,7 +52,8 @@
 					Content = c.Content,
 					OwnerId = c.OwnerId.ToString(),
 					OwnerEmail = c.Owner.Email,
-					IsWaitingForReview = c.ModifiedContent != null
+					IsWaitingForReview = c.ModifiedContent != null,
+					CreatedOn = c.CreatedOn
 				})
 				.ToArrayAsync();
 

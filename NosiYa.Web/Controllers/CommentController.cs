@@ -136,7 +136,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Delete(int id, [FromQuery] int eventId)
+		public async Task<IActionResult> Delete(int id, [FromQuery] int eventId, string? baseUrl = null)
 		{
 			try
 			{
@@ -162,6 +162,11 @@
 				await this.commentService.DeleteByIdAsync(id);
 
 				this.TempData[WarningMessage] = "Коментара беше изтрит успешно!";
+
+				if (baseUrl != null)
+				{
+					return this.Redirect(baseUrl);
+				}
 
 				return RedirectToAction("Details", "Event", new { Id = eventId });
 			}

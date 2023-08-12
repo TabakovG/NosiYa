@@ -332,7 +332,7 @@
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Delete(int id, EventForDeleteViewModel model)
+		public async Task<IActionResult> Delete(int id, EventForDeleteViewModel model, string? baseUrl = null)
 		{
 			try
 			{
@@ -366,6 +366,12 @@
 				await this.commentService.DeleteAllByEventIdAsync(id);
 
 				this.TempData["WarningMessage"] = "Събитието беше изтрит успешно!";
+
+				if (baseUrl != null)
+				{
+					return this.Redirect(baseUrl);
+				}
+
 				return this.RedirectToAction("All", "Event");
 			}
 			catch (Exception)

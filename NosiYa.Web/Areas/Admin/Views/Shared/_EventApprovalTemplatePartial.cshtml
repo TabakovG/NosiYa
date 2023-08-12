@@ -35,7 +35,8 @@
 						asp-area="" 
 						asp-action="Delete" 
 						asp-controller="Event" 
-						asp-route-id="@element.EventId" 
+						asp-route-id="@element.EventId"
+						asp-route-baseUrl="@ViewContext.HttpContext.Request.Path"
 						method="post" 
 						class="d-inline delete-item-form">
 						<button type="submit" class="btn btn-danger ">Откажи</button>
