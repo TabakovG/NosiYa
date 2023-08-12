@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NosiYa.Data.Models;
 
-namespace NosiYa.Data.Configurations
+namespace NosiYa.Data.Configurations.SeedData
 {
     public class UserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-           // builder.HasData(this.CreateUser());
+            // builder.HasData(this.CreateUser());
         }
 
         /*private ApplicationUser[] CreateUser()

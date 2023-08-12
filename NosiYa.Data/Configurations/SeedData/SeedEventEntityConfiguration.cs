@@ -1,12 +1,12 @@
-﻿namespace NosiYa.Data.Configurations
+﻿namespace NosiYa.Data.Configurations.SeedData
 {
-	using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-    using Models;
+    
+    using NosiYa.Data.Models;
     using static Common.SeedingConstants;
 
-    public class EventEntityConfiguration : IEntityTypeConfiguration<Event>
+    public class SeedEventEntityConfiguration : IEntityTypeConfiguration<Event>
     {
         public void Configure(EntityTypeBuilder<Event> builder)
         {

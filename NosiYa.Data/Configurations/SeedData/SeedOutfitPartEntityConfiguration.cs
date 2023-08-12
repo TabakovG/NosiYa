@@ -1,13 +1,13 @@
-﻿namespace NosiYa.Data.Configurations
+﻿namespace NosiYa.Data.Configurations.SeedData
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-    using Models.Outfit;
-    using Models.Enums;
+    
+    using NosiYa.Data.Models.Enums;
+    using NosiYa.Data.Models.Outfit;
     using static Common.SeedingConstants;
 
-    public class OutfitPartEntityConfiguration : IEntityTypeConfiguration<OutfitPart>
+    public class SeedOutfitPartEntityConfiguration : IEntityTypeConfiguration<OutfitPart>
     {
         public void Configure(EntityTypeBuilder<OutfitPart> builder)
         {

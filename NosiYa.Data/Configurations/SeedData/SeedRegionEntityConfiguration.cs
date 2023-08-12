@@ -1,16 +1,14 @@
-﻿
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace NosiYa.Data.Configurations
+﻿namespace NosiYa.Data.Configurations.SeedData
 {
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    
     using Models;
 
-    public class RegionEntityConfiguration : IEntityTypeConfiguration<Region>
+    public class SeedRegionEntityConfiguration : IEntityTypeConfiguration<Region>
     {
         public void Configure(EntityTypeBuilder<Region> builder)
         {
-
             builder.HasData(this.CreateRegions());
         }
 

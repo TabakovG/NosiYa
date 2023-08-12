@@ -1,11 +1,11 @@
-﻿namespace NosiYa.Data.Configurations
+﻿namespace NosiYa.Data.Configurations.SeedData
 {
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Microsoft.EntityFrameworkCore;
-
-    using Models;
-
-    public class ImageEntityConfiguration : IEntityTypeConfiguration<Image>
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    
+    using NosiYa.Data.Models;
+    
+    public class SeedImageEntityConfiguration : IEntityTypeConfiguration<Image>
     {
         public void Configure(EntityTypeBuilder<Image> builder)
         {

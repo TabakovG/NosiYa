@@ -1,4 +1,7 @@
-﻿namespace NosiYa.Data
+﻿using NosiYa.Data.Configurations;
+using NosiYa.Data.Configurations.SeedData;
+
+namespace NosiYa.Data
 {
 
     using System.Reflection;
@@ -10,10 +13,12 @@
 
     public class NosiYaDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
-        public NosiYaDbContext(DbContextOptions<NosiYaDbContext> options)
+        private readonly bool SeedDb;
+
+        public NosiYaDbContext(DbContextOptions<NosiYaDbContext> options, bool seed = true)
             : base(options)
         {
-
+            this.SeedDb = seed;
         }
 
 
@@ -31,8 +36,27 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            Assembly assembly = Assembly.GetAssembly(typeof(NosiYaDbContext)) ?? Assembly.GetExecutingAssembly();
+            /*Assembly assembly = Assembly.GetAssembly(typeof(NosiYaDbContext)) ?? Assembly.GetExecutingAssembly();
             builder.ApplyConfigurationsFromAssembly(assembly);
+            base.OnModelCreating(builder);*/
+
+
+            builder.ApplyConfiguration(new CommentEntityConfiguration());
+            builder.ApplyConfiguration(new OutfitForCartEntityConfiguration());
+            builder.ApplyConfiguration(new OutfitRenterDateEntityConfiguration());
+            builder.ApplyConfiguration(new OutfitSetEntityConfiguration());
+
+            if (this.SeedDb)
+            {
+                builder.ApplyConfiguration(new SeedCommentEntityConfiguration());
+                builder.ApplyConfiguration(new SeedEventEntityConfiguration());
+                builder.ApplyConfiguration(new SeedImageEntityConfiguration());
+                builder.ApplyConfiguration(new SeedOutfitForCartEntityConfiguration());
+                builder.ApplyConfiguration(new SeedOutfitPartEntityConfiguration());
+                builder.ApplyConfiguration(new SeedOutfitRenterDateEntityConfiguration());
+                builder.ApplyConfiguration(new SeedOutfitSetEntityConfiguration());
+                builder.ApplyConfiguration(new SeedRegionEntityConfiguration());
+            }
             base.OnModelCreating(builder);
         }
     }

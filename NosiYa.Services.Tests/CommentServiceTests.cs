@@ -25,7 +25,7 @@ namespace NosiYa.Services.Tests
 				.UseInMemoryDatabase("NosiYaInMemory" + Guid.NewGuid().ToString())
 				.Options;
 
-			this.dbContext = new NosiYaDbContext(this.dbOptions);
+            this.dbContext = new NosiYaDbContext(this.dbOptions, false);
 			dbContext.Database.EnsureCreated();
 
 			SeedDatabase(dbContext);
