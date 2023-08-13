@@ -83,7 +83,7 @@
 
 				}
 
-				return this.RedirectToAction("AllUnavailable", "OutfitSet", new { Area = "", Id = model.OutfitSetId });
+				return this.RedirectToAction("Details", "OutfitSet", new { Area = "", Id = model.OutfitSetId });
 			}
 			catch (Exception)
 			{
@@ -159,7 +159,7 @@
 				if (outfitSetType != model.RenterType)
 				{
 					model.OutfitSets = await this.outfitSetService.GetOutfitSetsAsOptionsAsync();
-					this.TempData[ErrorMessage] = $"Елементът трябва да съответсва на носията и да е подходящ за ${outfitSetType.ToString()}";
+					this.TempData[ErrorMessage] = $"Елементът трябва да съответства на носията и да е подходящ за ${outfitSetType.ToString()}";
 					return this.View(model);
 				}
 
