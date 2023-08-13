@@ -28,35 +28,37 @@ namespace NosiYa.Services.Tests
 
             //Users ---------------------------------------------------------------------------------------------------------
 
-            var admin = new ApplicationUser
+            Users = new HashSet<ApplicationUser>()
             {
-                Id = Guid.Parse(AdminId),
-                UserName = "admin",
-                NormalizedUserName = "ADMIN",
-                Email = DevAdminEmail,
-                NormalizedEmail = "ADMIN@NOSIYA.COM",
-                EmailConfirmed = true,
-                PasswordHash = "random_password_hash",
-                SecurityStamp = "random_security_stamp",
-                ConcurrencyStamp = "random_concurrency_stamp",
-                PhoneNumber = "1234567890",
-            };
-            var user = new ApplicationUser
-            {
-                Id = Guid.Parse(UserId),
-                UserName = "user",
-                NormalizedUserName = "USER",
-                Email = DevUserEmail,
-                NormalizedEmail = "USER@NOSIYA.COM",
-                EmailConfirmed = true,
-                PasswordHash = "random_password_hash",
-                SecurityStamp = "random_security_stamp",
-                ConcurrencyStamp = "random_concurrency_stamp",
-                PhoneNumber = "1234567220",
+                new ApplicationUser
+                {
+                    Id = Guid.Parse(AdminId),
+                    UserName = "admin",
+                    NormalizedUserName = "ADMIN",
+                    Email = DevAdminEmail,
+                    NormalizedEmail = "ADMIN@NOSIYA.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = "random_password_hash",
+                    SecurityStamp = "random_security_stamp",
+                    ConcurrencyStamp = "random_concurrency_stamp",
+                    PhoneNumber = "1234567890",
+                },
+                new ApplicationUser
+                {
+                    Id = Guid.Parse(UserId),
+                    UserName = "user",
+                    NormalizedUserName = "USER",
+                    Email = DevUserEmail,
+                    NormalizedEmail = "USER@NOSIYA.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = "random_password_hash",
+                    SecurityStamp = "random_security_stamp",
+                    ConcurrencyStamp = "random_concurrency_stamp",
+                    PhoneNumber = "1234567220",
+                }
+
             };
 
-            Users.Add(admin);
-            Users.Add(user);
             dbContext.Users.AddRange(Users);
 
             //Outfit Renter dates /Orders or Rents/-----------------------------------------------------------------------------
@@ -293,7 +295,7 @@ namespace NosiYa.Services.Tests
                 OutfitId = 2,
                 FromDate = DateTime.Parse("14-08-2023"),
                 ToDate = DateTime.Parse("17-08-2023"),
-                CartId = user.Cart.Id,
+                CartId = 2,
                 IsActive = false
             },
                 new OutfitForCart
@@ -342,7 +344,7 @@ namespace NosiYa.Services.Tests
                     OutfitId = 2,
                     FromDate = DateTime.Parse("14-08-2023"),
                     ToDate = DateTime.Parse("17-08-2023"),
-                    CartId = admin.Cart.Id,
+                    CartId = 1,
                     IsActive = true
                 }
             };
@@ -395,8 +397,7 @@ namespace NosiYa.Services.Tests
                     Location = "Test event location",
                     IsApproved = true,
                     IsActive = true,
-                    OwnerId = admin.Id,
-                    Owner = admin,
+                    OwnerId = Guid.Parse(AdminId),
                     EventStartDate = DateTime.UtcNow,
                     EventEndDate = DateTime.UtcNow.AddDays(3),
                 }
@@ -414,7 +415,9 @@ namespace NosiYa.Services.Tests
                     Content = "Здравейте, Тази година входа за паркинга ще е зад сцената! ",
                     OwnerId = Guid.Parse(AdminId),
                     EventId = 1,
-                    IsApproved = true
+                    IsApproved = true,
+                    IsActive = false,
+                    ModifiedContent = null
                 },
                 new Comment
                 {
@@ -422,7 +425,9 @@ namespace NosiYa.Services.Tests
                     Content = "Някой знае ли дали може да се плати вход само за първия ден?",
                     OwnerId = Guid.Parse(UserId),
                     EventId = 1,
-                    IsApproved = true
+                    IsApproved = true,
+                    IsActive = true,
+                    ModifiedContent = null
                 },
                 new Comment
                 {
@@ -430,7 +435,10 @@ namespace NosiYa.Services.Tests
                     Content = "Миналата година можеше. Цената беше 10лв.",
                     OwnerId = Guid.Parse(AdminId),
                     EventId = 1,
-                    IsApproved = true
+                    IsApproved = true,
+                    IsActive = true,
+                    ModifiedContent = null
+
                 },
                 new Comment
                 {
@@ -438,7 +446,10 @@ namespace NosiYa.Services.Tests
                     Content = "Този фестивал вече е добавен. Можете да премахнете това събитие.",
                     OwnerId = Guid.Parse(AdminId),
                     EventId = 2,
-                    IsApproved = true
+                    IsApproved = true,
+                    IsActive = true,
+                    ModifiedContent = null
+
                 },
                 new Comment
                 {
@@ -446,7 +457,10 @@ namespace NosiYa.Services.Tests
                     Content = "Международен фолклорен фестивал „Витоша“ е неделима част от Културния календар на София. Провеждането му е уникална възможност за българската публика да се запознае с музикалната и танцова традиция на държави от цял свят. Това е шанс младата аудитория да види най-атрактивното лице на фолклора.",
                     OwnerId = Guid.Parse(AdminId),
                     EventId = 73,
-                    IsApproved = true
+                    IsApproved = true,
+                    IsActive = true,
+                    ModifiedContent = null
+
                 },
 
                 new Comment
@@ -456,23 +470,25 @@ namespace NosiYa.Services.Tests
                     OwnerId = Guid.Parse(AdminId),
                     EventId = 73,
                     IsApproved = false,
-                    IsActive = false
+                    IsActive = false,
+                    ModifiedContent = null
                 },
                 new Comment
                 {
                     Id = 77,
                     Content = "Visible Comment 1",
-                    OwnerId = admin.Id,
+                    OwnerId = Guid.Parse(AdminId),
                     EventId = 77,
                     IsApproved = true,
                     IsActive = true,
-                    CreatedOn = DateTime.UtcNow
+                    CreatedOn = DateTime.UtcNow,
+                    ModifiedContent = null
                 },
                 new Comment
                 {
                     Id = 78,
                     Content = "Visible Comment 2",
-                    OwnerId = admin.Id,
+                    OwnerId = Guid.Parse(AdminId),
                     EventId = 77,
                     IsApproved = false, // Visible due to user ownership
                     IsActive = true,
@@ -487,7 +503,8 @@ namespace NosiYa.Services.Tests
                     EventId = 77,
                     IsApproved = true,
                     IsActive = true,
-                    CreatedOn = DateTime.UtcNow
+                    CreatedOn = DateTime.UtcNow,
+                    ModifiedContent = null
                 }
             };
 
@@ -697,14 +714,7 @@ namespace NosiYa.Services.Tests
             }
             dbContext.Images.AddRange(images);
 
-
-            //dbContext.Carts.AddRange(Carts);
             dbContext.SaveChanges();
-
-            var userw = dbContext.Users.Find(Guid.Parse(AdminId));
-            var usasder = dbContext.Events.Find(1);
-            var role = dbContext.OutfitSets.Find(1);
-            var rodle = dbContext.UserRoles.ToArray();
         }
     }
 }

@@ -8,6 +8,7 @@ namespace NosiYa.Services.Tests
 	using Data.Interfaces;
 	using NosiYa.Web.ViewModels.Cart;
 	using NosiYa.Data.Models.Outfit;
+	using static Common.SeedingConstants;
 
 	public class CartServiceTests
 	{
@@ -244,7 +245,7 @@ namespace NosiYa.Services.Tests
 		public async Task GetAllItemsFromUserCartAsync_ShouldReturnItemsForValidUserId()
 		{
 			// Arrange
-			var validUserId = "7C34FB52-0FDB-4CD7-027F-08DB822AA1B3"; // Existing user ID
+			var validUserId = AdminId; // Existing user ID
 
 			// Act
 			var result = await cartService.GetAllItemsFromUserCartAsync(validUserId);
