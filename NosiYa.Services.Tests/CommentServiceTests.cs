@@ -2,41 +2,41 @@ using NosiYa.Data.Models;
 
 namespace NosiYa.Services.Tests
 {
-	using Microsoft.EntityFrameworkCore;
-	using static DbSeedData;
+    using Microsoft.EntityFrameworkCore;
+    using static DbSeedData;
 
-	using System.Net;
+    using System.Net;
 
-	using NosiYa.Data;
-	using Data;
-	using Data.Interfaces;
-	using Web.ViewModels.Comment;
+    using NosiYa.Data;
+    using Data;
+    using Data.Interfaces;
+    using Web.ViewModels.Comment;
     using static Common.SeedingConstants;
     using static Common.NotificationMessagesConstants;
 
-	public class CommentServiceTests
-	{
-		private NosiYaDbContext dbContext;
-		private DbContextOptions<NosiYaDbContext> dbOptions;
-		private ICommentService commentService;
+    public class CommentServiceTests
+    {
+        private NosiYaDbContext dbContext;
+        private DbContextOptions<NosiYaDbContext> dbOptions;
+        private ICommentService commentService;
         private ApplicationUser newUser;
 
-		[OneTimeSetUp]
-		public void OneTimeSetUp()
-		{
-			this.dbOptions = new DbContextOptionsBuilder<NosiYaDbContext>()
-				.UseInMemoryDatabase("NosiYaInMemory" + Guid.NewGuid().ToString())
-				.Options;
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            this.dbOptions = new DbContextOptionsBuilder<NosiYaDbContext>()
+                .UseInMemoryDatabase("NosiYaInMemory" + Guid.NewGuid().ToString())
+                .Options;
 
             this.dbContext = new NosiYaDbContext(this.dbOptions, false);
-			dbContext.Database.EnsureCreated();
+            dbContext.Database.EnsureCreated();
 
-			SeedDatabase(dbContext);
-			this.commentService = new CommentService(this.dbContext);
-		}
+            SeedDatabase(dbContext);
+            this.commentService = new CommentService(this.dbContext);
+        }
 
-		[SetUp]
-		public void Setup()
+        [SetUp]
+        public void Setup()
         {
 
         }
@@ -96,9 +96,9 @@ namespace NosiYa.Services.Tests
             Assert.That(result, Has.All.Property("OwnerEmail").Not.Null.Or.Empty);
             Assert.That(result, Has.All.Property("Content").Not.Null.Or.Empty);
             Assert.That(result, Has.All.Property("IsWaitingForReview").Not.Null);
-            Assert.That(result.FirstOrDefault(c=>c.Id==71), Is.Null);
-            Assert.That(result.First(c=>c.Id==72), Is.Not.Null);
-            Assert.That(result.First(c=>c.Id==73), Is.Not.Null);
+            Assert.That(result.FirstOrDefault(c => c.Id == 71), Is.Null);
+            Assert.That(result.First(c => c.Id == 72), Is.Not.Null);
+            Assert.That(result.First(c => c.Id == 73), Is.Not.Null);
         }
 
         [Test]
@@ -176,7 +176,7 @@ namespace NosiYa.Services.Tests
             var result = await commentService.GetAllForApproval();
 
             // Assert
-            Assert.That(result.FirstOrDefault(c=>c.CommentId==76), Is.Null);
+            Assert.That(result.FirstOrDefault(c => c.CommentId == 76), Is.Null);
             Assert.That(result.First(c => c.CommentId == 78), Is.Not.Null);
         }
 
@@ -189,7 +189,7 @@ namespace NosiYa.Services.Tests
             var result = await commentService.IsOwnedByUserIdAsync(commentId, "2f29d591-89ef-45b2-89a9-08db83ceb60e");
 
             // Assert
-            Assert.That(result,Is.True);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -203,7 +203,7 @@ namespace NosiYa.Services.Tests
             var result = await commentService.IsOwnedByUserIdAsync(commentId, userId);
 
             // Assert
-            Assert.That(result,Is.False);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -215,7 +215,7 @@ namespace NosiYa.Services.Tests
             // Act
             var result = await commentService.GetForEditByIdAsync(commentId);
 
-            
+
             // Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Content, Is.EqualTo("Някой знае ли дали може да се плати вход само за първия ден?"));
@@ -251,6 +251,7 @@ namespace NosiYa.Services.Tests
         public async Task EditByModelAsync_ValidModel_EditsComment()
         {
             // Arrange
+
             var modelCreate = new CommentFormModel
             {
                 Content = "Test Comment",
@@ -276,6 +277,7 @@ namespace NosiYa.Services.Tests
             Assert.That(editedComment, Is.Not.Null);
             Assert.That(editedComment!.ModifiedContent, Is.EqualTo(WebUtility.HtmlEncode(newModifiedContent)));
             Assert.That(editedComment.Content, Does.StartWith(CommentWaitingForReviewText));
+            await commentService.DeleteByIdAsync(newCommentId);
         }
 
         [Test]
@@ -313,14 +315,16 @@ namespace NosiYa.Services.Tests
             // Arrange
             var model = new CommentFormModel
             {
-                Content = "Test Comment",
-                EventId = 1
+                Content = "Test Comment Test Comment",
+                EventId = 2
             };
 
             // Act
+
             var result = await commentService.CreateCommentAndReturnIdAsync(model, Guid.Parse(AdminId));
 
             // Assert
+
             Assert.That(result, Is.GreaterThan(0));
 
             // Verify that the comment is added to the database
@@ -332,6 +336,8 @@ namespace NosiYa.Services.Tests
             Assert.That(WebUtility.HtmlDecode(savedComment.ModifiedContent), Is.EqualTo(model.Content));
             Assert.That(savedComment.EventId, Is.EqualTo(model.EventId));
             Assert.That(savedComment.IsActive, Is.True);
+
+            await commentService.DeleteByIdAsync(result);
         }
 
         [Test]
@@ -399,32 +405,42 @@ namespace NosiYa.Services.Tests
         [Test]
         public async Task DeleteAllByEventIdAsync_ValidEventId_DeletesComments()
         {
-            // Arrange
-            var eventId = 1; // Replace with a valid event ID
-            Assert.That(await dbContext.Comments.FindAsync(72),Is.Not.Null);
-            Assert.That(await dbContext.Comments.FindAsync(73),Is.Not.Null);
+            await using (var context = new NosiYaDbContext(dbOptions, false))
+            {
+                // Arrange
+                var eventId = 1; // Replace with a valid event ID
+                Assert.That(await context.Comments.FindAsync(72), Is.Not.Null);
+                Assert.That(await context.Comments.FindAsync(73), Is.Not.Null);
 
-            // Act
-            await commentService.DeleteAllByEventIdAsync(eventId);
-            var result = await dbContext.Comments.FindAsync(73);
-            var secondResult = await dbContext.Comments.FindAsync(73);
+                // Act
+                await commentService.DeleteAllByEventIdAsync(eventId);
+                var result = await context.Comments.FindAsync(73);
+                var secondResult = await context.Comments.FindAsync(73);
 
-            // Assert
-            Assert.That(result!.IsActive, Is.False);
-            Assert.That(secondResult!.IsActive, Is.False);
+                // Assert
+                Assert.That(result!.IsActive, Is.False);
+                Assert.That(secondResult!.IsActive, Is.False);
+
+            }
         }
 
         [Test]
         public async Task DeleteByIdAsync_ValidId_DeletesComment()
         {
             // Arrange
-            var result = await dbContext.Comments.FindAsync(79);
+            var newCommentId = await commentService.CreateCommentAndReturnIdAsync(new CommentFormModel
+            {
+                Content = "Test content",
+                EventId = 1
+            }, Guid.Parse(AdminId));
+
+            var result = await dbContext.Comments.FindAsync(newCommentId);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result!.IsActive, Is.True);
 
             // Act
-            await commentService.DeleteByIdAsync(79);
+            await commentService.DeleteByIdAsync(newCommentId);
 
             // Assert
             Assert.That(result!.IsActive, Is.False);
@@ -433,11 +449,11 @@ namespace NosiYa.Services.Tests
 
 
         [OneTimeTearDown]
-		public void OneTimeTearDown()
-		{
-			// Dispose of the DbContext to release the in-memory database
-			dbContext.Dispose();
-		}
+        public void OneTimeTearDown()
+        {
+            // Dispose of the DbContext to release the in-memory database
+            dbContext.Dispose();
+        }
 
     }
 }
